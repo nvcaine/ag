@@ -43,12 +43,11 @@ class Ship extends Entity
 
 	override public function update()
 	{
+		super.update();
 		handleInput();
 
 		move();
 		moveBy(1.5 + xVelocity, velocity, "solid");
-
-		super.update();
 	}
 
 	override public function moveCollideX(e:Entity):Bool
@@ -143,6 +142,9 @@ class Ship extends Entity
 		if(Math.abs(velocity) > maxVelocity)
 			velocity = maxVelocity * HXP.sign(velocity);
 
+		if(velocity == 0)
+			return;
+
 		if(velocity < 0)
 			if(y < 0)
 				velocity = 0;
@@ -152,7 +154,7 @@ class Ship extends Entity
 				scene.camera.y -= 1;
 			}
 
-		else if (velocity > 0)
+		else
 			if(y > HXP.height - height)
 				velocity = 0;
 			else

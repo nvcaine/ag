@@ -33,14 +33,15 @@ class Enemy extends Entity
 
 		dispatcher = d;
 
-		data = new EnemyDTO({type: "asd", health: 100, damage: 10});
+		data = new EnemyDTO({type: "asd", health: 200, damage: 10});
 	}
 
 	// this is triggered when the player collides with an enemy, the enemy dying instantly
 	override public function moveCollideX(e:Entity)
 	{
 		//scene.remove(e);
-		scene.remove(this);
+		//scene.remove(this);
+		die();
 
 		dispatcher.dispatchEvent(new HUDEvent(HUDEvent.ENEMY_COLLISION));
 
