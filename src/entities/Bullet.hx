@@ -10,6 +10,7 @@ import events.HUDEvent;
 class Bullet extends Entity
 {
 	private var dispatcher:EventDispatcher;
+	private var damage:Int;
 
 	public function new(x:Float, y:Float, d:EventDispatcher, g:Image)
 	{
@@ -19,12 +20,13 @@ class Bullet extends Entity
 		setHitbox(16, 4);
 
 		dispatcher = d;
+
 		type = "bullet";
 	}
 
 	override public function moveCollideX(e:Entity)
 	{
-		dispatcher.dispatchEvent(new ExplosionEvent("explode", e.x - 16, e.y - 16));
+		//dispatcher.dispatchEvent(new ExplosionEvent("explode", e.x - 16, e.y - 16));
 		dispatcher.dispatchEvent(new HUDEvent(HUDEvent.KILL_SCORE, 10)); // default score 10 - why, you say ?! becasue, that's why
 
 		scene.remove(e);

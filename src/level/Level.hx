@@ -4,10 +4,14 @@ import flash.events.EventDispatcher;
 
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Backdrop;
+import com.haxepunk.HXP;
+
 import com.haxepunk.masks.Grid;
 import com.haxepunk.graphics.Image;
 
 import events.LevelEvent;
+
+import entities.Enemy;
 
 class Level extends Entity
 {
@@ -15,27 +19,37 @@ class Level extends Entity
 	private var checkPointsPassed:Int = 0;
 
 	private var dispatcher:EventDispatcher;
+	private var enemyImages:Hash<Image>;
 
-	public function new(d:EventDispatcher)
+	private var spawnTimer:Float = 0;
+
+	public function new(d:EventDispatcher, enemyAssets:Hash<Image>)
 	{
 		super(0, 0);
 
 		checkpoints = [500, 1000];
 
 		dispatcher = d;
+		enemyImages = enemyAssets;
 	}
 
 	public function init()
 	{
 		drawBackground();
+
 		initGrid(40);
 	}
 
 	override public function update()
 	{
+		super.update();
+
 		checkIfReachedCheckpoint();
 
-		super.update();
+		spawnTimer -= HXP.elapsed;
+
+		if(spawnTimer < 0)
+			spawn();
 	}
 
 	private function initGrid(gridCellSize:Int)
@@ -61,6 +75,16 @@ class Level extends Entity
 		b.scrollY = 0.5;
 
 		graphic = b;
+	}
+
+	private function spawn()
+	{
+		var e = (Std.random(2) % 2 == 0) ? enemyImages.get("enemy1") : enemyImages.get("enemy2");
+		var y = Math.random() * (HXP.height - 32);
+
+		scene.add(new Enemy(e, scene.camera.x + HXP.width, y, dispatcher));
+
+		spawnTimer = 1;
 	}
 
 	private function addEntity(x:Float, y:Float, size:Int)
