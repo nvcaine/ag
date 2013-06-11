@@ -43,11 +43,14 @@ class Ship extends Entity
 
 	override public function update()
 	{
-		super.update();
 		handleInput();
 
-		move();
+		moveVertically();
+		moveHorizontally();
+
 		moveBy(1.5 + xVelocity, velocity, "solid");
+
+		super.update();
 	}
 
 	override public function moveCollideX(e:Entity):Bool
@@ -129,39 +132,33 @@ class Ship extends Entity
 		canShoot = true;
 	}
 
-	private function move()
-	{
-		moveVertically();
-		moveHorizontally();
-	}
-
 	private function moveVertically()
 	{
 		velocity += acceleration * speed;
 
-		if(Math.abs(velocity) > maxVelocity)
-			velocity = maxVelocity * HXP.sign(velocity);
-
 		if(velocity == 0)
 			return;
 
+		if(Math.abs(velocity) > maxVelocity)
+			velocity = maxVelocity * HXP.sign(velocity);
+
 		if(velocity < 0)
-			if(y < 0)
-				velocity = 0;
-			else
+			if(y <= 0)
 			{
-				velocity = Math.min(velocity + drag, 0);
-				scene.camera.y -= 1;
+				velocity = 0;
+				y = 0;
 			}
+			else
+				velocity = Math.min(velocity + drag, 0);
 
 		else
-			if(y > HXP.height - height)
-				velocity = 0;
-			else
+			if(y >= HXP.height - height)
 			{
-				velocity = Math.max(velocity - drag, 0);
-				scene.camera.y += 1;
+				velocity = 0;
+				y = HXP.height - height;
 			}
+			else
+				velocity = Math.max(velocity - drag, 0);
 	}
 
 	private function moveHorizontally()
