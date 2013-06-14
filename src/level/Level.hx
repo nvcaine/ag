@@ -13,6 +13,8 @@ import events.LevelEvent;
 
 import entities.Enemy;
 
+import model.consts.EntityTypeConsts;
+
 class Level extends Entity
 {
 	private var checkpoints:Array<Int>;
@@ -59,7 +61,7 @@ class Level extends Entity
 
 		//mask.setRect(20, 20, 1, 1);
 
-		maskEntity.type = "solid";
+		maskEntity.type = EntityTypeConsts.LEVEL;
 
 		scene.add(maskEntity);
 

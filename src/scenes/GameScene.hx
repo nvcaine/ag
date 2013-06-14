@@ -5,11 +5,13 @@ import com.haxepunk.HXP;
 import com.haxepunk.graphics.Image;
 
 import flash.events.EventDispatcher;
+import flash.events.Event;
 
 import nme.geom.Point;
 
 import entities.Ship;
 import entities.Explosion;
+import entities.Projectile;
 
 import events.ExplosionEvent;
 import events.HUDEvent;
@@ -26,6 +28,9 @@ class GameScene extends Scene
 	private var hud:GameHUD;
 	private var enemyImages:Hash<Image>;
 	private var level:Level;
+	private var player:Ship;
+
+	private var plasma:Image;
 
 	public function new()
 	{
@@ -35,11 +40,13 @@ class GameScene extends Scene
 
 		initListeners(d, [
 				"explode",
+				"shoot",
 				HUDEvent.KILL_SCORE,
 				HUDEvent.ENEMY_COLLISION,
 				LevelEvent.PASSED_CHECKPOINT
 			], [
 				onEnemyExplode,
+				onShoot,
 				onScore,
 				onEnemyCollision,
 				onLevelCheckpointPassed
@@ -54,9 +61,11 @@ class GameScene extends Scene
 	{
 		level.init();
 
-		add(new Ship(16, HXP.halfHeight, d));
-
+		plasma = new Image("gfx/plasma.png");
 		camera = new Point(0, 0);
+		player = new Ship(16, HXP.halfHeight, d);
+
+		add(player);
 	}
 	
 	override public function update()
@@ -115,5 +124,10 @@ class GameScene extends Scene
 	private function onLevelCheckpointPassed(e:LevelEvent)
 	{
 		hud.updateCheckpoint(e.checkpoint);
+	}
+
+	private function onShoot(e:Event)
+	{
+		add(new Projectile(player.x + player.width, player.y + player.height / 2, d, plasma, 50));
 	}
 }

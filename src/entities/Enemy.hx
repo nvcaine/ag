@@ -3,29 +3,24 @@ package entities;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
 
+import flash.events.EventDispatcher;
+
 import events.ExplosionEvent;
 import events.HUDEvent;
 
-import flash.events.EventDispatcher;
-
 import dto.EnemyDTO;
+
+import model.consts.EntityTypeConsts;
+
+import entities.Projectile;
 
 class Enemy extends Entity
 {
-	/*
-	 * at one point, when we will use a single enemy class
-	 * (or maybe we won't, but in case we do), 
-	 * this property will come in handy
-	 */
-	//private var enemyData:EnemyVO
-
 	private var dispatcher:EventDispatcher;
 	private var data:EnemyDTO;
 
 	public function new(g:Image, x:Float, y:Float, d:EventDispatcher)
 	{
-		type = "enemy";
-
 		super(x, y);
 
 		graphic = g;
@@ -34,13 +29,12 @@ class Enemy extends Entity
 		dispatcher = d;
 
 		data = new EnemyDTO({type: "asd", health: 200, damage: 10});
+
+		type = EntityTypeConsts.ENEMY;
 	}
 
-	// this is triggered when the player collides with an enemy, the enemy dying instantly
-	override public function moveCollideX(e:Entity)
+	override public function moveCollideX(e:Entity):Bool
 	{
-		//scene.remove(e);
-		//scene.remove(this);
 		die();
 
 		dispatcher.dispatchEvent(new HUDEvent(HUDEvent.ENEMY_COLLISION));
@@ -50,31 +44,31 @@ class Enemy extends Entity
 
 	public override function update()
 	{
-		moveBy(-2, 0, "player");
+		moveBy(-2, 0, EntityTypeConsts.PLAYER);
 
 		super.update();
 
-		checkProjectileCollision(["bullet"]);
+		checkProjectileCollision([EntityTypeConsts.PROJECTILE]);
 
 		if(data.health <= 0)
-			die();		
+			die();
+
+		if(x < scene.camera.x - width)
+			die(false);
 	}
 
 	private function checkProjectileCollision(projectileEntityTypes:Array<String>)
 	{
-		var bullet = collideTypes(projectileEntityTypes, x, y);
+		var bullet:Projectile = cast(collideTypes(projectileEntityTypes, x, y), Projectile);
 
-		if(bullet != null && Type.getClassName(Type.getClass(bullet)) == "entities.Bullet")
-		{
-			scene.remove(bullet);
-
-			data.health -= 50;
-		}
+		if(bullet != null /*&& Type.getClassName(Type.getClass(bullet)) == "entities.Bullet"*/)
+			data.health -= bullet.damage;
 	}
 
-	private function die()
+	private function die(dispatchEvent:Bool = true)
 	{
-		dispatcher.dispatchEvent(new ExplosionEvent("explode", this.x - 16, this.y - 16));
+		if(dispatchEvent)
+			dispatcher.dispatchEvent(new ExplosionEvent("explode", this.x - 16, this.y - 16));
 
 		scene.remove(this);
 	}

@@ -21,6 +21,14 @@ class Explosion extends Entity
 		graphic = e;
 	}
 
+	override public function update()
+	{
+		super.update();
+
+		if(e.particleCount == 0)
+			scene.remove(this);
+	}
+
 	public function explode()
 	{
 		var i:Int;
@@ -37,6 +45,7 @@ class Explosion extends Entity
 			//e.emitInCircle("exp", this.x, this.y, 50);
 
 		var sound = Assets.getSound("sfx/explode.mp3");
+
 		sound.play();
 	}
 

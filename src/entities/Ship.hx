@@ -5,14 +5,18 @@ import com.haxepunk.HXP;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
-import flash.events.EventDispatcher;
 
+import flash.events.EventDispatcher;
 import flash.events.TimerEvent;
+import flash.events.Event;
+
 import flash.utils.Timer;
 
 import nme.Assets;
 
 import events.HUDEvent;
+
+import model.consts.EntityTypeConsts;
 
 class Ship extends Entity
 {
@@ -48,7 +52,7 @@ class Ship extends Entity
 		moveVertically();
 		moveHorizontally();
 
-		moveBy(1.5 + xVelocity, velocity, "solid");
+		moveBy(1.5 + xVelocity, velocity, EntityTypeConsts.LEVEL);
 
 		super.update();
 	}
@@ -70,10 +74,9 @@ class Ship extends Entity
 	private function init()
 	{
 		canShoot = true;
-		type = "player";
+		type = EntityTypeConsts.PLAYER;
 		velocity = xVelocity = 0;
 
-		plasma = new Image("gfx/plasma.png");
 		graphic = new Image("gfx/ship.png");
 
 		t = new Timer(200);
@@ -119,10 +122,11 @@ class Ship extends Entity
 		t.start();
 		canShoot = false;
 
-		var sound = Assets.getSound("sfx/laser.mp3");
-		sound.play();
+		dispatcher.dispatchEvent(new Event("shoot"));
+		//var sound = Assets.getSound("sfx/laser.mp3");
+		//sound.play();
 
-		scene.add(new Bullet(x + width, y + height / 2, dispatcher, plasma));
+		//scene.add(new Bullet(x + width, y + height / 2, dispatcher, plasma));
 	}
 
 	private function onTimer(e:TimerEvent)
