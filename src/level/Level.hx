@@ -1,37 +1,31 @@
 package level;
 
-import flash.events.EventDispatcher;
-
-import com.haxepunk.Entity;
-import com.haxepunk.graphics.Backdrop;
-import com.haxepunk.HXP;
-
-import com.haxepunk.masks.Grid;
-import com.haxepunk.graphics.Image;
-
-import events.LevelEvent;
-
 import entities.Enemy;
 
+import com.haxepunk.Entity;
+import com.haxepunk.HXP;
+import com.haxepunk.graphics.Backdrop;
+import com.haxepunk.graphics.Image;
+import com.haxepunk.masks.Grid;
+
 import model.consts.EntityTypeConsts;
+//import model.events.LevelEvent;
 
 class Level extends Entity
 {
 	private var checkpoints:Array<Int>;
 	private var checkPointsPassed:Int = 0;
 
-	private var dispatcher:EventDispatcher;
 	private var enemyImages:Hash<Image>;
 
 	private var spawnTimer:Float = 0;
 
-	public function new(d:EventDispatcher, enemyAssets:Hash<Image>)
+	public function new(enemyAssets:Hash<Image>)
 	{
 		super(0, 0);
 
 		checkpoints = [500, 1000];
 
-		dispatcher = d;
 		enemyImages = enemyAssets;
 	}
 
@@ -84,7 +78,7 @@ class Level extends Entity
 		var e = (Std.random(2) % 2 == 0) ? enemyImages.get("enemy1") : enemyImages.get("enemy2");
 		var y = Math.random() * (HXP.height - 32);
 
-		scene.add(new Enemy(e, scene.camera.x + HXP.width, y, dispatcher));
+		scene.add(new Enemy(e, scene.camera.x + HXP.width, y));
 
 		spawnTimer = 1;
 	}
@@ -114,7 +108,7 @@ class Level extends Entity
 		{
 			checkpoints.splice(0, 1);
 
-			dispatcher.dispatchEvent(new LevelEvent(LevelEvent.PASSED_CHECKPOINT, ++checkPointsPassed));
+			//dispatcher.dispatchEvent(new LevelEvent(LevelEvent.PASSED_CHECKPOINT, ++checkPointsPassed));
 		}
 	}
 }

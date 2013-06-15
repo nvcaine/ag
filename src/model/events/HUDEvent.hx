@@ -1,4 +1,4 @@
-package events;
+package model.events;
 
 import flash.events.Event;
 
@@ -8,11 +8,13 @@ class HUDEvent extends Event
 	public static inline var ENEMY_COLLISION:String = "enemyCollision";
 
 	public var score:Int;
+	public var damage:Int;
 
-	public function new(type:String, score:Int = 0, bubbles:Bool = false, cancelable:Bool = false)
+	public function new(type:String, score:Int = 0, damage:Int = 0, bubbles:Bool = false, cancelable:Bool = false)
 	{
 		super(type, bubbles, cancelable);
 
 		this.score = score;
+		this.damage = damage;
 	}
 }

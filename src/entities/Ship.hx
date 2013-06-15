@@ -6,26 +6,20 @@ import com.haxepunk.graphics.Image;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
 
-import flash.events.EventDispatcher;
 import flash.events.TimerEvent;
-import flash.events.Event;
-
 import flash.utils.Timer;
 
-import nme.Assets;
-
-import events.HUDEvent;
-
 import model.consts.EntityTypeConsts;
+import model.events.HUDEvent;
 
-class Ship extends Entity
+import org.actors.MessageEntity;
+
+class Ship extends MessageEntity
 {
 	private var velocity:Float;
 	private var xVelocity:Float;
 	private var acceleration:Float;
 	private var xAcceleration:Float;
-	private var dispatcher:EventDispatcher;
-	private var plasma:Image;
 	private var t:Timer;
 	private var canShoot:Bool;
 
@@ -33,16 +27,13 @@ class Ship extends Entity
 	static private inline var speed:Float = 3;
 	static private inline var drag:Float = 0.4;
 
-	public function new(x:Float, y:Float, d:EventDispatcher)
+	public function new(x:Float, y:Float)
 	{
 		super(x, y);
 
 		setHitbox(32, 32);
 
-		dispatcher = d;
-
 		init();
-		defineInput();
 	}
 
 	override public function update()
@@ -81,11 +72,13 @@ class Ship extends Entity
 
 		t = new Timer(200);
 		t.addEventListener("timer", onTimer);
+
+		defineInput();
 	}
 
 	private function onLevelCollision()
 	{
-		dispatcher.dispatchEvent(new HUDEvent(HUDEvent.ENEMY_COLLISION));
+		sendMessage(new HUDEvent(HUDEvent.ENEMY_COLLISION));
 	}
 
 	private function defineInput()
@@ -122,11 +115,7 @@ class Ship extends Entity
 		t.start();
 		canShoot = false;
 
-		dispatcher.dispatchEvent(new Event("shoot"));
-		//var sound = Assets.getSound("sfx/laser.mp3");
-		//sound.play();
-
-		//scene.add(new Bullet(x + width, y + height / 2, dispatcher, plasma));
+		scene.add(new Projectile(x + width, y + height / 2, {assetPath: "gfx/plasma.png", sound: "sfx/laser.mp3", width: 20, height: 5, damage: 50}));
 	}
 
 	private function onTimer(e:TimerEvent)

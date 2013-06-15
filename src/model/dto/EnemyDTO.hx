@@ -1,4 +1,4 @@
-package dto;
+package model.dto;
 
 // will extend an abstract dto
 class EnemyDTO
@@ -6,6 +6,7 @@ class EnemyDTO
 	public var type:String;
 	public var health:Int;
 	public var damage:Int;
+	public var score:Int;
 
 	public function new(data:Dynamic = null)
 	{

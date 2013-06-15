@@ -3,11 +3,12 @@ package entities;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Emitter;
 import com.haxepunk.graphics.Image;
+import com.haxepunk.utils.Ease;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
-import com.haxepunk.utils.Ease;
-import nme.display.Bitmap;
+
 import nme.Assets;
+import nme.display.Bitmap;
 
 class Explosion extends Entity
 {
@@ -34,16 +35,14 @@ class Explosion extends Entity
 		var i:Int;
 
 		for(i in 0...200)
-			e.emit("exp", 32, 32);
+			e.emit("exp", 16, 16);
 
 		for(i in 0...200)
-			e.emit("exp2", 32, 32);
+			e.emit("exp2", 16, 16);
 
 		for(i in 0...100)
-			e.emit("exp3", 32, 32);
+			e.emit("exp3", 16, 16);
 		
-			//e.emitInCircle("exp", this.x, this.y, 50);
-
 		var sound = Assets.getSound("sfx/explode.mp3");
 
 		sound.play();

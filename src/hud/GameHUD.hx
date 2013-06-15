@@ -1,11 +1,14 @@
 package hud;
 
-import com.haxepunk.graphics.Text;
+import com.haxepunk.HXP;
 import com.haxepunk.graphics.Canvas;
 import com.haxepunk.graphics.Graphiclist;
+import com.haxepunk.graphics.Text;
 import com.haxepunk.graphics.prototype.Rect;
 
-import com.haxepunk.HXP;
+import model.events.HUDEvent;
+
+import org.events.EventManager;
 
 class GameHUD extends Graphiclist
 {
@@ -17,6 +20,8 @@ class GameHUD extends Graphiclist
 	private var healthBar:Canvas;
 	private var enemyScore:Int = 0;
 	private var currentHealth:Int = 100;
+
+	private var em:EventManager;
 
 	public function new()
 	{
@@ -34,13 +39,13 @@ class GameHUD extends Graphiclist
 
 	public function decreaseHealth(damage:Int)
 	{
-		if(count > 2)
-			removeAt(2);
+		if(currentHealth <= 0)
+			return;
 
 		currentHealth -= damage;
 
-		if(currentHealth <= 0)
-			return;
+		if(count > 2)
+			removeAt(2);
 
 		drawHealth(currentHealth);
 	}
@@ -61,10 +66,18 @@ class GameHUD extends Graphiclist
 
 		scrollX = 0;
 		scrollY = 0;
+
+		em = EventManager.cloneInstance();
+
+		em.addEventListener(HUDEvent.ENEMY_COLLISION, onEnemyCollision);
+		em.addEventListener(HUDEvent.KILL_SCORE, onScore);
 	}
 
 	private function drawHealth(value:Int)
 	{
+		if(value <= 0)
+			return;
+
 		healthBar = new Canvas(HXP.width, 100);
 		healthBar.drawGraphic(10, 50, new Rect(value, 20, getHealthBarColor())); // this will be dynamically rendered
 
@@ -79,5 +92,17 @@ class GameHUD extends Graphiclist
 		];
 
 		return colors[Std.int(currentHealth / 10) - 1];
+	}
+
+	// ---------------------- Handlers ------------------------
+
+	private function onEnemyCollision(e:HUDEvent)
+	{
+		decreaseHealth(e.damage);
+	}
+
+	private function onScore(e:HUDEvent)
+	{
+		updateScore(e.score);
 	}
 }

@@ -1,30 +1,27 @@
 package scenes;
 
-import com.haxepunk.Scene;
 import com.haxepunk.HXP;
+import com.haxepunk.Scene;
 import com.haxepunk.graphics.Image;
 
-import flash.events.EventDispatcher;
 import flash.events.Event;
-
-import nme.geom.Point;
 
 import entities.Ship;
 import entities.Explosion;
-import entities.Projectile;
-
-import events.ExplosionEvent;
-import events.HUDEvent;
-import events.LevelEvent;
+//import entities.Projectile;
 
 import hud.GameHUD;
 
 import level.Level;
 
+import model.events.ExplosionEvent;
+
+import nme.geom.Point;
+
+import org.events.EventManager;
+
 class GameScene extends Scene
 {
-	private var d:EventDispatcher;
-
 	private var hud:GameHUD;
 	private var enemyImages:Hash<Image>;
 	private var level:Level;
@@ -36,21 +33,8 @@ class GameScene extends Scene
 	{
 		super();
 
-		d = new EventDispatcher();
-
-		initListeners(d, [
-				"explode",
-				"shoot",
-				HUDEvent.KILL_SCORE,
-				HUDEvent.ENEMY_COLLISION,
-				LevelEvent.PASSED_CHECKPOINT
-			], [
-				onEnemyExplode,
-				onShoot,
-				onScore,
-				onEnemyCollision,
-				onLevelCheckpointPassed
-			]);
+		//new EventManager(); - singleton! just try to instantiate it...
+		initListeners(EventManager.cloneInstance(), ["explode"], [onEnemyExplode]);
 
 		loadEnemies();
 		initLevel();
@@ -63,7 +47,7 @@ class GameScene extends Scene
 
 		plasma = new Image("gfx/plasma.png");
 		camera = new Point(0, 0);
-		player = new Ship(16, HXP.halfHeight, d);
+		player = new Ship(16, HXP.halfHeight);
 
 		add(player);
 	}
@@ -82,7 +66,7 @@ class GameScene extends Scene
 		addGraphic(hud);
 	}
 
-	private function initListeners(listener:EventDispatcher, events:Array<Dynamic>, handlers:Array<Dynamic>)
+	private function initListeners(listener:EventManager, events:Array<Dynamic>, handlers:Array<Dynamic>)
 	{
 		for(i in 0...events.length)
 			listener.addEventListener(events[i], handlers[i]);
@@ -90,7 +74,7 @@ class GameScene extends Scene
 
 	private function initLevel()
 	{
-		level = new Level(d, enemyImages);
+		level = new Level(enemyImages);
 
 		add(level);
 	}
@@ -111,23 +95,8 @@ class GameScene extends Scene
 		ex.explode();
 	}
 
-	private function onScore(e:HUDEvent)
+	/*private function onShoot(e:Event)
 	{
-		hud.updateScore(e.score);		
-	}
-
-	private function onEnemyCollision(e:HUDEvent)
-	{
-		hud.decreaseHealth(10);
-	}
-
-	private function onLevelCheckpointPassed(e:LevelEvent)
-	{
-		hud.updateCheckpoint(e.checkpoint);
-	}
-
-	private function onShoot(e:Event)
-	{
-		add(new Projectile(player.x + player.width, player.y + player.height / 2, d, plasma, 50));
-	}
+		add(new Projectile(player.x + player.width, player.y + player.height / 2, plasma, 50));
+	}*/
 }
