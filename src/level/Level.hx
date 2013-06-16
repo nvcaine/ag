@@ -5,10 +5,12 @@ import entities.Enemy;
 import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import com.haxepunk.graphics.Backdrop;
+import com.haxepunk.graphics.Canvas;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.masks.Grid;
 
 import model.consts.EntityTypeConsts;
+import model.dto.EnemyDTO;
 //import model.events.LevelEvent;
 
 class Level extends Entity
@@ -16,11 +18,11 @@ class Level extends Entity
 	private var checkpoints:Array<Int>;
 	private var checkPointsPassed:Int = 0;
 
-	private var enemyImages:Hash<Image>;
+	private var enemyImages:Hash<String>;
 
 	private var spawnTimer:Float = 0;
 
-	public function new(enemyAssets:Hash<Image>)
+	public function new(enemyAssets:Hash<String>)
 	{
 		super(0, 0);
 
@@ -75,10 +77,11 @@ class Level extends Entity
 
 	private function spawn()
 	{
-		var e = (Std.random(2) % 2 == 0) ? enemyImages.get("enemy1") : enemyImages.get("enemy2");
-		var y = Math.random() * (HXP.height - 32);
+		var enemyAsset:String = (Std.random(2) % 2 == 0) ? enemyImages.get("enemy1") : enemyImages.get("enemy2");
+		var enemyData:EnemyDTO = new EnemyDTO({type: "asd", health: 200, damage: 5, score: 5, speed: 2, asset: enemyAsset, width: 32, height: 32});
+		var y:Float = Math.random() * (HXP.height - 32);
 
-		scene.add(new Enemy(e, scene.camera.x + HXP.width, y));
+		scene.add(new Enemy(scene.camera.x + HXP.width, y, enemyData));
 
 		spawnTimer = 1;
 	}

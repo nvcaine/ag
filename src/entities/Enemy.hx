@@ -1,6 +1,7 @@
 package entities;
 
 import com.haxepunk.Entity;
+import com.haxepunk.graphics.Canvas;
 import com.haxepunk.graphics.Image;
 
 import entities.Projectile;
@@ -10,23 +11,34 @@ import model.dto.EnemyDTO;
 import model.events.ExplosionEvent;
 import model.events.HUDEvent;
 
-import org.actors.MessageEntity;
+import nme.Assets;
 
+import org.actors.MessageEntity;
 
 class Enemy extends MessageEntity
 {
 	private var data:EnemyDTO;
 
-	public function new(g:Image, x:Float, y:Float)
+	public function new(x:Float, y:Float, data:EnemyDTO)
 	{
 		super(x, y);
 
-		graphic = g;
-		setHitbox(32, 32);
-
-		data = new EnemyDTO({type: "asd", health: 200, damage: 5, score: 5});
+		this.data = data;
 
 		type = EntityTypeConsts.ENEMY;
+
+		initGraphic(data);
+	}
+
+	private function initGraphic(data:EnemyDTO)
+	{
+		var g:Canvas = new Canvas(data.width, data.height);
+
+		g.draw(0, 0, Assets.getBitmapData(data.asset));
+
+		graphic = g;
+
+		setHitbox(data.width, data.height);
 	}
 
 	override public function moveCollideX(e:Entity):Bool
@@ -40,9 +52,12 @@ class Enemy extends MessageEntity
 
 	public override function update()
 	{
-		moveBy(-2, 0, EntityTypeConsts.PLAYER);
+		if(!visible)
+			return;
 
 		super.update();
+
+		moveBy(-data.speed, 0, EntityTypeConsts.PLAYER);
 
 		checkProjectileCollision([EntityTypeConsts.PROJECTILE]);
 
@@ -55,19 +70,24 @@ class Enemy extends MessageEntity
 
 	private function checkProjectileCollision(projectileEntityTypes:Array<String>)
 	{
-		var bullet:Projectile = cast(collideTypes(projectileEntityTypes, x, y), Projectile);
+		var entity:Projectile = cast(collideTypes(projectileEntityTypes, x, y), Projectile);
 
-		if(bullet != null)
-			data.health -= bullet.damage;
+		if(entity != null)
+		{
+			data.health -= entity.damage;
+			return;			
+		}
 	}
 
 	private function die(explode:Bool = true, score:Bool = false)
 	{
 		if(explode)
-			sendMessage(new ExplosionEvent("explode", this.x - 16, this.y - 16));
+			sendMessage(new ExplosionEvent("explode", this.x - width / 2, this.y - height / 2));
 
 		if(score)
 			sendMessage(new HUDEvent(HUDEvent.KILL_SCORE, data.score));
+
+		graphic = null;
 
 		scene.remove(this);
 	}

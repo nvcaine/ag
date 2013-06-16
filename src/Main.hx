@@ -7,9 +7,9 @@ class Main extends Engine
 
 	override public function init()
 	{
-#if debug
+//#if debug
 		HXP.console.enable();
-#end
+//#end
 		// HXP.scene = new YourScene();
 		HXP.scene = new GameScene();
 	}

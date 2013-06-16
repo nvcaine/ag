@@ -3,10 +3,14 @@ package model.dto;
 // will extend an abstract dto
 class EnemyDTO
 {
-	public var type:String;
-	public var health:Int;
+	public var asset:String;
 	public var damage:Int;
+	public var health:Int;
+	public var height:Int;
 	public var score:Int;
+	public var speed:Int;
+	public var type:String;
+	public var width:Int;
 
 	public function new(data:Dynamic = null)
 	{
@@ -22,7 +26,5 @@ class EnemyDTO
 		for(i in 0...fields.length)
 			if(Reflect.hasField(this, fields[i]))
 				Reflect.setField(this, fields[i], Reflect.field(data, fields[i]));
-
-//		trace(this.type + " " + this.damage + " " + this.health);
 	}
 }
