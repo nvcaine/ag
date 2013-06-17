@@ -2,11 +2,9 @@ package scenes;
 
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
-//import com.haxepunk.graphics.Image;
 
 import flash.events.Event;
 
-import entities.Ship;
 import entities.Explosion;
 
 import hud.GameHUD;
@@ -18,13 +16,14 @@ import model.events.ExplosionEvent;
 import nme.geom.Point;
 
 import org.events.EventManager;
+import org.actors.Player;
 
 class GameScene extends Scene
 {
 	private var hud:GameHUD;
 	private var enemyImages:Hash<String>;
 	private var level:Level;
-	private var player:Ship;
+	private var player:Player;
 
 	public function new()
 	{
@@ -35,6 +34,8 @@ class GameScene extends Scene
 		loadEnemies();
 		initLevel();
 		initHUD();
+
+		player = new Player({x: 16, y: HXP.halfHeight}, this);//Ship(16, HXP.halfHeight);
 	}
 
 	override public function begin()
@@ -42,16 +43,15 @@ class GameScene extends Scene
 		level.init();
 
 		camera = new Point(0, 0);
-		player = new Ship(16, HXP.halfHeight);
-
-		add(player);
 	}
 	
 	override public function update()
 	{
 		super.update();
 
-		camera.x += 1.5;
+		//camera.x += 0.5;
+
+		player.handleInput();
 	}
 
 	private function initHUD()
