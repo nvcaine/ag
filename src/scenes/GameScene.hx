@@ -11,6 +11,7 @@ import hud.GameHUD;
 
 import level.Level;
 
+import model.consts.PlayerConsts;
 import model.events.ExplosionEvent;
 
 import nme.geom.Point;
@@ -35,7 +36,7 @@ class GameScene extends Scene
 		initLevel();
 		initHUD();
 
-		player = new Player({x: 16, y: HXP.halfHeight}, this);//Ship(16, HXP.halfHeight);
+		player = new Player({x: 16, y: HXP.halfHeight}, this);
 	}
 
 	override public function begin()
@@ -49,7 +50,7 @@ class GameScene extends Scene
 	{
 		super.update();
 
-		//camera.x += 0.5;
+		camera.x += PlayerConsts.DEFAULT_SPEED;
 
 		player.handleInput();
 	}

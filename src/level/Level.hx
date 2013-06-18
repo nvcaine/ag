@@ -97,6 +97,8 @@ class Level extends Entity
 
 	private function addLevelEntity(x:Float, y:Float, entitySize:Int, gridMask:Grid, gridCellSize:Int)
 	{
+		// there is a conflict between the graphics and the grid
+		// which appera to make the player go through "walls"
 		gridMask.setRect(Std.int(x / gridCellSize), Std.int(y / gridCellSize), 1, 1);
 
 		addEntity(x, y, entitySize);

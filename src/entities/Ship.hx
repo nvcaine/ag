@@ -5,29 +5,24 @@ import com.haxepunk.HXP;
 import com.haxepunk.graphics.Image;
 
 import model.consts.EntityTypeConsts;
+import model.consts.PlayerConsts;
 import model.events.HUDEvent;
+
+import nme.geom.Point;
 
 import org.actors.MessageEntity;
 
 class Ship extends MessageEntity
 {
-	private var velocity:Float;
-	private var xVelocity:Float;
-	private var yAcceleration:Float;
-	private var xAcceleration:Float;
-
-	static private inline var maxVelocity:Float = 8;
-	static private inline var speed:Float = 3;
-	static private inline var drag:Float = 0.4;
+	private var velocity:Point;
+	private var yAcceleration:Int;
+	private var xAcceleration:Int;
 
 	public function new(x:Float, y:Float)
 	{
 		super(x, y);
 
 		init();
-		velocity = xVelocity = 1;
-
-		trace("cons:" + velocity);
 	}
 
 	override public function update()
@@ -35,8 +30,9 @@ class Ship extends MessageEntity
 		super.update();
 
 		moveVertically();
-		//moveHorizontally();
-		moveBy(1.5 /*+ xVelocity*/, velocity, EntityTypeConsts.LEVEL);
+		moveHorizontally();
+
+		moveBy(PlayerConsts.DEFAULT_SPEED + velocity.x, velocity.y, EntityTypeConsts.LEVEL);
 	}
 
 	override public function moveCollideX(e:Entity):Bool
@@ -53,7 +49,7 @@ class Ship extends MessageEntity
 		return true;
 	}
 
-	public function setAcceleration(xAcc:Float, yAcc:Float)
+	public function setAcceleration(xAcc:Int, yAcc:Int)
 	{
 		xAcceleration = xAcc;
 		yAcceleration = yAcc;
@@ -61,7 +57,14 @@ class Ship extends MessageEntity
 
 	public function shoot()
 	{
-		scene.add(new Projectile(x + width, y + height / 2, {assetPath: "gfx/plasma.png", sound: "sfx/laser.mp3", width: 20, height: 5, damage: 50}));
+		scene.add(createNewProjectile());
+	}
+
+	private function createNewProjectile():Projectile
+	{
+		var data:Dynamic = {assetPath: "gfx/plasma.png", sound: "sfx/laser.mp3", width: 20, height: 5, damage: 50};
+
+		return new Projectile(x + width, y + height / 2, data);
 	}
 
 	private function init()
@@ -71,6 +74,8 @@ class Ship extends MessageEntity
 		graphic = new Image("gfx/ship.png");
 
 		setHitbox(32, 32);
+
+		velocity = new Point(0, 0);
 	}
 
 	private function onLevelCollision()
@@ -80,57 +85,61 @@ class Ship extends MessageEntity
 
 	private function moveVertically()
 	{
-		trace("v:" + velocity);
+		velocity.y += yAcceleration * PlayerConsts.SPEED;
 
-		velocity += yAcceleration * speed;
-		trace("*:" + (yAcceleration * speed));
-		//trace("v:" + velocity + " " + yAcceleration + " " + speed);
-
-		if(velocity == 0)
+		if(velocity.y == 0)
 			return;
 
-		if(Math.abs(velocity) > maxVelocity)
-			velocity = maxVelocity * HXP.sign(velocity);
+		if(Math.abs(velocity.y) > PlayerConsts.MAX_VELOCITY)
+			velocity.y = PlayerConsts.MAX_VELOCITY * HXP.sign(velocity.y);
 
-		if(velocity < 0)
+		if(velocity.y < 0)
+		{
 			if(y <= 0)
 			{
-				velocity = 0;
+				velocity.y = 0;
 				y = 0;
 			}
 			else
-				velocity = Math.min(velocity + drag, 0);
+				velocity.y = Math.min(velocity.y + PlayerConsts.DRAG, 0);
 
-		else
-			if(y >= HXP.height - height)
-			{
-				velocity = 0;
-				y = HXP.height - height;
-			}
-			else
-				velocity = Math.max(velocity - drag, 0);
+			return;
+		}
+
+		if(y >= HXP.height - height)
+		{
+			velocity.y = 0;
+			y = HXP.height - height;
+
+			return;
+		}
+
+		velocity.y = Math.max(velocity.y - PlayerConsts.DRAG, 0);
 	}
 
 	private function moveHorizontally()
 	{
-		xVelocity += xAcceleration * speed;
+		velocity.x += xAcceleration * PlayerConsts.SPEED;
 
-		if(Math.abs(xVelocity) > maxVelocity)
-			xVelocity = maxVelocity * HXP.sign(xVelocity);
+		if(velocity.x == 0)
+			return;
 
-		if(xVelocity < 0)
+		if(Math.abs(velocity.x) > PlayerConsts.MAX_VELOCITY)
+			velocity.x = PlayerConsts.MAX_VELOCITY * HXP.sign(velocity.x);
+
+		if(velocity.x < 0)
 		{
-			xVelocity = Math.min(xVelocity + drag, 0);
+			velocity.x = Math.min(velocity.x + PlayerConsts.DRAG, 0);
 
 			if(x - scene.camera.x < 5)
-				xVelocity = 0;
-		}
-		else if (xVelocity > 0)
-		{
-			xVelocity = Math.max(xVelocity - drag, 0);
+				velocity.x = 0;
 
-			if(x > scene.camera.x + HXP.width - width)
-				xVelocity = 0;
+			return;
 		}
+
+		velocity.x = Math.max(velocity.x - PlayerConsts.DRAG, 0);
+
+		if(x > scene.camera.x + HXP.width - width)
+			velocity.x = 0;
 	}
 }

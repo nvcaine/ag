@@ -12,6 +12,7 @@ import model.events.HUDEvent;
 import model.consts.EntityTypeConsts;
 
 import nme.Assets;
+import nme.media.SoundTransform;
 
 class Projectile extends Entity
 {
@@ -57,7 +58,7 @@ class Projectile extends Entity
 
 		damage = data.damage;
 
-		Assets.getSound(data.sound).play();
+		Assets.getSound(data.sound).play(0, 1, new SoundTransform(0.15));
 	}
 
 	private function initGraphic(data:Dynamic)
