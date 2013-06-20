@@ -7,6 +7,7 @@ import com.haxepunk.graphics.Text;
 import com.haxepunk.graphics.prototype.Rect;
 
 import model.events.HUDEvent;
+import model.events.EntityEvent;
 
 import org.events.EventManager;
 
@@ -43,6 +44,9 @@ class GameHUD extends Graphiclist
 			return;
 
 		currentHealth -= damage;
+
+		if(currentHealth <= 0)
+			em.dispatchEvent(new EntityEvent(EntityEvent.PLAYER_DEAD));
 
 		if(count > 2)
 			removeAt(2);

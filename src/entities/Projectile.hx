@@ -7,7 +7,6 @@ import com.haxepunk.graphics.Image;
 
 import flash.events.EventDispatcher;
 
-import model.events.ExplosionEvent;
 import model.events.HUDEvent;
 import model.consts.EntityTypeConsts;
 

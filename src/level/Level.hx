@@ -78,7 +78,7 @@ class Level extends Entity
 	private function spawn()
 	{
 		var enemyAsset:String = (Std.random(2) % 2 == 0) ? enemyImages.get("enemy1") : enemyImages.get("enemy2");
-		var enemyData:EnemyDTO = new EnemyDTO({type: "asd", health: 200, damage: 5, score: 5, speed: 2, asset: enemyAsset, width: 32, height: 32});
+		var enemyData:EnemyDTO = new EnemyDTO({type: "asd", health: 100, damage: 25, score: 5, speed: 2, asset: enemyAsset, width: 32, height: 32});
 		var y:Float = Math.random() * (HXP.height - 32);
 
 		scene.add(new Enemy(scene.camera.x + HXP.width, y, enemyData));

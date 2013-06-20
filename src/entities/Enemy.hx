@@ -8,7 +8,7 @@ import entities.Projectile;
 
 import model.consts.EntityTypeConsts;
 import model.dto.EnemyDTO;
-import model.events.ExplosionEvent;
+import model.events.EntityEvent;
 import model.events.HUDEvent;
 
 import nme.Assets;
@@ -82,7 +82,7 @@ class Enemy extends MessageEntity
 	private function die(explode:Bool = true, score:Bool = false)
 	{
 		if(explode)
-			sendMessage(new ExplosionEvent("explode", this.x - width / 2, this.y - height / 2));
+			sendMessage(new EntityEvent(EntityEvent.ENTITY_EXPLOSION, this.x - width / 2, this.y - height / 2));
 
 		if(score)
 			sendMessage(new HUDEvent(HUDEvent.KILL_SCORE, data.score));

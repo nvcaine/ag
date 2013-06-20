@@ -12,7 +12,7 @@ import hud.GameHUD;
 import level.Level;
 
 import model.consts.PlayerConsts;
-import model.events.ExplosionEvent;
+import model.events.EntityEvent;
 
 import nme.geom.Point;
 
@@ -30,7 +30,7 @@ class GameScene extends Scene
 	{
 		super();
 
-		initListeners(EventManager.cloneInstance(), ["explode"], [onEnemyExplode]);
+		initListeners(EventManager.cloneInstance(), [EntityEvent.ENTITY_EXPLOSION, EntityEvent.PLAYER_DEAD], [onEnemyExplode, onPlayerDead]);
 
 		loadEnemies();
 		initLevel();
@@ -83,11 +83,16 @@ class GameScene extends Scene
 		enemyImages.set("enemy2", "gfx/enemy2.png");
 	}
 
-	private function onEnemyExplode(e:ExplosionEvent)
+	private function onEnemyExplode(e:EntityEvent)
 	{
 		var ex:Explosion = new Explosion(e.x, e.y);
 
 		add(ex);
 		ex.explode();
+	}
+
+	private function onPlayerDead(e:EntityEvent)
+	{
+		trace("player dead");
 	}
 }
