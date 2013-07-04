@@ -30,7 +30,7 @@ class GameScene extends Scene
 	{
 		super();
 
-		initListeners(EventManager.cloneInstance(), [EntityEvent.ENTITY_EXPLOSION, EntityEvent.PLAYER_DEAD], [onEnemyExplode, onPlayerDead]);
+		initListeners(EventManager.cloneInstance(), [EntityEvent.ENTITY_EXPLOSION], [onEnemyExplode]); //, EntityEvent.PLAYER_DEAD], [onEnemyExplode, onPlayerDead]);
 
 		loadEnemies();
 		initLevel();
@@ -91,8 +91,8 @@ class GameScene extends Scene
 		ex.explode();
 	}
 
-	private function onPlayerDead(e:EntityEvent)
+	/*private function onPlayerDead(e:EntityEvent)
 	{
 		trace("player dead");
-	}
+	}*/
 }
