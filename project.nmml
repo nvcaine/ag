@@ -13,7 +13,7 @@
 	<haxelib name="nme" />
 	<haxelib name="HaxePunk" />
 
-	<assets path="assets/graphics" rename="gfx" include="*.png|*.jpg" />
+	<assets path="assets/graphics" rename="gfx" include="*.png|*.jpg" type="image" />
 	<assets path="assets/audio" rename="sfx" include="*.mp3" if="flash" />
 	<assets path="assets/audio" rename="sfx" include="*.wav|*.ogg" unless="flash" />
 	<assets path="assets/font" rename="font" include="*.ttf" />

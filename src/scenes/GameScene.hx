@@ -30,7 +30,7 @@ class GameScene extends Scene
 	{
 		super();
 
-		initListeners(EventManager.cloneInstance(), [EntityEvent.ENTITY_EXPLOSION], [onEnemyExplode]); //, EntityEvent.PLAYER_DEAD], [onEnemyExplode, onPlayerDead]);
+		initListeners(EventManager.cloneInstance(), [EntityEvent.ENTITY_EXPLOSION], [onEnemyExplode]);
 
 		loadEnemies();
 		initLevel();

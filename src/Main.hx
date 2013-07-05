@@ -18,7 +18,7 @@ class Main extends Engine
 		//HXP.console.enable();
 //#end
 		// HXP.scene = new YourScene();
-		HXP.scene = new GameScene();
+		HXP.scene = new MenuScene();//GameScene();
 
 		eventManager = EventManager.cloneInstance();
 		eventManager.addEventListener("playerDead", onPlayerDead); // has const
