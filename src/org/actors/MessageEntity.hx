@@ -19,7 +19,7 @@ class MessageEntity extends Entity
 
 	private function addListener(message:String, handler:Dynamic)
 	{
-		eventManager.addEventListener(message, handler);
+		eventManager.addEventListener(message, handler, false, 0, true);
 	}
 
 	private function sendMessage(e:Event)

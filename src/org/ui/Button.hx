@@ -26,19 +26,18 @@ class Button extends Entity
 		dispatcher.addEventListener(type, handler);
 	}
 
+	public function clearListener(type:String, handler:Dynamic->Void)
+	{
+		dispatcher.removeEventListener(type, handler);
+	}
+
 	override public function update()
 	{
 		super.update();
 
-		if(collidePoint(x, y, scene.mouseX, scene.mouseY))
-		{
-			var eventType:String = MouseEvent.MOUSE_OVER;
-
-			if(Input.mousePressed)
-				eventType = MouseEvent.MOUSE_DOWN;
-
-			dispatcher.dispatchEvent(new MouseEvent(eventType));
-		}
+		if(Input.mousePressed)
+			if(collidePoint(x, y, scene.mouseX, scene.mouseY))
+				dispatcher.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN));
 	}
 
 	private function initImage(image:Dynamic)

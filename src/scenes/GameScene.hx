@@ -29,6 +29,35 @@ class GameScene extends Scene
 	public function new()
 	{
 		super();
+	}
+
+	override public function begin()
+	{
+		level.init();
+	}
+
+	override public function end()
+	{
+		clearListeners(EventManager.cloneInstance(), [EntityEvent.ENTITY_EXPLOSION], [onEnemyExplode]);
+	}	
+
+	override public function update()
+	{
+		super.update();
+
+		camera.x += PlayerConsts.DEFAULT_SPEED;
+
+		player.handleInput();
+	}
+
+	public function restart()
+	{
+		init();
+	}
+
+	private function init()
+	{
+		removeAll();
 
 		initListeners(EventManager.cloneInstance(), [EntityEvent.ENTITY_EXPLOSION], [onEnemyExplode]);
 
@@ -37,22 +66,9 @@ class GameScene extends Scene
 		initHUD();
 
 		player = new Player({x: 16, y: HXP.halfHeight}, this);
-	}
 
-	override public function begin()
-	{
-		level.init();
-
-		camera = new Point(0, 0);
-	}
-	
-	override public function update()
-	{
-		super.update();
-
-		camera.x += PlayerConsts.DEFAULT_SPEED;
-
-		player.handleInput();
+		camera.x = 0;
+		camera.y = 0;
 	}
 
 	private function initHUD()
@@ -65,7 +81,13 @@ class GameScene extends Scene
 	private function initListeners(listener:EventManager, events:Array<Dynamic>, handlers:Array<Dynamic>)
 	{
 		for(i in 0...events.length)
-			listener.addEventListener(events[i], handlers[i]);
+			listener.addEventListener(events[i], handlers[i], false, 0 , true);
+	}
+
+	private function clearListeners(listener:EventManager, events:Array<Dynamic>, handlers:Array<Dynamic>)
+	{
+		for(i in 0...events.length)
+			listener.removeEventListener(events[i], handlers[i]);
 	}
 
 	private function initLevel()
@@ -90,9 +112,4 @@ class GameScene extends Scene
 		add(ex);
 		ex.explode();
 	}
-
-	/*private function onPlayerDead(e:EntityEvent)
-	{
-		trace("player dead");
-	}*/
 }
