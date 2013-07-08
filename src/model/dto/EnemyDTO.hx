@@ -7,7 +7,7 @@ class EnemyDTO extends AbstractDTO
 	public var health:Int;
 	public var height:Int;
 	public var score:Int;
-	public var speed:Int;
+	public var speed:Float;
 	public var type:String;
 	public var width:Int;
 }

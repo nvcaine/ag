@@ -11,7 +11,6 @@ import hud.GameHUD;
 
 import level.Level;
 
-import model.consts.PlayerConsts;
 import model.events.EntityEvent;
 
 import nme.geom.Point;
@@ -45,7 +44,7 @@ class GameScene extends Scene
 	{
 		super.update();
 
-		camera.x += PlayerConsts.DEFAULT_SPEED;
+		//camera.x += PlayerConsts.DEFAULT_SPEED;
 
 		player.handleInput();
 	}

@@ -25,9 +25,36 @@ class Enemy extends MessageEntity
 
 		this.data = data;
 
-		type = EntityTypeConsts.ENEMY;
+		type = EntityTypeConsts.ENEMY; // don't confuse with data.type (which refers to the type of enemy)
 
 		initGraphic(data);
+	}
+
+	override public function moveCollideX(e:Entity):Bool
+	{
+		sendMessage(new HUDEvent(HUDEvent.ENEMY_COLLISION, 0, data.damage));
+
+		die();
+
+		return true;
+	}
+
+	override public function update()
+	{
+		if(!visible)
+			return;
+
+		super.update();
+
+		moveBy(data.speed, 0, EntityTypeConsts.PLAYER);
+
+		checkProjectileCollision([EntityTypeConsts.PROJECTILE]);
+
+		if(data.health <= 0)
+			die(true, true);
+
+		if(x < scene.camera.x - width)
+			die(false);
 	}
 
 	private function initGraphic(data:EnemyDTO)
@@ -41,33 +68,6 @@ class Enemy extends MessageEntity
 		setHitbox(data.width, data.height);
 	}
 
-	override public function moveCollideX(e:Entity):Bool
-	{
-		sendMessage(new HUDEvent(HUDEvent.ENEMY_COLLISION, 0, data.damage));
-
-		die();
-
-		return true;
-	}
-
-	public override function update()
-	{
-		if(!visible)
-			return;
-
-		super.update();
-
-		moveBy(-data.speed, 0, EntityTypeConsts.PLAYER);
-
-		checkProjectileCollision([EntityTypeConsts.PROJECTILE]);
-
-		if(data.health <= 0)
-			die(true, true);
-
-		if(x < scene.camera.x - width)
-			die(false);
-	}
-
 	private function checkProjectileCollision(projectileEntityTypes:Array<String>)
 	{
 		var entity:Projectile = cast(collideTypes(projectileEntityTypes, x, y), Projectile);
@@ -75,6 +75,7 @@ class Enemy extends MessageEntity
 		if(entity != null)
 		{
 			data.health -= entity.damage;
+
 			return;			
 		}
 	}
@@ -82,7 +83,7 @@ class Enemy extends MessageEntity
 	private function die(explode:Bool = true, score:Bool = false)
 	{
 		if(explode)
-			sendMessage(new EntityEvent(EntityEvent.ENTITY_EXPLOSION, this.x - width / 2, this.y - height / 2));
+			sendMessage(new EntityEvent(EntityEvent.ENTITY_EXPLOSION, this.x + width / 2, this.y + height / 2));
 
 		if(score)
 			sendMessage(new HUDEvent(HUDEvent.KILL_SCORE, data.score));

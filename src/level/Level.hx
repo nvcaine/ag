@@ -1,7 +1,5 @@
 package level;
 
-import entities.Enemy;
-
 import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import com.haxepunk.graphics.Backdrop;
@@ -9,7 +7,11 @@ import com.haxepunk.graphics.Canvas;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.masks.Grid;
 
+import entities.BossEnemy;
+import entities.Enemy;
+
 import model.consts.EntityTypeConsts;
+import model.consts.PlayerConsts;
 import model.dto.EnemyDTO;
 //import model.events.LevelEvent;
 
@@ -21,12 +23,15 @@ class Level extends Entity
 	private var enemyImages:Hash<String>;
 
 	private var spawnTimer:Float = 0;
+	private var cameraSpeed:Float = 0;
+	private var bossReached:Bool = false;
+
 
 	public function new(enemyAssets:Hash<String>)
 	{
 		super(0, 0);
 
-		checkpoints = [500, 1000];
+		checkpoints = [500, 750];
 
 		enemyImages = enemyAssets;
 	}
@@ -36,6 +41,8 @@ class Level extends Entity
 		drawBackground();
 
 		initGrid(40);
+
+		cameraSpeed = PlayerConsts.DEFAULT_SPEED;
 	}
 
 	override public function update()
@@ -46,7 +53,9 @@ class Level extends Entity
 
 		spawnTimer -= HXP.elapsed;
 
-		if(spawnTimer < 0)
+		scene.camera.x += cameraSpeed;
+
+		if(spawnTimer < 0 && !bossReached)
 			spawn();
 	}
 
@@ -78,7 +87,7 @@ class Level extends Entity
 	private function spawn()
 	{
 		var enemyAsset:String = (Std.random(2) % 2 == 0) ? enemyImages.get("enemy1") : enemyImages.get("enemy2");
-		var enemyData:EnemyDTO = new EnemyDTO({type: "asd", health: 100, damage: 25, score: 5, speed: 2, asset: enemyAsset, width: 32, height: 32});
+		var enemyData:EnemyDTO = new EnemyDTO({type: "asd", health: 100, damage: 25, score: 5, speed: -3, asset: enemyAsset, width: 32, height: 32});
 		var y:Float = Math.random() * (HXP.height - 32);
 
 		scene.add(new Enemy(scene.camera.x + HXP.width, y, enemyData));
@@ -114,6 +123,20 @@ class Level extends Entity
 			checkpoints.splice(0, 1);
 
 			//dispatcher.dispatchEvent(new LevelEvent(LevelEvent.PASSED_CHECKPOINT, ++checkPointsPassed));
+			if(checkpoints.length == 0)
+				spawnBoss();
 		}
+	}
+
+	private function spawnBoss()
+	{
+		bossReached = true;
+		cameraSpeed = 0;
+
+		var enemyAsset:String = "gfx/boss.png";
+		var enemyData:EnemyDTO = new EnemyDTO({type: "boss", health: 300, damage: 25, score: 100, speed: -0.5, asset: enemyAsset, width: 128, height: 128});
+		var y:Float = (HXP.height / 2 - 64);
+
+		scene.add(new BossEnemy(scene.camera.x + HXP.width - 160, y, enemyData));
 	}
 }
