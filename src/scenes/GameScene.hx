@@ -64,7 +64,7 @@ class GameScene extends Scene
 		initLevel();
 		initHUD();
 
-		player = new Player({x: 16, y: HXP.halfHeight}, this);
+		player = new Player({x: (HXP.width / 2), y: HXP.height - 50}, this);
 
 		camera.x = 0;
 		camera.y = 0;

@@ -19,12 +19,12 @@ class BossEnemy extends Enemy
 		super.update();
 
 		//moveBy(0, dir);
-		y += dir;
+		x += dir;
 
-		if(y > HXP.height - 128 && dir == 1)
+		if(x > HXP.width - 128 && dir == 1)
 			dir = -1;
 		else
-			if(y < 0)
+			if(x < 0)
 				dir = 1;
 	}
 }

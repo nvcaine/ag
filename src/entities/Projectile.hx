@@ -29,7 +29,7 @@ class Projectile extends Entity
 		return damage;
 	}
 
-	override public function moveCollideX(e:Entity):Bool
+	override public function moveCollideY(e:Entity):Bool
 	{
 		scene.remove(this);
 
@@ -38,7 +38,7 @@ class Projectile extends Entity
 
 	override public function update()
 	{
-		moveBy(10, 0, EntityTypeConsts.ENEMY);
+		moveBy(0, -10, EntityTypeConsts.ENEMY);
 
 		if(x - scene.camera.x > HXP.width)
 		{

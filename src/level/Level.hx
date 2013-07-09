@@ -31,7 +31,7 @@ class Level extends Entity
 	{
 		super(0, 0);
 
-		checkpoints = [500, 750];
+		checkpoints = [-500, -750];
 
 		enemyImages = enemyAssets;
 	}
@@ -53,7 +53,7 @@ class Level extends Entity
 
 		spawnTimer -= HXP.elapsed;
 
-		scene.camera.x += cameraSpeed;
+		scene.camera.y -= cameraSpeed;
 
 		if(spawnTimer < 0 && !bossReached)
 			spawn();
@@ -61,7 +61,7 @@ class Level extends Entity
 
 	private function initGrid(gridCellSize:Int)
 	{
-		var mask:Grid = new Grid(1000, 500, gridCellSize, gridCellSize); // app W/H
+		var mask:Grid = new Grid(500, 700, gridCellSize, gridCellSize); // app W/H
 		var maskEntity = new Entity(0, 0, null, mask);
 
 		//mask.setRect(20, 20, 1, 1);
@@ -70,8 +70,8 @@ class Level extends Entity
 
 		scene.add(maskEntity);
 
-		addLevelEntity(400, 100, 40, mask, gridCellSize);
-		addLevelEntity(400, 220, 40, mask, gridCellSize);
+		addLevelEntity(200, 100, 40, mask, gridCellSize);
+		addLevelEntity(200, 220, 40, mask, gridCellSize);
 	}
 
 	private function drawBackground()
@@ -87,10 +87,10 @@ class Level extends Entity
 	private function spawn()
 	{
 		var enemyAsset:String = (Std.random(2) % 2 == 0) ? enemyImages.get("enemy1") : enemyImages.get("enemy2");
-		var enemyData:EnemyDTO = new EnemyDTO({type: "asd", health: 100, damage: 25, score: 5, speed: -3, asset: enemyAsset, width: 32, height: 32});
-		var y:Float = Math.random() * (HXP.height - 32);
+		var enemyData:EnemyDTO = new EnemyDTO({type: "asd", health: 100, damage: 25, score: 5, speed: 3, asset: enemyAsset, width: 32, height: 32});
+		var x:Float = Math.random() * (HXP.width - 32);
 
-		scene.add(new Enemy(scene.camera.x + HXP.width, y, enemyData));
+		scene.add(new Enemy(x, scene.camera.y, enemyData));
 
 		spawnTimer = 1;
 	}
@@ -118,7 +118,7 @@ class Level extends Entity
 		if(checkpoints.length == 0)
 			return;
 
-		if(scene.camera.x > checkpoints[0])
+		if(scene.camera.y < checkpoints[0])
 		{
 			checkpoints.splice(0, 1);
 
@@ -134,9 +134,9 @@ class Level extends Entity
 		cameraSpeed = 0;
 
 		var enemyAsset:String = "gfx/boss.png";
-		var enemyData:EnemyDTO = new EnemyDTO({type: "boss", health: 300, damage: 25, score: 100, speed: -0.5, asset: enemyAsset, width: 128, height: 128});
-		var y:Float = (HXP.height / 2 - 64);
+		var enemyData:EnemyDTO = new EnemyDTO({type: "boss", health: 300, damage: 25, score: 100, speed: 0.5, asset: enemyAsset, width: 128, height: 128});
+		var y:Float = scene.camera.y + 128;
 
-		scene.add(new BossEnemy(scene.camera.x + HXP.width - 160, y, enemyData));
+		scene.add(new BossEnemy(HXP.width / 2, y, enemyData));
 	}
 }

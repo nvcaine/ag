@@ -34,16 +34,16 @@ class Player
 		var xAcc:Int = 0, yAcc:Int = 0;
 
 		if(Input.check("up"))
-			yAcc = -1;			
+			yAcc = -5;			
 
 		if(Input.check("down"))
-			yAcc = 1;
+			yAcc = 5;
 
 		if(Input.check("left"))
-			xAcc = -1;
+			xAcc = -5;
 
 		if(Input.check("right"))
-			xAcc = 1;
+			xAcc = 5;
 
 		if(Input.check("shoot") && canShoot)
 			shoot();

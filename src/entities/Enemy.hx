@@ -39,6 +39,15 @@ class Enemy extends MessageEntity
 		return true;
 	}
 
+	override public function moveCollideY(e:Entity):Bool
+	{
+		sendMessage(new HUDEvent(HUDEvent.ENEMY_COLLISION, 0, data.damage));
+
+		die();
+
+		return true;
+	}
+
 	override public function update()
 	{
 		if(!visible)
@@ -46,7 +55,7 @@ class Enemy extends MessageEntity
 
 		super.update();
 
-		moveBy(data.speed, 0, EntityTypeConsts.PLAYER);
+		moveBy(0, data.speed, EntityTypeConsts.PLAYER);
 
 		checkProjectileCollision([EntityTypeConsts.PROJECTILE]);
 

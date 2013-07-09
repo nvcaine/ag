@@ -32,7 +32,7 @@ class Ship extends MessageEntity
 		moveVertically();
 		moveHorizontally();
 
-		moveBy(PlayerConsts.DEFAULT_SPEED + velocity.x, velocity.y, EntityTypeConsts.LEVEL);
+		moveBy(velocity.x, -PlayerConsts.DEFAULT_SPEED - velocity.y, EntityTypeConsts.LEVEL);
 	}
 
 	override public function moveCollideX(e:Entity):Bool
@@ -64,7 +64,7 @@ class Ship extends MessageEntity
 	{
 		var data:Dynamic = {assetPath: "gfx/plasma.png", sound: "sfx/laser.mp3", width: 20, height: 5, damage: 50};
 
-		return new Projectile(x + width, y + height / 2, data);
+		return new Projectile(x + width / 2, y, data);
 	}
 
 	private function init()
@@ -85,61 +85,23 @@ class Ship extends MessageEntity
 
 	private function moveVertically()
 	{
-		velocity.y += yAcceleration * PlayerConsts.SPEED;
+		y += yAcceleration;
 
-		if(velocity.y == 0)
-			return;
+		if(y < scene.camera.y)
+			y = scene.camera.y;
 
-		if(Math.abs(velocity.y) > PlayerConsts.MAX_VELOCITY)
-			velocity.y = PlayerConsts.MAX_VELOCITY * HXP.sign(velocity.y);
-
-		if(velocity.y < 0)
-		{
-			if(y <= 0)
-			{
-				velocity.y = 0;
-				y = 0;
-			}
-			else
-				velocity.y = Math.min(velocity.y + PlayerConsts.DRAG, 0);
-
-			return;
-		}
-
-		if(y >= HXP.height - height)
-		{
-			velocity.y = 0;
-			y = HXP.height - height;
-
-			return;
-		}
-
-		velocity.y = Math.max(velocity.y - PlayerConsts.DRAG, 0);
+		if(y > scene.camera.y + HXP.height - height)
+			y = scene.camera.y + HXP.height - height;
 	}
 
 	private function moveHorizontally()
 	{
-		velocity.x += xAcceleration * PlayerConsts.SPEED;
+		x += xAcceleration;
 
-		if(velocity.x == 0)
-			return;
+		if(x < 0)
+			x = 0;
 
-		if(Math.abs(velocity.x) > PlayerConsts.MAX_VELOCITY)
-			velocity.x = PlayerConsts.MAX_VELOCITY * HXP.sign(velocity.x);
-
-		if(velocity.x < 0)
-		{
-			velocity.x = Math.min(velocity.x + PlayerConsts.DRAG, 0);
-
-			if(x - scene.camera.x < 5)
-				velocity.x = 0;
-
-			return;
-		}
-
-		velocity.x = Math.max(velocity.x - PlayerConsts.DRAG, 0);
-
-		if(x > scene.camera.x + HXP.width - width)
-			velocity.x = 0;
+		if(x > HXP.width - width)
+			x = HXP.width - width;
 	}
 }
