@@ -101,7 +101,7 @@ class GameScene extends Scene
 		enemyImages = new Hash<String>();
 
 		enemyImages.set("enemy1", "gfx/enemy.png");
-		enemyImages.set("enemy2", "gfx/enemy2.png");
+		enemyImages.set("enemy2", "gfx/bonb.png");
 	}
 
 	private function onEnemyExplode(e:EntityEvent)

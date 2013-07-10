@@ -62,10 +62,12 @@ class Projectile extends Entity
 
 	private function initGraphic(data:Dynamic)
 	{
-		var g:Canvas = new Canvas(data.width, data.height); //g;
+		/*var g:Canvas = new Canvas(data.width, data.height); //g;
 
-		g.draw(0, 0, Assets.getBitmapData(data.assetPath));
+		g.draw(0, 0, Assets.getBitmapData(data.assetPath));*/
 
+		var g:Image = new Image(data.assetPath);
+		
 		graphic = g;
 
 		setHitbox(data.width, data.height);

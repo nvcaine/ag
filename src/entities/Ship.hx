@@ -57,21 +57,25 @@ class Ship extends MessageEntity
 
 	public function shoot()
 	{
-		scene.add(createNewProjectile());
+		scene.add(createNewProjectile(x + width / 2 + 7, y));
+		scene.add(createNewProjectile(x + width / 2 + 30, y));
 	}
 
-	private function createNewProjectile():Projectile
+	private function createNewProjectile(x:Float, y:Float):Projectile
 	{
-		var data:Dynamic = {assetPath: "gfx/plasma.png", sound: "sfx/laser.mp3", width: 20, height: 5, damage: 50};
+		var data:Dynamic = {assetPath: "gfx/glontz.png", sound: "sfx/laser.mp3", width: 20, height: 5, damage: 50};
 
-		return new Projectile(x + width / 2, y, data);
+		return new Projectile(x, y, data);
 	}
 
 	private function init()
 	{
 		type = EntityTypeConsts.PLAYER;
 
-		graphic = new Image("gfx/ship.png");
+		var a:Image = new Image("gfx/ship.png");
+		a.scaleX = a.scaleY = 0.375;
+
+		graphic = a;
 
 		setHitbox(32, 32);
 
