@@ -60,7 +60,11 @@ class Enemy extends MessageEntity
 		checkProjectileCollision([EntityTypeConsts.PROJECTILE]);
 
 		if(data.health <= 0)
+		{
 			die(true, true);
+
+			dropPickup(100);
+		}
 
 		if(x < scene.camera.x - width)
 			die(false);
@@ -74,7 +78,6 @@ class Enemy extends MessageEntity
 
 		var g:Image = new Image(data.asset);
 
-		g.scaleX = g.scaleY = 0.65;
 		graphic = g;
 
 		setHitbox(data.width, data.height);
@@ -103,5 +106,10 @@ class Enemy extends MessageEntity
 		graphic = null;
 
 		scene.remove(this);
+	}
+
+	private function dropPickup(chance:Float)
+	{
+		sendMessage(new EntityEvent(EntityEvent.DROP_PICKUP, this.x + width / 2, this.y + height / 2));
 	}
 }

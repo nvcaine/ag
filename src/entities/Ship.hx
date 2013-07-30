@@ -73,7 +73,6 @@ class Ship extends MessageEntity
 		type = EntityTypeConsts.PLAYER;
 
 		var a:Image = new Image("gfx/ship.png");
-		a.scaleX = a.scaleY = 0.375;
 
 		graphic = a;
 
@@ -87,6 +86,7 @@ class Ship extends MessageEntity
 		sendMessage(new HUDEvent(HUDEvent.ENEMY_COLLISION));
 	}
 
+	// DO NOT manipulate x/y directly
 	private function moveVertically()
 	{
 		y += yAcceleration;

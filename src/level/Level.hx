@@ -40,7 +40,7 @@ class Level extends Entity
 	{
 		drawBackground();
 
-		initGrid(40);
+		initGrid(50);
 
 		cameraSpeed = PlayerConsts.DEFAULT_SPEED;
 	}
@@ -61,17 +61,46 @@ class Level extends Entity
 
 	private function initGrid(gridCellSize:Int)
 	{
-		var mask:Grid = new Grid(500, 700, gridCellSize, gridCellSize); // app W/H
+		var mask:Grid = new Grid(500, 700, gridCellSize, gridCellSize); // level W/H
 		var maskEntity = new Entity(0, 0, null, mask);
 
 		//mask.setRect(20, 20, 1, 1);
 
 		maskEntity.type = EntityTypeConsts.LEVEL;
 
-		scene.add(maskEntity);
+		addLevelEntity(200, 0, mask, gridCellSize);
+		addLevelEntity(200, 50, mask, gridCellSize);
+		addLevelEntity(200, 100, mask, gridCellSize);
+		addLevelEntity(200, 150, mask, gridCellSize);
+		addLevelEntity(200, 200, mask, gridCellSize);
+		addLevelEntity(200, 250, mask, gridCellSize);
 
-		addLevelEntity(200, 100, 40, mask, gridCellSize);
-		addLevelEntity(200, 220, 40, mask, gridCellSize);
+		scene.add(maskEntity);
+	}
+
+	private function addEntity(x:Float, y:Float, size:Int)
+	{
+		//trace("entity: " + x + " " + y + " " + size);
+
+		var a:Entity = new Entity(x, y);
+
+		a.graphic = Image.createRect(size, size, 0xDDEEFF);
+
+		scene.add(a);
+	}
+
+	private function addLevelEntity(x:Float, y:Float, gridMask:Grid, gridCellSize:Int)
+	{
+		// there is a conflict between the graphics and the grid
+		// which appera to make the player go through "walls"
+		var row:Int = Std.int(x / gridCellSize);
+		var col:Int = Std.int(y / gridCellSize);
+
+		//trace("grid: " + row + " " + col + " " + gridCellSize);
+
+		gridMask.setTile(row, col, true);
+
+		addEntity(row * gridCellSize, col * gridCellSize, gridCellSize);
 	}
 
 	private function drawBackground()
@@ -93,24 +122,6 @@ class Level extends Entity
 		scene.add(new Enemy(x, scene.camera.y, enemyData));
 
 		spawnTimer = 1;
-	}
-
-	private function addEntity(x:Float, y:Float, size:Int)
-	{
-		var a:Entity = new Entity(x, y);
-
-		a.graphic = Image.createRect(size, size, 0xDDEEFF);
-
-		scene.add(a);
-	}
-
-	private function addLevelEntity(x:Float, y:Float, entitySize:Int, gridMask:Grid, gridCellSize:Int)
-	{
-		// there is a conflict between the graphics and the grid
-		// which appera to make the player go through "walls"
-		gridMask.setRect(Std.int(x / gridCellSize), Std.int(y / gridCellSize), 1, 1);
-
-		addEntity(x, y, entitySize);
 	}
 
 	private function checkIfReachedCheckpoint()

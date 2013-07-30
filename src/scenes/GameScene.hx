@@ -6,6 +6,7 @@ import com.haxepunk.Scene;
 import flash.events.Event;
 
 import entities.Explosion;
+import entities.Pickup;
 
 import hud.GameHUD;
 
@@ -58,7 +59,7 @@ class GameScene extends Scene
 	{
 		removeAll();
 
-		initListeners(EventManager.cloneInstance(), [EntityEvent.ENTITY_EXPLOSION], [onEnemyExplode]);
+		initListeners(EventManager.cloneInstance(), [EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP], [onEnemyExplode, onDropPickup]);
 
 		loadEnemies();
 		initLevel();
@@ -110,5 +111,12 @@ class GameScene extends Scene
 
 		add(ex);
 		ex.explode();
+	}
+
+	private function onDropPickup(e:EntityEvent)
+	{
+		var p:Pickup = new Pickup(e.x, e.y, {assetPath: "gfx/pickup.png", width: 16, height: 16});
+
+		add(p);
 	}
 }

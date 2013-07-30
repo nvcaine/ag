@@ -60,12 +60,9 @@ class Projectile extends Entity
 		Assets.getSound(data.sound).play(0, 1, new SoundTransform(0.15));
 	}
 
+	// duplicate code
 	private function initGraphic(data:Dynamic)
 	{
-		/*var g:Canvas = new Canvas(data.width, data.height); //g;
-
-		g.draw(0, 0, Assets.getBitmapData(data.assetPath));*/
-
 		var g:Image = new Image(data.assetPath);
 		
 		graphic = g;
