@@ -53,7 +53,6 @@ class GameHUD extends Graphiclist
 		if(count > 2)
 			removeAt(2);
 
-		trace(currentHealth);
 		drawHealth(currentHealth);
 	}
 
@@ -64,8 +63,10 @@ class GameHUD extends Graphiclist
 
 	private function init()
 	{
-		enemyScoreT = new Text(ENEMY_SCORE_TEMPLATE + Std.string(enemyScore), 10, 10, 0, 0);
-		checkpointsText = new Text(CHECKPOINTS_TEMPLATE, 10, 30, 0, 0);
+		var textOptions:TextOptions = {font: "font/xoloniumregular.ttf", color: 0x00FF00};
+
+		enemyScoreT = new Text(ENEMY_SCORE_TEMPLATE + Std.string(enemyScore), 10, 10, 0, 0, textOptions);
+		checkpointsText = new Text(CHECKPOINTS_TEMPLATE, 10, 30, 0, 0, textOptions);
 
 		add(enemyScoreT);
 		add(checkpointsText);
@@ -116,7 +117,6 @@ class GameHUD extends Graphiclist
 
 	private function onUpdateHealth(e:HUDEvent)
 	{
-		trace(e.health);
 		updateHealth(e.health);
 	}
 }

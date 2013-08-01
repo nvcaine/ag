@@ -68,13 +68,7 @@ class Enemy extends MessageEntity
 
 	private function initGraphic(data:EnemyDTO)
 	{
-		/*var g:Canvas = new Canvas(data.width, data.height);
-
-		g.draw(0, 0, Assets.getBitmapData(data.asset));*/
-
-		var g:Image = new Image(data.asset);
-
-		graphic = g;
+		graphic = new Image(data.asset);
 
 		setHitbox(data.width, data.height);
 	}
@@ -93,7 +87,6 @@ class Enemy extends MessageEntity
 
 	private function collideWithPlayer()
 	{
-		trace("collide");
 		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, -data.damage));
 
 		die();
