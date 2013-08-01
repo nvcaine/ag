@@ -61,6 +61,12 @@ class Ship extends MessageEntity
 		scene.add(createNewProjectile(x + width / 2 + 30, y));
 	}
 
+	public function applyBuff(data:Dynamic)
+	{
+		//trace("picked up");
+		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 1, 10));
+	}
+
 	private function createNewProjectile(x:Float, y:Float):Projectile
 	{
 		var data:Dynamic = {assetPath: "gfx/glontz.png", sound: "sfx/laser.mp3", width: 20, height: 5, damage: 50};
@@ -72,9 +78,7 @@ class Ship extends MessageEntity
 	{
 		type = EntityTypeConsts.PLAYER;
 
-		var a:Image = new Image("gfx/ship.png");
-
-		graphic = a;
+		graphic = new Image("gfx/ship.png");
 
 		setHitbox(32, 32);
 
@@ -83,7 +87,7 @@ class Ship extends MessageEntity
 
 	private function onLevelCollision()
 	{
-		sendMessage(new HUDEvent(HUDEvent.ENEMY_COLLISION));
+		//sendMessage(new HUDEvent(HUDEvent.ENEMY_COLLISION));
 	}
 
 	// DO NOT manipulate x/y directly

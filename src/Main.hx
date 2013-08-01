@@ -14,8 +14,10 @@ import scenes.MenuScene;
 
 class Main extends Engine
 {
-	private var eventManager:EventManager;
+	public static inline var GAME_SCENE:String = "game";
+	public static inline var MENU_SCENE:String = "menu";
 
+	private var eventManager:EventManager;
 	private var scenes:Hash<Scene>;
 
 	override public function init()
@@ -27,7 +29,7 @@ class Main extends Engine
 		initScenes();
 		addHandlers();
 
-		HXP.scene = scenes.get("menu");
+		HXP.scene = scenes.get(MENU_SCENE);
 	}
 
 	public static function main()
@@ -39,26 +41,26 @@ class Main extends Engine
 	{
 		eventManager = EventManager.cloneInstance();
 
-		eventManager.addEventListener(EntityEvent.PLAYER_DEAD, onPlayerDead, false, 0, true); // has const
-		eventManager.addEventListener(MenuEvent.NEW_GAME, onNewGame, false, 0, true); // has const
+		eventManager.addEventListener(EntityEvent.PLAYER_DEAD, onPlayerDead, false, 0, true);
+		eventManager.addEventListener(MenuEvent.NEW_GAME, onNewGame, false, 0, true);
 	}
 
 	private function initScenes()
 	{
 		scenes = new Hash<Scene>();
 
-		scenes.set("game", new GameScene());
-		scenes.set("menu", new MenuScene());
+		scenes.set(GAME_SCENE, new GameScene());
+		scenes.set(MENU_SCENE, new MenuScene());
 	}
 
 	private function onPlayerDead(e:Event)
 	{
-		HXP.scene = cast(scenes.get("menu"), MenuScene);
+		HXP.scene = cast(scenes.get(MENU_SCENE), MenuScene);
 	}
 
 	private function onNewGame(e:Event)
 	{
-		var gameScene:GameScene = cast(scenes.get("game"), GameScene);
+		var gameScene:GameScene = cast(scenes.get(GAME_SCENE), GameScene);
 
 		gameScene.restart();
 

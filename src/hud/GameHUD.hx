@@ -13,8 +13,10 @@ import org.events.EventManager;
 
 class GameHUD extends Graphiclist
 {
-	static inline var ENEMY_SCORE_TEMPLATE = "Score: ";
-	static inline var CHECKPOINTS_TEMPLATE = "Checkpoints: ";
+	static inline var ENEMY_SCORE_TEMPLATE:String = "Score: ";
+	static inline var CHECKPOINTS_TEMPLATE:String = "Checkpoints: ";
+
+	static inline var MAX_HEALTH:Int = 100;
 
 	private var enemyScoreT:Text;
 	private var checkpointsText:Text;
@@ -38,12 +40,12 @@ class GameHUD extends Graphiclist
 		enemyScoreT.text = ENEMY_SCORE_TEMPLATE + Std.string(enemyScore);
 	}
 
-	public function decreaseHealth(damage:Int)
+	public function updateHealth(health:Int)
 	{
-		if(currentHealth <= 0)
+		if(health == 0 || (currentHealth <= 0 && health < 0) || (currentHealth >= MAX_HEALTH && health > 0))
 			return;
 
-		currentHealth -= damage;
+		currentHealth += health;
 
 		if(currentHealth <= 0)
 			em.dispatchEvent(new EntityEvent(EntityEvent.PLAYER_DEAD));
@@ -51,6 +53,7 @@ class GameHUD extends Graphiclist
 		if(count > 2)
 			removeAt(2);
 
+		trace(currentHealth);
 		drawHealth(currentHealth);
 	}
 
@@ -73,8 +76,9 @@ class GameHUD extends Graphiclist
 
 		em = EventManager.cloneInstance();
 
-		em.addEventListener(HUDEvent.ENEMY_COLLISION, onEnemyCollision);
+		//em.addEventListener(HUDEvent.ENEMY_COLLISION, onEnemyCollision);
 		em.addEventListener(HUDEvent.KILL_SCORE, onScore);
+		em.addEventListener(HUDEvent.UPDATE_HEALTH, onUpdateHealth);
 	}
 
 	private function drawHealth(value:Int)
@@ -100,13 +104,19 @@ class GameHUD extends Graphiclist
 
 	// ---------------------- Handlers ------------------------
 
-	private function onEnemyCollision(e:HUDEvent)
+	/*private function onEnemyCollision(e:HUDEvent)
 	{
-		decreaseHealth(e.damage);
-	}
+		updateHealth(-e.health);
+	}*/
 
 	private function onScore(e:HUDEvent)
 	{
 		updateScore(e.score);
+	}
+
+	private function onUpdateHealth(e:HUDEvent)
+	{
+		trace(e.health);
+		updateHealth(e.health);
 	}
 }

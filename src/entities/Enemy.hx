@@ -32,18 +32,14 @@ class Enemy extends MessageEntity
 
 	override public function moveCollideX(e:Entity):Bool
 	{
-		sendMessage(new HUDEvent(HUDEvent.ENEMY_COLLISION, 0, data.damage));
-
-		die();
+		collideWithPlayer();
 
 		return true;
 	}
 
 	override public function moveCollideY(e:Entity):Bool
 	{
-		sendMessage(new HUDEvent(HUDEvent.ENEMY_COLLISION, 0, data.damage));
-
-		die();
+		collideWithPlayer();
 
 		return true;
 	}
@@ -93,6 +89,14 @@ class Enemy extends MessageEntity
 
 			return;			
 		}
+	}
+
+	private function collideWithPlayer()
+	{
+		trace("collide");
+		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, -data.damage));
+
+		die();
 	}
 
 	private function die(explode:Bool = true, score:Bool = false)
