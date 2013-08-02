@@ -3,11 +3,14 @@ package hud;
 import com.haxepunk.HXP;
 import com.haxepunk.graphics.Canvas;
 import com.haxepunk.graphics.Graphiclist;
+import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Text;
 import com.haxepunk.graphics.prototype.Rect;
 
 import model.events.HUDEvent;
 import model.events.EntityEvent;
+
+import nme.text.TextFormatAlign;
 
 import org.events.EventManager;
 
@@ -37,7 +40,7 @@ class GameHUD extends Graphiclist
 	{
 		enemyScore += defaultScore;
 
-		enemyScoreT.text = ENEMY_SCORE_TEMPLATE + Std.string(enemyScore);
+		enemyScoreT.text = /*ENEMY_SCORE_TEMPLATE + */Std.string(enemyScore);
 	}
 
 	public function updateHealth(health:Int)
@@ -63,13 +66,15 @@ class GameHUD extends Graphiclist
 
 	private function init()
 	{
-		var textOptions:TextOptions = {font: "font/xoloniumregular.ttf", color: 0x00FF00};
+		var textOptions:TextOptions = {font: "font/xoloniumregular.ttf", color: 0x00FF00, align: TextFormatAlign.RIGHT};
 
-		enemyScoreT = new Text(ENEMY_SCORE_TEMPLATE + Std.string(enemyScore), 10, 10, 0, 0, textOptions);
-		checkpointsText = new Text(CHECKPOINTS_TEMPLATE, 10, 30, 0, 0, textOptions);
+		enemyScoreT = new Text(/*ENEMY_SCORE_TEMPLATE + */Std.string(enemyScore), 30, 27, 120, 16, textOptions);
+		//checkpointsText = new Text(CHECKPOINTS_TEMPLATE, 10, 30, 0, 0, textOptions);
+
+		drawBackground();
 
 		add(enemyScoreT);
-		add(checkpointsText);
+		//add(checkpointsText);
 		drawHealth(currentHealth);
 
 		scrollX = 0;
@@ -82,13 +87,18 @@ class GameHUD extends Graphiclist
 		em.addEventListener(HUDEvent.UPDATE_HEALTH, onUpdateHealth);
 	}
 
+	private function drawBackground()
+	{
+		add(new Image("gfx/hud.png"));
+	}
+
 	private function drawHealth(value:Int)
 	{
 		if(value <= 0)
 			return;
 
 		healthBar = new Canvas(HXP.width, 100);
-		healthBar.drawGraphic(10, 50, new Rect(value, 20, getHealthBarColor())); // this will be dynamically rendered
+		healthBar.drawGraphic(287, 19, new Rect(value * 2 - 9, 20, getHealthBarColor())); // this will be dynamically rendered
 
 		add(healthBar);
 	}
