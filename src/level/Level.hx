@@ -12,7 +12,7 @@ import entities.Enemy;
 
 import model.consts.EntityTypeConsts;
 import model.consts.PlayerConsts;
-import model.dto.EnemyDTO;
+// import model.dto.EnemyDTO;
 //import model.events.LevelEvent;
 
 class Level extends Entity
@@ -116,7 +116,7 @@ class Level extends Entity
 	private function spawn()
 	{
 		var enemyAsset:String = (Std.random(2) % 2 == 0) ? enemyImages.get("enemy1") : enemyImages.get("enemy2");
-		var enemyData:EnemyDTO = new EnemyDTO({type: "asd", health: 100, damage: 25, score: 5, speed: 3, asset: enemyAsset, width: 32, height: 32});
+		var enemyData:Dynamic = {type: "asd", health: 100, damage: 25, score: 5, speed: 3, assetPath: enemyAsset, width: 32, height: 32};
 		var x:Float = Math.random() * (HXP.width - 32);
 
 		scene.add(new Enemy(x, scene.camera.y, enemyData));
@@ -144,9 +144,8 @@ class Level extends Entity
 		bossReached = true;
 		cameraSpeed = 0;
 
-		var enemyAsset:String = "gfx/boss.png";
-		var enemyData:EnemyDTO = new EnemyDTO({type: "boss", health: 300, damage: 25, score: 100, speed: 0.5, asset: enemyAsset, width: 128, height: 128});
 		var y:Float = scene.camera.y + 128;
+		var enemyData:Dynamic = {type: "boss", health: 300, damage: 25, score: 100, speed: 0.5, assetPath: "gfx/boss.png", width: 128, height: 128};
 
 		scene.add(new BossEnemy(HXP.width / 2, y, enemyData));
 	}

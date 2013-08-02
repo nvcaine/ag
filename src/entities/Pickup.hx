@@ -1,13 +1,15 @@
 package entities;
 
-import com.haxepunk.Entity;
-import com.haxepunk.graphics.Image;
+//import com.haxepunk.Entity;
+//import com.haxepunk.graphics.Image;
 
 import entities.Ship;
 
 import model.consts.EntityTypeConsts;
 
-class Pickup extends Entity
+import org.actors.MessageEntity;
+
+class Pickup extends MessageEntity
 {
 	private var data:Dynamic;
 
@@ -20,15 +22,6 @@ class Pickup extends Entity
 		initGraphic(data);
 
 		this.data = data;
-	}
-
-	private function initGraphic(data:Dynamic)
-	{
-		var g:Image = new Image(data.assetPath);
-
-		graphic = g;
-
-		setHitbox(data.width, data.height);
 	}
 
 	override public function update()

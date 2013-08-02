@@ -62,7 +62,7 @@ class Player
 
 	private function initEntity(data:Dynamic)
 	{
-		entity = new Ship(data.x, data.y);
+		entity = new Ship(data.x, data.y, data);
 
 		this.scene.add(entity);
 	}

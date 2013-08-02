@@ -65,7 +65,7 @@ class GameScene extends Scene
 		initLevel();
 		initHUD();
 
-		player = new Player({x: (HXP.width / 2), y: HXP.height - 50}, this);
+		player = new Player({x: (HXP.width / 2), y: HXP.height - 50, assetPath: "gfx/ship.png", width: 32, height: 32}, this);
 
 		camera.x = 0;
 		camera.y = 0;

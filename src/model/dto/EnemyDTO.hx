@@ -2,7 +2,7 @@ package model.dto;
 
 class EnemyDTO extends AbstractDTO
 {
-	public var asset:String;
+	public var assetPath:String;
 	public var damage:Int;
 	public var health:Int;
 	public var height:Int;

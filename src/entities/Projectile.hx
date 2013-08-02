@@ -2,8 +2,8 @@ package entities;
 
 import com.haxepunk.HXP;
 import com.haxepunk.Entity;
-import com.haxepunk.graphics.Canvas;
-import com.haxepunk.graphics.Image;
+/*import com.haxepunk.graphics.Canvas;
+import com.haxepunk.graphics.Image;*/
 
 import flash.events.EventDispatcher;
 
@@ -13,7 +13,9 @@ import model.consts.EntityTypeConsts;
 import nme.Assets;
 import nme.media.SoundTransform;
 
-class Projectile extends Entity
+import org.actors.MessageEntity;
+
+class Projectile extends MessageEntity
 {
 	public var damage(get, null):Int;
 
@@ -61,12 +63,12 @@ class Projectile extends Entity
 	}
 
 	// duplicate code
-	private function initGraphic(data:Dynamic)
+	/*private function initGraphic(data:Dynamic)
 	{
 		var g:Image = new Image(data.assetPath);
 		
 		graphic = g;
 
 		setHitbox(data.width, data.height);
-	}
+	}*/
 }

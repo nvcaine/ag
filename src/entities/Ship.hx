@@ -18,11 +18,11 @@ class Ship extends MessageEntity
 	private var yAcceleration:Int;
 	private var xAcceleration:Int;
 
-	public function new(x:Float, y:Float)
+	public function new(x:Float, y:Float, data:Dynamic)
 	{
 		super(x, y);
 
-		init();
+		init(data);
 	}
 
 	override public function update()
@@ -74,13 +74,11 @@ class Ship extends MessageEntity
 		return new Projectile(x, y, data);
 	}
 
-	private function init()
+	private function init(data:Dynamic)
 	{
 		type = EntityTypeConsts.PLAYER;
 
-		graphic = new Image("gfx/ship.png");
-
-		setHitbox(32, 32);
+		initGraphic(data);
 
 		velocity = new Point(0, 0);
 	}

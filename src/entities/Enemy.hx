@@ -19,11 +19,11 @@ class Enemy extends MessageEntity
 {
 	private var data:EnemyDTO;
 
-	public function new(x:Float, y:Float, data:EnemyDTO)
+	public function new(x:Float, y:Float, data:Dynamic)
 	{
 		super(x, y);
 
-		this.data = data;
+		this.data = new EnemyDTO(data);
 
 		type = EntityTypeConsts.ENEMY; // don't confuse with data.type (which refers to the type of enemy)
 
@@ -66,19 +66,6 @@ class Enemy extends MessageEntity
 			die(false);
 	}
 
-	private function initGraphic(data:EnemyDTO)
-	{
-		/*var g:Canvas = new Canvas(data.width, data.height);
-
-		g.draw(0, 0, Assets.getBitmapData(data.asset));*/
-
-		var g:Image = new Image(data.asset);
-
-		graphic = g;
-
-		setHitbox(data.width, data.height);
-	}
-
 	private function checkProjectileCollision(projectileEntityTypes:Array<String>)
 	{
 		var entity:Projectile = cast(collideTypes(projectileEntityTypes, x, y), Projectile);
@@ -93,7 +80,6 @@ class Enemy extends MessageEntity
 
 	private function collideWithPlayer()
 	{
-		trace("collide");
 		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, -data.damage));
 
 		die();
