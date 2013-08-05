@@ -26,11 +26,6 @@ class GameScene extends Scene
 	private var level:Level;
 	private var player:Player;
 
-	public function new()
-	{
-		super();
-	}
-
 	override public function begin()
 	{
 		level.init();

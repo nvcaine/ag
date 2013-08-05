@@ -13,33 +13,41 @@ import org.ui.Button;
 class MenuScene extends Scene
 {
 	private var newGameB:Button;
+	private var inventoryB:Button;
+
 	private var em:EventManager;
 
-	public function new()
-	{
-		super();
-	}
-
 	override public function begin()
-	{
-		if(newGameB == null)
-			newGameB = new Button(10, 10, "gfx/menu/newgame.png");
-
-		newGameB.addListener(MouseEvent.MOUSE_DOWN, onMouseOut);
-
-		add(newGameB);
-	}
-
-	override public function end()
-	{
-		newGameB.clearListener(MouseEvent.MOUSE_DOWN, onMouseOut);
-	}
-
-	private function onMouseOut(e:MouseEvent)
 	{
 		if(em == null)
 			em = EventManager.cloneInstance();
 
+		if(newGameB == null)
+			newGameB = new Button(10, 10, "gfx/menu/newgame.png");
+
+		if(inventoryB == null)
+			inventoryB = new Button(10, 100, "gfx/menu/newgame.png");
+
+		newGameB.addListener(MouseEvent.MOUSE_DOWN, onNewGame);
+		inventoryB.addListener(MouseEvent.MOUSE_DOWN, onInventory);
+
+		add(newGameB);
+		add(inventoryB);
+	}
+
+	override public function end()
+	{
+		newGameB.clearListener(MouseEvent.MOUSE_DOWN, onNewGame);
+		inventoryB.clearListener(MouseEvent.MOUSE_DOWN, onInventory);
+	}
+
+	private function onNewGame(e:MouseEvent)
+	{
 		em.dispatchEvent(new MenuEvent(MenuEvent.NEW_GAME));
+	}
+
+	private function onInventory(e:MouseEvent)
+	{
+		em.dispatchEvent(new MenuEvent(MenuEvent.SHOW_INVENTORY));
 	}
 }
