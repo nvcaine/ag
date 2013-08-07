@@ -12,6 +12,8 @@ class Button extends Entity
 	private var _image:Image;
 	private var dispatcher:EventDispatcher;
 	private var prevEventType:String = "";
+	private var mouseWasDown:Bool = false;
+	private var mouseEntered:Bool = false;
 
 	public function new(x:Float, y:Float, image:Dynamic)
 	{
@@ -41,27 +43,45 @@ class Button extends Entity
 
 		if(mouseCollides)
 		{
-			eventType = MouseEvent.MOUSE_OVER;
+			if(!mouseEntered)
+			{
+				eventType = MouseEvent.MOUSE_OVER;				
+				mouseEntered = true;
+			}
 
 			if(Input.mousePressed)
+			{
 				eventType = MouseEvent.MOUSE_DOWN;
-			else
-				if(prevEventType == MouseEvent.MOUSE_DOWN)
-					eventType = MouseEvent.MOUSE_UP;
+				mouseWasDown = true;
+			}
+
+			if(Input.mouseReleased)
+			{
+				eventType = MouseEvent.CLICK;
+				mouseWasDown = false;
+			}
 		}
+		else
+		{
+			if(mouseEntered)
+			{
+				eventType = MouseEvent.MOUSE_OUT;
+				mouseEntered = false;
+			}
 
-		if(prevEventType == MouseEvent.MOUSE_OVER && !mouseCollides)
-			eventType = MouseEvent.MOUSE_OUT;
-
-		if(prevEventType == MouseEvent.MOUSE_DOWN && eventType == MouseEvent.MOUSE_UP)
-			eventType = MouseEvent.CLICK;
+			if(Input.mouseReleased && mouseWasDown)
+			{
+				eventType = MouseEvent.MOUSE_UP;
+				mouseWasDown = false;
+			}
+		}
 
 		if(eventType != "" && prevEventType != eventType)
 		{
 			prevEventType = eventType;
-
-			trace(eventType);
 			dispatcher.dispatchEvent(new MouseEvent(eventType));
+
+			//trace(eventType);
 		}
 	}
 

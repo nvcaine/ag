@@ -28,8 +28,8 @@ class MenuScene extends Scene
 		if(inventoryB == null)
 			inventoryB = new Button(10, 100, "gfx/menu/newgame.png");
 
-		//newGameB.addListener(MouseEvent.MOUSE_DOWN, onNewGame);
-		//inventoryB.addListener(MouseEvent.MOUSE_DOWN, onInventory);
+		newGameB.addListener(MouseEvent.CLICK, onNewGame);
+		inventoryB.addListener(MouseEvent.CLICK, onInventory);
 
 		add(newGameB);
 		add(inventoryB);
@@ -37,8 +37,8 @@ class MenuScene extends Scene
 
 	override public function end()
 	{
-		newGameB.clearListener(MouseEvent.MOUSE_DOWN, onNewGame);
-		inventoryB.clearListener(MouseEvent.MOUSE_DOWN, onInventory);
+		newGameB.clearListener(MouseEvent.CLICK, onNewGame);
+		inventoryB.clearListener(MouseEvent.CLICK, onInventory);
 	}
 
 	private function onNewGame(e:MouseEvent)

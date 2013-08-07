@@ -19,10 +19,15 @@ class InventoryScene extends Scene
 	{
 		backB = new Button(10, 10, "gfx/menu/back.png");
 
-		backB.addListener(MouseEvent.MOUSE_DOWN, onBack);
+		backB.addListener(MouseEvent.CLICK, onBack);
 		add(backB);
 
 		drawShipTemplate();
+	}
+
+	override public function end()
+	{
+		backB.clearListener(MouseEvent.CLICK, onBack);
 	}
 
 	private function onBack(e:MouseEvent)
