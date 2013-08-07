@@ -11,6 +11,7 @@ class Button extends Entity
 {
 	private var _image:Image;
 	private var dispatcher:EventDispatcher;
+	private var prevEventType:String = "";
 
 	public function new(x:Float, y:Float, image:Dynamic)
 	{
@@ -35,9 +36,33 @@ class Button extends Entity
 	{
 		super.update();
 
-		if(Input.mousePressed)
-			if(collidePoint(x, y, scene.mouseX, scene.mouseY))
-				dispatcher.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN));
+		var eventType:String = "";
+		var mouseCollides:Bool = collidePoint(x, y, scene.mouseX, scene.mouseY);
+
+		if(mouseCollides)
+		{
+			eventType = MouseEvent.MOUSE_OVER;
+
+			if(Input.mousePressed)
+				eventType = MouseEvent.MOUSE_DOWN;
+			else
+				if(prevEventType == MouseEvent.MOUSE_DOWN)
+					eventType = MouseEvent.MOUSE_UP;
+		}
+
+		if(prevEventType == MouseEvent.MOUSE_OVER && !mouseCollides)
+			eventType = MouseEvent.MOUSE_OUT;
+
+		if(prevEventType == MouseEvent.MOUSE_DOWN && eventType == MouseEvent.MOUSE_UP)
+			eventType = MouseEvent.CLICK;
+
+		if(eventType != "" && prevEventType != eventType)
+		{
+			prevEventType = eventType;
+
+			trace(eventType);
+			dispatcher.dispatchEvent(new MouseEvent(eventType));
+		}
 	}
 
 	private function initImage(image:Dynamic)

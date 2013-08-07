@@ -28,8 +28,8 @@ class MenuScene extends Scene
 		if(inventoryB == null)
 			inventoryB = new Button(10, 100, "gfx/menu/newgame.png");
 
-		newGameB.addListener(MouseEvent.MOUSE_DOWN, onNewGame);
-		inventoryB.addListener(MouseEvent.MOUSE_DOWN, onInventory);
+		//newGameB.addListener(MouseEvent.MOUSE_DOWN, onNewGame);
+		//inventoryB.addListener(MouseEvent.MOUSE_DOWN, onInventory);
 
 		add(newGameB);
 		add(inventoryB);

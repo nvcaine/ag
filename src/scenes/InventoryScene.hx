@@ -33,8 +33,9 @@ class InventoryScene extends Scene
 	private function drawShipTemplate()
 	{
 		var ship:Image = new Image("gfx/ship.png");
-		var entity:Entity = new Entity(100, 50);
+		var entity:Entity = new Entity(100, 150);
 
+		ship.scaleX = ship.scaleY = 3;
 		entity.graphic = ship;
 
 		add(entity);
