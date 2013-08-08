@@ -1,24 +1,32 @@
 package org.ui;
 
+import com.haxepunk.Entity;
 import com.haxepunk.graphics.Graphiclist;
+import com.haxepunk.graphics.Image;
+import com.haxepunk.graphics.Text;
 
-import nme.text.TextField;
 
-class Tooltip extends Graphiclist
+class Tooltip extends Entity
 {
-	public function new()
+	public function new(x:Float, y:Float)
 	{
-		super();
+		super(x, y);
 
 		init();
 	}
 
 	private function init()
 	{
-		var tf:TextField = new TextField();
+		var textOptions:TextOptions = {font: "font/xoloniumregular.ttf", color: 0x00FF00};
+		var tf:Text = new Text("Awesome-est weapon ever", 0, 0, 0, 0, textOptions);
+		var w:Int = cast(tf.x, Int) + tf.width;
+		var h:Int = cast(tf.y, Int) + tf.height;
 
-		tf.text = "The tooltip with the text that will be displayed";
+		var bg = Image.createRect(w, h, 0x0090c2);
+		var g:Graphiclist = new Graphiclist([bg, tf]);
+		
+		graphic = g;
 
-		add(tf);
+		setHitbox(w, h);
 	}
 }

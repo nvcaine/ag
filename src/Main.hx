@@ -29,7 +29,7 @@ class Main extends Engine
 		initScenes();
 		addHandlers();
 
-		HXP.scene = scenes.get(SceneConsts.MENU);
+		HXP.scene = scenes.get(SceneConsts.INVENTORY);
 	}
 
 	public static function main()

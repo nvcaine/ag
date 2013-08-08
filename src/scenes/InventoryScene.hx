@@ -10,6 +10,7 @@ import nme.events.MouseEvent;
 
 import org.events.EventManager;
 import org.ui.Button;
+import org.ui.TooltipButton;
 
 class InventoryScene extends Scene
 {
@@ -44,5 +45,13 @@ class InventoryScene extends Scene
 		entity.graphic = ship;
 
 		add(entity);
+
+		var hardpoint:TooltipButton = new TooltipButton(100, 200, "gfx/hardpoint.png");
+
+		add(hardpoint);
+
+		var hardpoint2:TooltipButton = new TooltipButton(200, 100, "gfx/hardpoint.png");
+
+		add(hardpoint2);
 	}
 }
