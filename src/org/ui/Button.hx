@@ -9,19 +9,23 @@ import nme.events.MouseEvent;
 
 class Button extends Entity
 {
-	private var _image:Image;
+	private var skin:Dynamic;
 	private var dispatcher:EventDispatcher;
 	private var prevEventType:String = "";
 	private var mouseWasDown:Bool = false;
 	private var mouseEntered:Bool = false;
 
-	public function new(x:Float, y:Float, image:Dynamic)
+	public function new(x:Float, y:Float, skinInfo:Dynamic)
 	{
 		super(x, y);
 
-		initImage(image);
-
 		dispatcher = new EventDispatcher();
+
+		initImage(skinInfo.defaultImage);
+
+		skin = skinInfo;
+
+		initStates();
 	}
 
 	public function addListener(type:String, handler:Dynamic->Void)
@@ -85,12 +89,41 @@ class Button extends Entity
 		}
 	}
 
-	private function initImage(image:Dynamic)
+	private function initStates()
 	{
-		_image = new Image(image);
+		if(skin.overImage != null)
+			addListener(MouseEvent.MOUSE_OVER, onMouseOver);
 
-		graphic = _image;
+		if(skin.downImage != null)
+			addListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 
-		setHitbox(_image.width, _image.height);
+		if(skin.defaultImage != null && skin.overImage != null)
+			addListener(MouseEvent.MOUSE_OUT, onMouseOut);
+	}
+
+	private function initImage(imageAsset:Dynamic)
+	{
+		var image:Image = new Image(imageAsset);
+
+		graphic = image;
+
+		setHitbox(image.width, image.height);
+	}
+
+	// -----------------------------------------------------------------------------
+
+	private function onMouseOver(e:MouseEvent)
+	{
+		graphic = new Image(skin.overImage);
+	}
+
+	private function onMouseOut(e:MouseEvent)
+	{
+		graphic = new Image(skin.defaultImage);
+	}
+
+	private function onMouseDown(e:MouseEvent)
+	{
+		graphic = new Image(skin.downImage);
 	}
 }

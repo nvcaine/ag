@@ -56,12 +56,12 @@ class TooltipButton extends Button
 		return new Point(x + width, y + height / 2 - tooltip.height / 2);
 	}
 
-	private function onMouseOver(e:MouseEvent)
+	override private function onMouseOver(e:MouseEvent)
 	{
 		showTooltip(TooltipPositionConsts.TOP);
 	}
 
-	private function onMouseOut(e:MouseEvent)
+	override private function onMouseOut(e:MouseEvent)
 	{
 		tooltip.visible = false;
 	}

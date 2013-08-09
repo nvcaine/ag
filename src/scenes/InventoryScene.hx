@@ -18,7 +18,7 @@ class InventoryScene extends Scene
 
 	override public function begin()
 	{
-		backB = new Button(10, 10, "gfx/menu/back.png");
+		backB = new Button(10, 10, {defaultImage: "gfx/menu/back.png", downImage: "gfx/menu/back_down.png", overImage: "gfx/menu/back_over.png"});
 
 		backB.addListener(MouseEvent.CLICK, onBack);
 		add(backB);
@@ -46,11 +46,11 @@ class InventoryScene extends Scene
 
 		add(entity);
 
-		var hardpoint:TooltipButton = new TooltipButton(100, 200, "gfx/hardpoint.png");
+		var hardpoint:TooltipButton = new TooltipButton(100, 200, {defaultImage:"gfx/hardpoint.png"});
 
 		add(hardpoint);
 
-		var hardpoint2:TooltipButton = new TooltipButton(200, 100, "gfx/hardpoint.png");
+		var hardpoint2:TooltipButton = new TooltipButton(200, 100, {defaultImage:"gfx/hardpoint.png"});
 
 		add(hardpoint2);
 	}

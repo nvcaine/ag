@@ -23,10 +23,10 @@ class MenuScene extends Scene
 			em = EventManager.cloneInstance();
 
 		if(newGameB == null)
-			newGameB = new Button(10, 10, "gfx/menu/newgame.png");
+			newGameB = new Button(10, 10, {defaultImage: "gfx/menu/new_game.png", overImage: "gfx/menu/new_game_over.png", downImage: "gfx/menu/new_game_down.png"});
 
 		if(inventoryB == null)
-			inventoryB = new Button(10, 100, "gfx/menu/newgame.png");
+			inventoryB = new Button(10, 50, {defaultImage: "gfx/menu/inventory.png", overImage: "gfx/menu/inventory_over.png", downImage: "gfx/menu/inventory_down.png"});
 
 		newGameB.addListener(MouseEvent.CLICK, onNewGame);
 		inventoryB.addListener(MouseEvent.CLICK, onInventory);
