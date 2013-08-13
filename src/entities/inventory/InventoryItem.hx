@@ -1,4 +1,4 @@
-package org.actors;
+package entities.inventory;
 
 import model.dto.ItemDTO;
 import model.events.InventoryEvent;

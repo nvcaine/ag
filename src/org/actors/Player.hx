@@ -6,7 +6,7 @@ import com.haxepunk.utils.Key;
 import flash.events.TimerEvent;
 import flash.utils.Timer;
 
-import entities.Ship;
+import entities.game.Ship;
 
 import nme.events.TimerEvent;
 import nme.utils.Timer;

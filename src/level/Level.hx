@@ -7,8 +7,8 @@ import com.haxepunk.graphics.Canvas;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.masks.Grid;
 
-import entities.BossEnemy;
-import entities.Enemy;
+import entities.game.BossEnemy;
+import entities.game.Enemy;
 
 import model.consts.EntityTypeConsts;
 import model.consts.PlayerConsts;

@@ -1,10 +1,10 @@
-package entities;
+package entities.game;
 
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Canvas;
 import com.haxepunk.graphics.Image;
 
-import entities.Projectile;
+import entities.game.Projectile;
 
 import model.consts.EntityTypeConsts;
 import model.dto.EnemyDTO;

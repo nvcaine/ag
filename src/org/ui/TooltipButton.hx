@@ -1,6 +1,6 @@
 package org.ui;
 
-import model.consts.TooltipPositionConsts;
+import org.consts.TooltipPositionConsts;
 
 import nme.events.MouseEvent;
 import nme.geom.Point;

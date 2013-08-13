@@ -4,12 +4,13 @@ import com.haxepunk.Scene;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.Entity;
 
+import entities.inventory.EntityGrid;
+
 import model.events.InventoryEvent;
 import model.events.MenuEvent;
 
 import nme.events.MouseEvent;
 
-import org.actors.EntityGrid;
 import org.events.EventManager;
 import org.ui.Button;
 import org.ui.TooltipButton;

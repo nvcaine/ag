@@ -1,4 +1,4 @@
-package org.actors;
+package entities.inventory;
 
 import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
@@ -6,8 +6,6 @@ import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 
 import com.haxepunk.graphics.Image;
-
-import org.actors.InventoryItem;
 
 class EntityGrid
 {
@@ -53,9 +51,6 @@ class EntityGrid
 	public function drawEntity(row:Int, col:Int)
 	{
 		var icon:InventoryItem = new InventoryItem(row, col, _cellWidth, _cellHeight, {defaultImage: "gfx/arma.png"});
-
-		/*icon.scaleX = 0.5;
-		icon.scaleY = 0.5;*/
 
 		_scene.add(icon);
 	}

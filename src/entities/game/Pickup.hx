@@ -1,9 +1,9 @@
-package entities;
+package entities.game;
 
 //import com.haxepunk.Entity;
 //import com.haxepunk.graphics.Image;
 
-import entities.Ship;
+import entities.game.Ship;
 
 import model.consts.EntityTypeConsts;
 

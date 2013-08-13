@@ -5,8 +5,8 @@ import com.haxepunk.Scene;
 
 import flash.events.Event;
 
-import entities.Explosion;
-import entities.Pickup;
+import entities.game.Explosion;
+import entities.game.Pickup;
 
 import hud.GameHUD;
 

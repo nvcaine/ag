@@ -1,4 +1,4 @@
-package entities;
+package entities.game;
 
 import com.haxepunk.HXP;
 import com.haxepunk.Entity;
