@@ -9,9 +9,9 @@ class TooltipButton extends Button
 {
 	private var tooltip:Tooltip;
 
-	public function new(x:Float, y:Float, image:Dynamic)
+	public function new(x:Float, y:Float, data:Dynamic)
 	{
-		super(x, y, image);
+		super(x, y, data);
 
 		init();
 	}

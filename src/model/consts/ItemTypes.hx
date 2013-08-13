@@ -1,8 +1,12 @@
 package model.consts;
 
-class WeaponTypes
+class ItemConsts
 {
-	public static inline var WEAPON:String = "weapon";
-	public static inline var ENGINE:String = "engine";
-	public static inline var UTILITY:String = "utility";
+	public static inline var ITEM_WEAPON:String = "weapon";
+	public static inline var ITEM_ENGINE:String = "engine";
+	public static inline var ITEM_UTILITY:String = "utility";
+
+	public static inline var TYPE_LIGHT:String = "light";
+	public static inline var TYPE_MEDIUM:String = "medium";
+	public static inline var TYPE_HEAVY:String = "heavy";
 }

@@ -4,6 +4,7 @@ import com.haxepunk.Scene;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.Entity;
 
+import model.events.InventoryEvent;
 import model.events.MenuEvent;
 
 import nme.events.MouseEvent;
@@ -16,6 +17,7 @@ import org.ui.TooltipButton;
 class InventoryScene extends Scene
 {
 	private var backB:Button;
+	private var em:EventManager;
 
 	override public function begin()
 	{
@@ -26,6 +28,10 @@ class InventoryScene extends Scene
 
 		drawShipTemplate();
 		drawInventory();
+
+		em = EventManager.cloneInstance();
+
+		em.addEventListener(InventoryEvent.EQUIP_ITEM, onEquip);
 	}
 
 	override public function end()
@@ -33,12 +39,7 @@ class InventoryScene extends Scene
 		backB.clearListener(MouseEvent.CLICK, onBack);
 	}
 
-	private function onBack(e:MouseEvent)
-	{
-		EventManager.cloneInstance().dispatchEvent(new MenuEvent(MenuEvent.SHOW_MENU));
-	}
-
-	private function drawShipTemplate()
+	private function drawShipTemplate() // receive template data
 	{
 		var ship:Image = new Image("gfx/ship.png");
 		var entity:Entity = new Entity(100, 150);
@@ -46,6 +47,7 @@ class InventoryScene extends Scene
 		ship.scaleX = ship.scaleY = 3;
 		entity.graphic = ship;
 
+		// add hard points dynamically
 		add(entity);
 
 		var hardpoint:TooltipButton = new TooltipButton(100, 200, {defaultImage:"gfx/hardpoint.png"});
@@ -72,6 +74,16 @@ class InventoryScene extends Scene
 		add(enginesButton);
 		add(utilityButton);
 
-		var grid = new EntityGrid(this, 5, 10, 50, 50);
+		var grid = new EntityGrid(this, 3, 5, 100, 100);
+	}
+
+	private function onBack(e:MouseEvent)
+	{
+		em.dispatchEvent(new MenuEvent(MenuEvent.SHOW_MENU));
+	}
+
+	private function onEquip(e:InventoryEvent)
+	{
+		trace("item equipped");
 	}
 }

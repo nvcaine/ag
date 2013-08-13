@@ -7,6 +7,8 @@ import com.haxepunk.Scene;
 
 import com.haxepunk.graphics.Image;
 
+import org.actors.InventoryItem;
+
 class EntityGrid
 {
 	private var _scene:Scene;
@@ -26,7 +28,7 @@ class EntityGrid
 		_cellHeight = cellHeight;
 
 		drawBackground(0, 450);
-		addEntities(["a", "b", "c", "d", "e", "a", "b", "c", "d", "e", "a", "b", "c", "d", "e"]);
+		addEntities(["a", "b", "c", "d", "e", "a", "b"]);
 	}
 
 	public function addEntities(items:Array<Dynamic>)
@@ -50,7 +52,12 @@ class EntityGrid
 
 	public function drawEntity(row:Int, col:Int)
 	{
-		_scene.addGraphic(Image.createRect(_cellWidth, _cellHeight, 0xFF0000), 0, col * _cellWidth, 450 + row * _cellHeight);
+		var icon:InventoryItem = new InventoryItem(row, col, _cellWidth, _cellHeight, {defaultImage: "gfx/arma.png"});
+
+		/*icon.scaleX = 0.5;
+		icon.scaleY = 0.5;*/
+
+		_scene.add(icon);
 	}
 
 	private function drawBackground(startX:Int, startY:Int)
