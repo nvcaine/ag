@@ -26,7 +26,7 @@ class EntityGrid
 		_cellHeight = cellHeight;
 
 		drawBackground(0, 450);
-		addEntities(["a", "b", "c", "d", "e", "a", "b"]);
+		addEntities([{assetPath: "gfx/arma.png", name:"Weapon 1"}, {assetPath: "gfx/arma.png", name:"Weapon 2"}]);
 	}
 
 	public function addEntities(items:Array<Dynamic>)
@@ -42,15 +42,15 @@ class EntityGrid
 				currentColumn = 0;
 			}
 
-			drawEntity(currentRow, currentColumn);
+			drawEntity(currentRow, currentColumn, items[i]);
 
 			currentColumn++;
 		}
 	}
 
-	public function drawEntity(row:Int, col:Int)
+	public function drawEntity(row:Int, col:Int, data:Dynamic)
 	{
-		var icon:InventoryItem = new InventoryItem(row, col, _cellWidth, _cellHeight, {defaultImage: "gfx/arma.png"});
+		var icon:InventoryItem = new InventoryItem(row, col, _cellWidth, _cellHeight, data);
 
 		_scene.add(icon);
 	}

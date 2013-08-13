@@ -26,6 +26,11 @@ class TooltipButton extends Button
 		scene.add(tooltip);
 	}
 
+	public function setTooltipText(text:String)
+	{
+		tooltip.setText(text);
+	}
+
 	public function showTooltip(position:String = TooltipPositionConsts.RIGHT)
 	{
 		var ttPos:Point = getTooltipPosition(position);

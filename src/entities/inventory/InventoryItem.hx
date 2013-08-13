@@ -19,7 +19,7 @@ class InventoryItem extends TooltipButton
 	{
 		var pos:Point = getCoords(row, col, cellWidth, cellHeight);
 
-		super(pos.x, pos.y, data);
+		super(pos.x, pos.y, {defaultImage: data.assetPath});
 
 		this.data = new ItemDTO(data);
 
@@ -33,6 +33,7 @@ class InventoryItem extends TooltipButton
 		super.added();
 
 		addListener(MouseEvent.CLICK, onClick);
+		setTooltipText(data.name);
 	}
 	private function getCoords(row:Int, col:Int, cellWidth:Int, cellHeight:Int):Point
 	{

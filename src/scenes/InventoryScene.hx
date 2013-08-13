@@ -5,6 +5,7 @@ import com.haxepunk.graphics.Image;
 import com.haxepunk.Entity;
 
 import entities.inventory.EntityGrid;
+import entities.inventory.Hardpoint;
 
 import model.events.InventoryEvent;
 import model.events.MenuEvent;
@@ -19,6 +20,7 @@ class InventoryScene extends Scene
 {
 	private var backB:Button;
 	private var em:EventManager;
+	private var hardpoints:Array<Hardpoint>;
 
 	override public function begin()
 	{
@@ -48,21 +50,31 @@ class InventoryScene extends Scene
 		ship.scaleX = ship.scaleY = 3;
 		entity.graphic = ship;
 
-		// add hard points dynamically
 		add(entity);
 
-		var hardpoint:TooltipButton = new TooltipButton(100, 200, {defaultImage:"gfx/hardpoint.png"});
-
-		add(hardpoint);
-
-		var hardpoint2:TooltipButton = new TooltipButton(200, 100, {defaultImage:"gfx/hardpoint.png"});
-
-		add(hardpoint2);
+		drawHardpoints([{name:"Hardpoint 1", assetPath: "gfx/hardpoint.png"}, {name:"Hardpoint 2", assetPath: "gfx/hardpoint.png"}]);
 	}
 
 	private function drawInventory()
 	{
 		drawInventoryHeader();
+	}
+
+	private function drawHardpoints(hardpointsData:Array<Dynamic>)
+	{
+		hardpoints = [];
+
+		for(i in 0...hardpointsData.length)
+			drawHardpoint(100 + i * 100, 100 + i * 100, hardpointsData[i]);
+	}
+
+	private function drawHardpoint(x:Float, y:Float, data:Dynamic)
+	{
+		var hp:Hardpoint = new Hardpoint(x, y, data);
+
+		hardpoints.push(hp);
+
+		add(hp);
 	}
 
 	private function drawInventoryHeader()
@@ -85,6 +97,16 @@ class InventoryScene extends Scene
 
 	private function onEquip(e:InventoryEvent)
 	{
-		trace("item equipped");
+		for(i in 0...hardpoints.length)
+		{
+			var h:Hardpoint = hardpoints[i];
+
+			if(h.isAvailable())
+			{
+				h.mountItem(e.data);
+
+				return;
+			}
+		}
 	}
 }
