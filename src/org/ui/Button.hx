@@ -99,6 +99,9 @@ class Button extends Entity
 
 		if(skin.defaultImage != null && skin.overImage != null)
 			addListener(MouseEvent.MOUSE_OUT, onMouseOut);
+
+		if(skin.defaultImage != null && skin.overImage != null)
+			addListener(MouseEvent.CLICK, onMouseOut);
 	}
 
 	private function initImage(imageAsset:Dynamic)

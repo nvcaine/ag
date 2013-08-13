@@ -8,6 +8,7 @@ import model.events.MenuEvent;
 
 import nme.events.MouseEvent;
 
+import org.actors.EntityGrid;
 import org.events.EventManager;
 import org.ui.Button;
 import org.ui.TooltipButton;
@@ -24,6 +25,7 @@ class InventoryScene extends Scene
 		add(backB);
 
 		drawShipTemplate();
+		drawInventory();
 	}
 
 	override public function end()
@@ -53,5 +55,23 @@ class InventoryScene extends Scene
 		var hardpoint2:TooltipButton = new TooltipButton(200, 100, {defaultImage:"gfx/hardpoint.png"});
 
 		add(hardpoint2);
+	}
+
+	private function drawInventory()
+	{
+		drawInventoryHeader();
+	}
+
+	private function drawInventoryHeader()
+	{
+		var weaponsButton:Button = new Button(5, 425, {defaultImage: "gfx/inventory/weapons.png", overImage: "gfx/inventory/weapons_hover.png", downImage: "gfx/inventory/weapons_down.png"});
+		var enginesButton:Button = new Button(170, 425, {defaultImage: "gfx/inventory/engines.png", overImage: "gfx/inventory/engines_hover.png", downImage: "gfx/inventory/engines_down.png"});
+		var utilityButton:Button = new Button(335, 425, {defaultImage: "gfx/inventory/utility.png", overImage: "gfx/inventory/utility_hover.png", downImage: "gfx/inventory/utility_down.png"});
+
+		add(weaponsButton);
+		add(enginesButton);
+		add(utilityButton);
+
+		var grid = new EntityGrid(this, 5, 10, 50, 50);
 	}
 }
