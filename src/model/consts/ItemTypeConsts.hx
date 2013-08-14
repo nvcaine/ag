@@ -1,6 +1,6 @@
 package model.consts;
 
-class ItemConsts
+class ItemTypeConsts
 {
 	public static inline var ITEM_WEAPON:String = "weapon";
 	public static inline var ITEM_ENGINE:String = "engine";

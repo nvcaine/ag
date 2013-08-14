@@ -39,6 +39,11 @@ class Hardpoint extends TooltipButton
 		setTooltipText(data.name + "\n" + itemData.name);
 	}
 
+	public function supports(itemType:String):Bool
+	{
+		return (data.type == itemType);
+	}
+
 	public function isAvailable():Bool
 	{
 		return (itemData == null);

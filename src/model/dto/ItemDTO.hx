@@ -8,5 +8,5 @@ class ItemDTO extends AbstractDTO
 	public var name:String;
 	public var attributes:Array<Dynamic>;
 	public var offset:Point;
-	public var assetPath:String; // conflict with defaultImage - from TooltipButton
+	public var assetPath:String;
 }

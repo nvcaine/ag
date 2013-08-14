@@ -51,6 +51,9 @@ class EntityGrid
 
 	public function clearItems()
 	{
+		if(inventoryItems.length == 0)
+			return;
+
 		for(i in 0...inventoryItems.length)
 			_scene.remove(inventoryItems[i]);
 
