@@ -106,9 +106,9 @@ class InventoryScene extends Scene
 		for(i in 0...items.length)
 			grid.addItem(items[i]);
 
-		/*grid.addItem(new ItemDTO({assetPath: "gfx/arma.png", name:"Weapon 1"}));
-		grid.addItem(new ItemDTO({assetPath: "gfx/arma.png", name:"Weapon 2"}));
-		grid.addItem(new ItemDTO({assetPath: "gfx/arma.png", name:"Weapon 3"}));*/
+		weaponsButton.addListener(MouseEvent.CLICK, onWeaponsClick);
+		enginesButton.addListener(MouseEvent.CLICK, onEnginesClick);
+		utilityButton.addListener(MouseEvent.CLICK, onUtilityClick);
 	}
 
 	private function onBack(e:MouseEvent)
@@ -147,5 +147,20 @@ class InventoryScene extends Scene
 
 		for(i in 0...items.length)
 			grid.addItem(items[i]);
+	}
+
+	private function onWeaponsClick(e:MouseEvent)
+	{
+		trace("weapons");
+	}
+
+	private function onEnginesClick(e:MouseEvent)
+	{
+		trace("engines");
+	}
+
+	private function onUtilityClick(e:MouseEvent)
+	{
+		trace("utility");
 	}
 }
