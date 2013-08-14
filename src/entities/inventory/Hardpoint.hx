@@ -1,7 +1,11 @@
 package entities.inventory;
 
 import model.dto.ItemDTO;
+import model.events.InventoryEvent;
+
 import nme.events.MouseEvent;
+
+import org.events.EventManager;
 import org.ui.TooltipButton;
 
 class Hardpoint extends TooltipButton
@@ -45,8 +49,11 @@ class Hardpoint extends TooltipButton
 		if(isAvailable())
 			return;
 
-		itemData = null;
 		initImage(data.assetPath);
 		setTooltipText(data.name);
+
+		EventManager.cloneInstance().dispatchEvent(new InventoryEvent(InventoryEvent.UNEQUIP_ITEM, itemData));
+
+		itemData = null;
 	}
 }

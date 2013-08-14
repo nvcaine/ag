@@ -6,6 +6,7 @@ import nme.events.Event;
 class InventoryEvent extends Event
 {
 	public static inline var EQUIP_ITEM:String = "equipItem";
+	public static inline var UNEQUIP_ITEM:String = "unequipItem";
 
 	public var data:ItemDTO;
 

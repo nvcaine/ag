@@ -41,6 +41,11 @@ class TooltipButton extends Button
 		tooltip.visible = true;
 	}
 
+	public function hideTooltip()
+	{
+		tooltip.visible = false;
+	}
+
 	private function init()
 	{
 		this.addListener(MouseEvent.MOUSE_OVER, onMouseOver);
@@ -68,6 +73,6 @@ class TooltipButton extends Button
 
 	override private function onMouseOut(e:MouseEvent)
 	{
-		tooltip.visible = false;
+		hideTooltip();
 	}
 }

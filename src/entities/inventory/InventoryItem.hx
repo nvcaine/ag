@@ -21,11 +21,19 @@ class InventoryItem extends TooltipButton
 
 		super(pos.x, pos.y, {defaultImage: data.assetPath});
 
-		this.data = new ItemDTO(data);
+		if(Type.getClassName(Type.getClass(data)) != "model.dto.ItemDTO")
+			this.data = new ItemDTO(data);
+		else
+			this.data = data;
 
 		setHitbox(cellWidth, cellHeight);
 
 		em = EventManager.cloneInstance();
+	}
+
+	public function matches(item:ItemDTO)
+	{
+		return (item.name == data.name);
 	}
 
 	override public function added()
@@ -33,6 +41,7 @@ class InventoryItem extends TooltipButton
 		super.added();
 
 		addListener(MouseEvent.CLICK, onClick);
+
 		setTooltipText(data.name);
 	}
 	private function getCoords(row:Int, col:Int, cellWidth:Int, cellHeight:Int):Point
@@ -44,6 +53,8 @@ class InventoryItem extends TooltipButton
 
 	private function onClick(e:MouseEvent)
 	{
+		hideTooltip();
+
 		// should be a message entity
 		em.dispatchEvent(new InventoryEvent(InventoryEvent.EQUIP_ITEM, data));
 	}

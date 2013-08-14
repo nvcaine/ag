@@ -7,6 +7,8 @@ import com.haxepunk.Entity;
 import entities.inventory.EntityGrid;
 import entities.inventory.Hardpoint;
 
+import model.dto.ItemDTO;
+
 import model.events.InventoryEvent;
 import model.events.MenuEvent;
 
@@ -21,6 +23,8 @@ class InventoryScene extends Scene
 	private var backB:Button;
 	private var em:EventManager;
 	private var hardpoints:Array<Hardpoint>;
+	private var items:Array<ItemDTO>;
+	private var grid:EntityGrid;
 
 	override public function begin()
 	{
@@ -29,17 +33,27 @@ class InventoryScene extends Scene
 		backB.addListener(MouseEvent.CLICK, onBack);
 		add(backB);
 
-		drawShipTemplate();
-		drawInventory();
-
 		em = EventManager.cloneInstance();
 
 		em.addEventListener(InventoryEvent.EQUIP_ITEM, onEquip);
+		em.addEventListener(InventoryEvent.UNEQUIP_ITEM, onUnequip);
+
+		items = [
+			new ItemDTO({assetPath: "gfx/arma.png", name:"Weapon 1"}),
+			new ItemDTO({assetPath: "gfx/arma.png", name:"Weapon 2"}),
+			new ItemDTO({assetPath: "gfx/arma.png", name:"Weapon 3"})
+		];
+
+		drawShipTemplate();
+		drawInventory();
 	}
 
 	override public function end()
 	{
 		backB.clearListener(MouseEvent.CLICK, onBack);
+
+		em.removeEventListener(InventoryEvent.EQUIP_ITEM, onEquip);
+		em.removeEventListener(InventoryEvent.UNEQUIP_ITEM, onUnequip);
 	}
 
 	private function drawShipTemplate() // receive template data
@@ -87,7 +101,14 @@ class InventoryScene extends Scene
 		add(enginesButton);
 		add(utilityButton);
 
-		var grid = new EntityGrid(this, 3, 5, 100, 100);
+		grid = new EntityGrid(this, 3, 5, 100, 100);
+
+		for(i in 0...items.length)
+			grid.addItem(items[i]);
+
+		/*grid.addItem(new ItemDTO({assetPath: "gfx/arma.png", name:"Weapon 1"}));
+		grid.addItem(new ItemDTO({assetPath: "gfx/arma.png", name:"Weapon 2"}));
+		grid.addItem(new ItemDTO({assetPath: "gfx/arma.png", name:"Weapon 3"}));*/
 	}
 
 	private function onBack(e:MouseEvent)
@@ -104,9 +125,27 @@ class InventoryScene extends Scene
 			if(h.isAvailable())
 			{
 				h.mountItem(e.data);
+				//grid.removeItem(e.data);
+		
+				grid.clearItems();
+		
+				items.remove(e.data);
+
+				for(i in 0...items.length)
+					grid.addItem(items[i]);
 
 				return;
 			}
 		}
+	}
+
+	private function onUnequip(e:InventoryEvent)
+	{
+		items.push(e.data);
+
+		grid.clearItems();
+
+		for(i in 0...items.length)
+			grid.addItem(items[i]);
 	}
 }
