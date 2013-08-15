@@ -28,18 +28,7 @@ class InventoryScene extends Scene
 
 	override public function begin()
 	{
-		// init --
-		backB = new Button(10, 10, {defaultImage: "gfx/menu/back.png", downImage: "gfx/menu/back_down.png", overImage: "gfx/menu/back_over.png"});
-
-		backB.addListener(MouseEvent.CLICK, onBack);
-		add(backB);
-
-		em = EventManager.cloneInstance();
-
-		em.addEventListener(InventoryEvent.EQUIP_ITEM, onEquip);
-		em.addEventListener(InventoryEvent.UNEQUIP_ITEM, onUnequip);
-
-		// --
+		init();
 
 		drawShipTemplate();
 		drawInventory([
@@ -58,6 +47,19 @@ class InventoryScene extends Scene
 
 		em.removeEventListener(InventoryEvent.EQUIP_ITEM, onEquip);
 		em.removeEventListener(InventoryEvent.UNEQUIP_ITEM, onUnequip);
+	}
+
+	private function init()
+	{
+		backB = new Button(10, 10, {defaultImage: "gfx/menu/back.png", downImage: "gfx/menu/back_down.png", overImage: "gfx/menu/back_over.png"});
+
+		backB.addListener(MouseEvent.CLICK, onBack);
+		add(backB);
+
+		em = EventManager.cloneInstance();
+
+		em.addEventListener(InventoryEvent.EQUIP_ITEM, onEquip);
+		em.addEventListener(InventoryEvent.UNEQUIP_ITEM, onUnequip);
 	}
 
 	private function drawShipTemplate() // receive template data
