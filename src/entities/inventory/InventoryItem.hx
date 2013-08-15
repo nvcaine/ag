@@ -13,7 +13,7 @@ import org.ui.TooltipButton;
 class InventoryItem extends TooltipButton
 {
 	private var em:EventManager;
-	private var data:ItemDTO;
+	public var data:ItemDTO;
 
 	public function new(row:Int, col:Int, cellWidth:Int, cellHeight:Int, data:Dynamic)
 	{

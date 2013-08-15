@@ -4,7 +4,7 @@ import com.haxepunk.Scene;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.Entity;
 
-import entities.inventory.EntityGrid;
+import entities.inventory.InventoryGrid;
 import entities.inventory.Hardpoint;
 
 import model.dto.ItemDTO;
@@ -24,13 +24,11 @@ class InventoryScene extends Scene
 	private var backB:Button;
 	private var em:EventManager;
 	private var hardpoints:Array<Hardpoint>;
-	private var items:Array<ItemDTO>;
-	private var grid:EntityGrid;
-
-	private var currentInventorySection:String;
+	private var grid:InventoryGrid;
 
 	override public function begin()
 	{
+		// init --
 		backB = new Button(10, 10, {defaultImage: "gfx/menu/back.png", downImage: "gfx/menu/back_down.png", overImage: "gfx/menu/back_over.png"});
 
 		backB.addListener(MouseEvent.CLICK, onBack);
@@ -41,18 +39,17 @@ class InventoryScene extends Scene
 		em.addEventListener(InventoryEvent.EQUIP_ITEM, onEquip);
 		em.addEventListener(InventoryEvent.UNEQUIP_ITEM, onUnequip);
 
-		items = [
+		// --
+
+		drawShipTemplate();
+		drawInventory([
 			new ItemDTO({assetPath: "gfx/arma.png", name:"Weapon 1", type: ItemTypeConsts.ITEM_WEAPON}),
 			new ItemDTO({assetPath: "gfx/arma.png", name:"Weapon 2", type: ItemTypeConsts.ITEM_WEAPON}),
 			new ItemDTO({assetPath: "gfx/arma.png", name:"Weapon 3", type: ItemTypeConsts.ITEM_WEAPON}),
 			new ItemDTO({assetPath: "gfx/arma.png", name:"Engine 1", type: ItemTypeConsts.ITEM_ENGINE}),
-			new ItemDTO({assetPath: "gfx/arma.png", name:"Engine 2", type: ItemTypeConsts.ITEM_ENGINE})
-		];
-
-		currentInventorySection = ItemTypeConsts.ITEM_WEAPON;
-
-		drawShipTemplate();
-		drawInventory();
+			new ItemDTO({assetPath: "gfx/arma.png", name:"Engine 2", type: ItemTypeConsts.ITEM_ENGINE}),
+			new ItemDTO({assetPath: "gfx/arma.png", name:"Utility 1", type: ItemTypeConsts.ITEM_UTILITY})
+		]);
 	}
 
 	override public function end()
@@ -79,15 +76,6 @@ class InventoryScene extends Scene
 		]);
 	}
 
-	private function drawInventory()
-	{
-		drawInventoryHeader();
-
-		grid = new EntityGrid(this, 3, 5, 100, 100);
-
-		refreshItems();
-	}
-
 	private function drawHardpoints(hardpointsData:Array<Dynamic>)
 	{
 		hardpoints = [];
@@ -105,49 +93,20 @@ class InventoryScene extends Scene
 		add(hp);
 	}
 
-	private function drawInventoryHeader()
+	private function getAvailableHardpoint(type:String):Hardpoint
 	{
-		var weaponsButton:Button = new Button(5, 425, {defaultImage: "gfx/inventory/weapons.png", overImage: "gfx/inventory/weapons_hover.png", downImage: "gfx/inventory/weapons_down.png"});
-		var enginesButton:Button = new Button(170, 425, {defaultImage: "gfx/inventory/engines.png", overImage: "gfx/inventory/engines_hover.png", downImage: "gfx/inventory/engines_down.png"});
-		var utilityButton:Button = new Button(335, 425, {defaultImage: "gfx/inventory/utility.png", overImage: "gfx/inventory/utility_hover.png", downImage: "gfx/inventory/utility_down.png"});
+		for(i in 0...hardpoints.length)
+			if(hardpoints[i].isAvailable() && hardpoints[i].supports(type))
+				return hardpoints[i];
 
-		weaponsButton.addListener(MouseEvent.CLICK, onWeaponsClick);
-		enginesButton.addListener(MouseEvent.CLICK, onEnginesClick);
-		utilityButton.addListener(MouseEvent.CLICK, onUtilityClick);
-
-		add(weaponsButton);
-		add(enginesButton);
-		add(utilityButton);
+		return null;
 	}
 
-	private function refreshItems()
+	private function drawInventory(items:Array<ItemDTO>)
 	{
-		var currentItems:Array<ItemDTO> = getItemsByType(currentInventorySection);
+		grid = new InventoryGrid(0, 450, items, 3, 5, 100, 100);
 
-		grid.clearItems();
-
-		for(i in 0...currentItems.length)
-			grid.addItem(currentItems[i]);
-	}
-
-	private function getItemsByType(type:String):Array<ItemDTO>
-	{
-		var result:Array<ItemDTO> = [];
-
-		for(i in 0...items.length)
-			if(items[i].type == type)
-				result.push(items[i]);
-
-		return result;
-	}
-
-	private function changeInventorySection(section:String)
-	{
-		if(currentInventorySection == section)
-			return;
-
-		currentInventorySection = section;
-		refreshItems();
+		add(grid);
 	}
 
 	private function onBack(e:MouseEvent)
@@ -155,47 +114,19 @@ class InventoryScene extends Scene
 		em.dispatchEvent(new MenuEvent(MenuEvent.SHOW_MENU));
 	}
 
-	private function onWeaponsClick(e:MouseEvent)
-	{
-		changeInventorySection(ItemTypeConsts.ITEM_WEAPON);
-	}
-
-	private function onEnginesClick(e:MouseEvent)
-	{
-		changeInventorySection(ItemTypeConsts.ITEM_ENGINE);
-	}
-
-	private function onUtilityClick(e:MouseEvent)
-	{
-		changeInventorySection(ItemTypeConsts.ITEM_UTILITY);
-	}
-
 	private function onEquip(e:InventoryEvent)
 	{
-		for(i in 0...hardpoints.length)
-		{
-			var h:Hardpoint = hardpoints[i];
+		var hardpoint:Hardpoint = getAvailableHardpoint(e.data.type);
 
-			if(h.isAvailable() && h.supports(e.data.type))
-			{
-				items.remove(e.data);
-				h.mountItem(e.data);
-		
-				grid.clearItems();
+		if(hardpoint == null)
+			return;
 
-				refreshItems();
-
-				return;
-			}
-		}
+		hardpoint.mountItem(e.data);
+		grid.unequip(e.data);
 	}
 
 	private function onUnequip(e:InventoryEvent)
 	{
-		items.push(e.data);
-
-		grid.clearItems();
-
-		refreshItems();
+		grid.equip(e.data);
 	}
 }
