@@ -91,7 +91,7 @@ class Enemy extends MessageEntity
 			sendMessage(new EntityEvent(EntityEvent.ENTITY_EXPLOSION, this.x + width / 2, this.y + height / 2));
 
 		if(score)
-			sendMessage(new HUDEvent(HUDEvent.KILL_SCORE, data.score));
+			sendMessage(new HUDEvent(HUDEvent.KILL_SCORE, data.score, 0, data.xp));
 
 		graphic = null;
 

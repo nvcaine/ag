@@ -9,6 +9,7 @@ import com.haxepunk.graphics.prototype.Rect;
 
 import model.events.HUDEvent;
 import model.events.EntityEvent;
+import model.proxy.PlayerProxy;
 
 import nme.text.TextFormatAlign;
 
@@ -17,21 +18,25 @@ import org.events.EventManager;
 class GameHUD extends Graphiclist
 {
 	static inline var ENEMY_SCORE_TEMPLATE:String = "Score: ";
-	static inline var CHECKPOINTS_TEMPLATE:String = "Checkpoints: ";
+	//static inline var CHECKPOINTS_TEMPLATE:String = "Checkpoints: ";
 
 	static inline var MAX_HEALTH:Int = 100;
 
 	private var enemyScoreT:Text;
-	private var checkpointsText:Text;
+	private var xpText:Text;
 	private var healthBar:Canvas;
 	private var enemyScore:Int = 0;
 	private var currentHealth:Int = 100;
 
 	private var em:EventManager;
 
+	private var playerProxy:PlayerProxy;
+
 	public function new()
 	{
 		super();
+
+		playerProxy = PlayerProxy.cloneInstance();
 
 		init();
 	}
@@ -40,7 +45,7 @@ class GameHUD extends Graphiclist
 	{
 		enemyScore += defaultScore;
 
-		enemyScoreT.text = /*ENEMY_SCORE_TEMPLATE + */Std.string(enemyScore);
+		enemyScoreT.text = Std.string(enemyScore);
 	}
 
 	public function updateHealth(health:Int)
@@ -53,42 +58,40 @@ class GameHUD extends Graphiclist
 		if(currentHealth <= 0)
 			em.dispatchEvent(new EntityEvent(EntityEvent.PLAYER_DEAD));
 
-		if(count > 2)
-			removeAt(2);
+		remove(healthBar);
 
 		drawHealth(currentHealth);
-	}
-
-	public function updateCheckpoint(checkpointIndex:Int)
-	{
-		checkpointsText.text = CHECKPOINTS_TEMPLATE + Std.string(checkpointIndex);
 	}
 
 	private function init()
 	{
 		var textOptions:TextOptions = {font: "font/xoloniumregular.ttf", color: 0x00FF00, align: TextFormatAlign.RIGHT};
 
-		enemyScoreT = new Text(/*ENEMY_SCORE_TEMPLATE + */Std.string(enemyScore), 30, 27, 120, 16, textOptions);
-		//checkpointsText = new Text(CHECKPOINTS_TEMPLATE, 10, 30, 0, 0, textOptions);
+		enemyScoreT = new Text(Std.string(enemyScore), 30, 27, 120, 16, textOptions);
+		xpText = new Text("Level " + playerProxy.level + " - " + playerProxy.experience + " / " + playerProxy.levelLimit, 30, 3, 120, 16, textOptions);
 
 		drawBackground();
 
 		add(enemyScoreT);
-		//add(checkpointsText);
+		add(xpText);
+
 		drawHealth(currentHealth);
 
-		scrollX = 0;
-		scrollY = 0;
+		scrollX = scrollY = 0;
 
 		em = EventManager.cloneInstance();
 
-		//em.addEventListener(HUDEvent.ENEMY_COLLISION, onEnemyCollision);
 		em.addEventListener(HUDEvent.KILL_SCORE, onScore);
 		em.addEventListener(HUDEvent.UPDATE_HEALTH, onUpdateHealth);
 	}
 
 	private function drawBackground()
 	{
+		var c = new Canvas(HXP.width, 100);
+		c.drawGraphic(282, 13, new Rect(204 , 32 , 0x000000 ));
+
+		add(c);
+
 		add(new Image("gfx/hud.png"));
 	}
 
@@ -113,16 +116,19 @@ class GameHUD extends Graphiclist
 		return colors[Std.int(currentHealth / 10) - 1];
 	}
 
-	// ---------------------- Handlers ------------------------
-
-	/*private function onEnemyCollision(e:HUDEvent)
+	private function updateExperience(amount:Int)
 	{
-		updateHealth(-e.health);
-	}*/
+		playerProxy.increaseExperience(amount);
+
+		xpText.text = "Level " + playerProxy.level + " - " + playerProxy.experience + " / " + playerProxy.levelLimit;
+	}
+
+	// ---------------------- Handlers ------------------------
 
 	private function onScore(e:HUDEvent)
 	{
 		updateScore(e.score);
+		updateExperience(e.xp);
 	}
 
 	private function onUpdateHealth(e:HUDEvent)

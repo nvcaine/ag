@@ -62,7 +62,14 @@ class Player
 
 	private function initEntity(data:Dynamic)
 	{
-		entity = new Ship(data.x, data.y, data);
+		var newData:Dynamic = data;
+
+		newData.addedStuff = [
+			{assetPath: "gfx/arma_2.png"},
+			{assetPath: "gfx/shield.png"}
+		];
+
+		entity = new Ship(data.x, data.y, newData);
 
 		this.scene.add(entity);
 	}

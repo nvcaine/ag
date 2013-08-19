@@ -1,5 +1,6 @@
 package scenes;
 
+import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 
@@ -21,7 +22,6 @@ import org.actors.Player;
 
 class GameScene extends Scene
 {
-	private var hud:GameHUD;
 	private var enemyImages:Hash<String>;
 	private var level:Level;
 	private var player:Player;
@@ -29,6 +29,7 @@ class GameScene extends Scene
 	override public function begin()
 	{
 		level.init();
+
 	}
 
 	override public function end()
@@ -60,7 +61,7 @@ class GameScene extends Scene
 		initLevel();
 		initHUD();
 
-		player = new Player({x: (HXP.width / 2), y: HXP.height - 50, assetPath: "gfx/ship.png", width: 32, height: 32}, this);
+		player = new Player({x: (HXP.width / 2), y: HXP.height - 50, assetPath: "gfx/nava_1.png", width: 98, height: 98}, this);
 
 		camera.x = 0;
 		camera.y = 0;
@@ -68,9 +69,7 @@ class GameScene extends Scene
 
 	private function initHUD()
 	{
-		hud = new GameHUD();
-
-		addGraphic(hud);
+		addGraphic(new GameHUD(), 0, 0, 653);
 	}
 
 	private function initListeners(listener:EventManager, events:Array<Dynamic>, handlers:Array<Dynamic>)

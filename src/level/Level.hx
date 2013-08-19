@@ -31,7 +31,7 @@ class Level extends Entity
 	{
 		super(0, 0);
 
-		checkpoints = [-500, -750];
+		checkpoints = [-500, -750, -3500];
 
 		enemyImages = enemyAssets;
 	}
@@ -96,8 +96,6 @@ class Level extends Entity
 		var row:Int = Std.int(x / gridCellSize);
 		var col:Int = Std.int(y / gridCellSize);
 
-		//trace("grid: " + row + " " + col + " " + gridCellSize);
-
 		gridMask.setTile(row, col, true);
 
 		addEntity(row * gridCellSize, col * gridCellSize, gridCellSize);
@@ -115,8 +113,10 @@ class Level extends Entity
 
 	private function spawn()
 	{
-		var enemyAsset:String = (Std.random(2) % 2 == 0) ? enemyImages.get("enemy1") : enemyImages.get("enemy2");
-		var enemyData:Dynamic = {type: "asd", health: 100, damage: 25, score: 5, speed: 3, assetPath: enemyAsset, width: 32, height: 32};
+		var enemyIndex:Int = Std.random(2);
+		var enemyAsset:String = (enemyIndex % 2 == 0) ? enemyImages.get("enemy1") : enemyImages.get("enemy2");
+		var enemyXP:Int = (enemyIndex % 2 == 0) ? 10 : 5;
+		var enemyData:Dynamic = {type: "asd", health: 100, damage: 25, score: 5, speed: 3, assetPath: enemyAsset, width: 32, height: 32, xp: enemyXP};
 		var x:Float = Math.random() * (HXP.width - 32);
 
 		scene.add(new Enemy(x, scene.camera.y, enemyData));
@@ -145,7 +145,7 @@ class Level extends Entity
 		cameraSpeed = 0;
 
 		var y:Float = scene.camera.y + 128;
-		var enemyData:Dynamic = {type: "boss", health: 300, damage: 25, score: 100, speed: 0.5, assetPath: "gfx/boss.png", width: 128, height: 128};
+		var enemyData:Dynamic = {type: "boss", health: 300, damage: 25, score: 100, speed: 0.5, assetPath: "gfx/boss.png", width: 128, height: 128, xp: 100};
 
 		scene.add(new BossEnemy(HXP.width / 2, y, enemyData));
 	}

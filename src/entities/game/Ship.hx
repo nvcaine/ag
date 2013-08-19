@@ -2,6 +2,7 @@ package entities.game;
 
 import com.haxepunk.Entity;
 import com.haxepunk.HXP;
+import com.haxepunk.graphics.Graphiclist;
 import com.haxepunk.graphics.Image;
 
 import model.consts.EntityTypeConsts;
@@ -57,13 +58,12 @@ class Ship extends MessageEntity
 
 	public function shoot()
 	{
-		scene.add(createNewProjectile(x + width / 2 + 7, y));
-		scene.add(createNewProjectile(x + width / 2 + 30, y));
+		scene.add(createNewProjectile(x + width / 2 - 40, y + 10));
+		scene.add(createNewProjectile(x + width / 2 + 40, y + 10));
 	}
 
 	public function applyBuff(data:Dynamic)
 	{
-		//trace("picked up");
 		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 1, 10));
 	}
 
@@ -72,6 +72,22 @@ class Ship extends MessageEntity
 		var data:Dynamic = {assetPath: "gfx/glontz.png", sound: "sfx/laser.mp3", width: 20, height: 5, damage: 50};
 
 		return new Projectile(x, y, data);
+	}
+
+	override private function initGraphic(data:Dynamic)
+	{
+		var layers:Array<Image> = [];
+		var g:Graphiclist = new Graphiclist();
+
+		if(data.addedStuff != null)
+			for(i in 0...data.addedStuff.length)
+				layers.push(new Image(data.addedStuff[i].assetPath));
+
+		layers.push(new Image(data.assetPath));
+
+		graphic = new Graphiclist(layers);
+
+		setGraphicHitbox(data);
 	}
 
 	private function init(data:Dynamic)

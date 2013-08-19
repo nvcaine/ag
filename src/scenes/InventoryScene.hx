@@ -32,11 +32,8 @@ class InventoryScene extends Scene
 
 		drawShipTemplate();
 		drawInventory([
-			new ItemDTO({assetPath: "gfx/arma.png", name:"Weapon 1", type: ItemTypeConsts.ITEM_WEAPON}),
-			new ItemDTO({assetPath: "gfx/arma.png", name:"Weapon 2", type: ItemTypeConsts.ITEM_WEAPON}),
-			new ItemDTO({assetPath: "gfx/arma.png", name:"Weapon 3", type: ItemTypeConsts.ITEM_WEAPON}),
-			new ItemDTO({assetPath: "gfx/arma.png", name:"Engine 1", type: ItemTypeConsts.ITEM_ENGINE}),
-			new ItemDTO({assetPath: "gfx/arma.png", name:"Engine 2", type: ItemTypeConsts.ITEM_ENGINE}),
+			new ItemDTO({assetPath: "gfx/arma_1_icon.png", name:"Weapon 1", type: ItemTypeConsts.ITEM_WEAPON}),
+			new ItemDTO({assetPath: "gfx/arma_2_icon.png", name:"Weapon 2", type: ItemTypeConsts.ITEM_WEAPON}),
 			new ItemDTO({assetPath: "gfx/arma.png", name:"Utility 1", type: ItemTypeConsts.ITEM_UTILITY})
 		]);
 	}
@@ -64,7 +61,7 @@ class InventoryScene extends Scene
 
 	private function drawShipTemplate() // receive template data
 	{
-		var ship:Image = new Image("gfx/ship.png");
+		var ship:Image = new Image("gfx/nava2.png");
 		var entity:Entity = new Entity(100, 150);
 
 		ship.scaleX = ship.scaleY = 3;
@@ -73,8 +70,8 @@ class InventoryScene extends Scene
 		add(entity);
 
 		drawHardpoints([
-			{name:"Hardpoint 1", assetPath: "gfx/hardpoint.png", type: ItemTypeConsts.ITEM_WEAPON},
-			{name:"Hardpoint 2", assetPath: "gfx/hardpoint.png", type: ItemTypeConsts.ITEM_ENGINE}
+			{name:"Hardpoint 1", assetPath: "gfx/hardpoint.png", type: ItemTypeConsts.ITEM_WEAPON}
+			//{name:"Hardpoint 2", assetPath: "gfx/hardpoint.png", type: ItemTypeConsts.ITEM_ENGINE}
 		]);
 	}
 
@@ -83,7 +80,7 @@ class InventoryScene extends Scene
 		hardpoints = [];
 
 		for(i in 0...hardpointsData.length)
-			drawHardpoint(100 + i * 100, 100 + i * 100, hardpointsData[i]);
+			drawHardpoint(200 + i * 100, 200 + i * 100, hardpointsData[i]);
 	}
 
 	private function drawHardpoint(x:Float, y:Float, data:Dynamic)
@@ -106,7 +103,7 @@ class InventoryScene extends Scene
 
 	private function drawInventory(items:Array<ItemDTO>)
 	{
-		grid = new InventoryGrid(0, 450, items, 3, 5, 100, 100);
+		grid = new InventoryGrid(0, 450, items, 6, 10, 50, 50);
 
 		add(grid);
 	}
