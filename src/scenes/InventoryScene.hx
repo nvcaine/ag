@@ -64,7 +64,7 @@ class InventoryScene extends Scene
 
 	private function drawTemplate()
 	{
-		template = new ShipTemplate(100, 150, {assetPath: "gfx/nava2.png"});
+		template = new ShipTemplate(100, 25, {assetPath: "gfx/nava_1.png"});
 
 		add(template);
 	}
@@ -93,5 +93,6 @@ class InventoryScene extends Scene
 	private function onUnequip(e:InventoryEvent)
 	{
 		grid.equip(e.data);
+		template.unequipItem(e.data);
 	}
 }

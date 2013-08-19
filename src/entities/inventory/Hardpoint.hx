@@ -61,9 +61,10 @@ class Hardpoint extends TooltipButton
 
 		initImage(data.assetPath);
 		setTooltipText(data.name);
-
-		EventManager.cloneInstance().dispatchEvent(new InventoryEvent(InventoryEvent.UNEQUIP_ITEM, itemData));
-
+		
+		var itemDataCopy:ItemDTO = itemData;
 		itemData = null;
+
+		EventManager.cloneInstance().dispatchEvent(new InventoryEvent(InventoryEvent.UNEQUIP_ITEM, itemDataCopy));
 	}
 }

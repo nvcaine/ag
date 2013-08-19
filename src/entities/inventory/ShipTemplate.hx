@@ -57,7 +57,7 @@ class ShipTemplate extends Entity
 		if(graphic != null)
 			graphic.destroy();
 
-		var elements:Array<Image> = []; //Graphiclist = new Graphiclist();
+		var elements:Array<Image> = [];
 		var base:Image = new Image(data.assetPath);
 
 		base.scaleX = base.scaleY = 3;
