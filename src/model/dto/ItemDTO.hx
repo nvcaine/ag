@@ -9,4 +9,5 @@ class ItemDTO extends AbstractDTO
 	public var attributes:Array<Dynamic>;
 	public var offset:Point;
 	public var assetPath:String;
+	public var layerAsset:String;
 }

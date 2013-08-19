@@ -39,6 +39,11 @@ class Hardpoint extends TooltipButton
 		setTooltipText(data.name + "\n" + itemData.name);
 	}
 
+	public function getLayerAsset():String
+	{
+		return itemData.layerAsset;
+	}
+
 	public function supports(itemType:String):Bool
 	{
 		return (data.type == itemType);

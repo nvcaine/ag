@@ -4,6 +4,7 @@ import com.haxepunk.Scene;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.Entity;
 
+import entities.inventory.ShipTemplate;
 import entities.inventory.InventoryGrid;
 import entities.inventory.Hardpoint;
 
@@ -23,18 +24,20 @@ class InventoryScene extends Scene
 {
 	private var backB:Button;
 	private var em:EventManager;
-	private var hardpoints:Array<Hardpoint>;
 	private var grid:InventoryGrid;
+	private var template:ShipTemplate;
 
 	override public function begin()
 	{
 		init();
 
-		drawShipTemplate();
+		drawTemplate();
+
+		// get this from player proxy
 		drawInventory([
-			new ItemDTO({assetPath: "gfx/arma_1_icon.png", name:"Weapon 1", type: ItemTypeConsts.ITEM_WEAPON}),
-			new ItemDTO({assetPath: "gfx/arma_2_icon.png", name:"Weapon 2", type: ItemTypeConsts.ITEM_WEAPON}),
-			new ItemDTO({assetPath: "gfx/arma.png", name:"Utility 1", type: ItemTypeConsts.ITEM_UTILITY})
+			new ItemDTO({assetPath: "gfx/arma_1_icon.png", name:"Weapon 1", type: ItemTypeConsts.ITEM_WEAPON, layerAsset: "gfx/arma_1.png"}),
+			new ItemDTO({assetPath: "gfx/arma_2_icon.png", name:"Weapon 2", type: ItemTypeConsts.ITEM_WEAPON, layerAsset: "gfx/arma_2.png"}),
+			new ItemDTO({assetPath: "gfx/arma.png", name:"Utility 1", type: ItemTypeConsts.ITEM_UTILITY, layerAsset: "gfx/shield.png"})
 		]);
 	}
 
@@ -59,46 +62,11 @@ class InventoryScene extends Scene
 		em.addEventListener(InventoryEvent.UNEQUIP_ITEM, onUnequip);
 	}
 
-	private function drawShipTemplate() // receive template data
+	private function drawTemplate()
 	{
-		var ship:Image = new Image("gfx/nava2.png");
-		var entity:Entity = new Entity(100, 150);
+		template = new ShipTemplate(100, 150, {assetPath: "gfx/nava2.png"});
 
-		ship.scaleX = ship.scaleY = 3;
-		entity.graphic = ship;
-
-		add(entity);
-
-		drawHardpoints([
-			{name:"Hardpoint 1", assetPath: "gfx/hardpoint.png", type: ItemTypeConsts.ITEM_WEAPON}
-			//{name:"Hardpoint 2", assetPath: "gfx/hardpoint.png", type: ItemTypeConsts.ITEM_ENGINE}
-		]);
-	}
-
-	private function drawHardpoints(hardpointsData:Array<Dynamic>)
-	{
-		hardpoints = [];
-
-		for(i in 0...hardpointsData.length)
-			drawHardpoint(200 + i * 100, 200 + i * 100, hardpointsData[i]);
-	}
-
-	private function drawHardpoint(x:Float, y:Float, data:Dynamic)
-	{
-		var hp:Hardpoint = new Hardpoint(x, y, data);
-
-		hardpoints.push(hp);
-
-		add(hp);
-	}
-
-	private function getAvailableHardpoint(type:String):Hardpoint
-	{
-		for(i in 0...hardpoints.length)
-			if(hardpoints[i].isAvailable() && hardpoints[i].supports(type))
-				return hardpoints[i];
-
-		return null;
+		add(template);
 	}
 
 	private function drawInventory(items:Array<ItemDTO>)
@@ -115,13 +83,11 @@ class InventoryScene extends Scene
 
 	private function onEquip(e:InventoryEvent)
 	{
-		var hardpoint:Hardpoint = getAvailableHardpoint(e.data.type);
-
-		if(hardpoint == null)
-			return;
-
-		hardpoint.mountItem(e.data);
-		grid.unequip(e.data);
+		if(template.hasAvailableHardpoint(e.data.type))
+		{
+			template.equipItem(e.data);
+			grid.unequip(e.data);
+		}
 	}
 
 	private function onUnequip(e:InventoryEvent)
