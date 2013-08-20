@@ -4,9 +4,10 @@ import com.haxepunk.Scene;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.Entity;
 
-import entities.inventory.ShipTemplate;
 import entities.inventory.InventoryGrid;
 import entities.inventory.Hardpoint;
+import entities.inventory.ShipTemplate;
+import entities.inventory.StatsView;
 
 import model.dto.ItemDTO;
 
@@ -44,6 +45,8 @@ class InventoryScene extends Scene
 
 		em.removeEventListener(InventoryEvent.EQUIP_ITEM, onEquip);
 		em.removeEventListener(InventoryEvent.UNEQUIP_ITEM, onUnequip);
+
+		this.removeAll();
 	}
 
 	private function init()
@@ -61,9 +64,11 @@ class InventoryScene extends Scene
 
 	private function drawTemplate()
 	{
-		template = new ShipTemplate(100, 25, {assetPath: "gfx/nava_1.png"});
+		template = new ShipTemplate(0, 25, {assetPath: "gfx/nava_1.png"});
 
 		add(template);
+
+		addGraphic(new StatsView(), 0, 200, 0);
 	}
 
 	private function drawInventory(items:Array<ItemDTO>)

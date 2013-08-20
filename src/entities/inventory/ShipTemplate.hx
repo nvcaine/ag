@@ -80,6 +80,8 @@ class ShipTemplate extends Entity
 
 	private function init()
 	{
+		hardpoints = [];
+
 		drawShipTemplate();
 	}
 
@@ -92,10 +94,8 @@ class ShipTemplate extends Entity
 
 	private function drawHardpoints(hardpointsData:Array<Dynamic>)
 	{
-		hardpoints = [];
-
 		for(i in 0...hardpointsData.length)
-			drawHardpoint(hardpointsData[i].x, hardpointsData[i].y, hardpointsData[i]);
+			drawHardpoint(x + hardpointsData[i].x, y + hardpointsData[i].y, hardpointsData[i]);
 	}
 
 	private function drawHardpoint(x:Float, y:Float, data:Dynamic)

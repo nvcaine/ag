@@ -47,6 +47,7 @@ class InventoryGrid extends Entity
 
 		drawBackground(x, y);
 		drawInventoryHeader();
+
 		refreshItems();
 	}
 
