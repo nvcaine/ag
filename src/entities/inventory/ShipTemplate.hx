@@ -97,7 +97,7 @@ class ShipTemplate extends Entity
 	private function drawHardpoints(hardpointsData:Array<Dynamic>)
 	{
 		for(i in 0...hardpointsData.length)
-			drawHardpoint(200 + i * 100, 200 + i * 100, hardpointsData[i]);
+			drawHardpoint(x + i * 100, y + i * 100, hardpointsData[i]);
 	}
 
 	private function drawHardpoint(x:Float, y:Float, data:Dynamic)

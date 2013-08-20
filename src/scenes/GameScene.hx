@@ -34,6 +34,8 @@ class GameScene extends Scene
 
 	override public function end()
 	{
+		this.removeAll();
+
 		clearListeners(EventManager.cloneInstance(), [EntityEvent.ENTITY_EXPLOSION], [onEnemyExplode]);
 	}	
 
