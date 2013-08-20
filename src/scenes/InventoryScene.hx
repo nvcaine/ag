@@ -47,6 +47,8 @@ class InventoryScene extends Scene
 
 		em.removeEventListener(InventoryEvent.EQUIP_ITEM, onEquip);
 		em.removeEventListener(InventoryEvent.UNEQUIP_ITEM, onUnequip);
+
+		this.removeAll();
 	}
 
 	private function init()
