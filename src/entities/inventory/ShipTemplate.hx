@@ -27,6 +27,16 @@ class ShipTemplate extends Entity
 		init();
 	}
 
+	public function saveTemplate()
+	{
+		var hpData:Array<Dynamic> = [];
+
+		for(i in 0...hardpoints.length)
+			hpData.push(hardpoints[i].getData());
+
+		PlayerProxy.cloneInstance().playerData.shipTemplate.hardpoints = hpData;
+	}
+
 	public function hasAvailableHardpoint(type:String)
 	{
 		for(i in 0...hardpoints.length)

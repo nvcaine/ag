@@ -1,5 +1,7 @@
 package entities.inventory;
 
+import com.haxepunk.graphics.Image;
+
 import model.dto.ItemDTO;
 import model.events.InventoryEvent;
 
@@ -44,6 +46,18 @@ class InventoryItem extends TooltipButton
 
 		setTooltipText(data.name);
 	}
+
+	override private function initImage(imageAsset:String, scaleX:Int = 1, scaleY:Int = 1)
+	{
+		var image:Image = new Image(imageAsset);
+
+		image.scaleX = image.scaleY = 3;
+
+		graphic = image;
+
+		setHitbox(image.width, image.height);
+	}
+
 	private function getCoords(row:Int, col:Int, cellWidth:Int, cellHeight:Int):Point
 	{
 		var result:Point = new Point(col * cellWidth + 2, 450 + row * cellHeight + 2);

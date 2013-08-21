@@ -84,8 +84,6 @@ class Button extends Entity
 		{
 			prevEventType = eventType;
 			dispatcher.dispatchEvent(new MouseEvent(eventType));
-
-			//trace(eventType);
 		}
 	}
 
@@ -104,13 +102,16 @@ class Button extends Entity
 			addListener(MouseEvent.CLICK, onMouseOut);
 	}
 
-	private function initImage(imageAsset:Dynamic)
+	private function initImage(imageAsset:Dynamic, scaleX:Int = 1, scaleY:Int = 1)
 	{
 		var image:Image = new Image(imageAsset);
 
+		image.scaleX = scaleX;
+		image.scaleY = scaleY;
+
 		graphic = image;
 
-		setHitbox(image.width, image.height);
+		setHitbox(image.width * scaleX, image.height * scaleY);
 	}
 
 	// -----------------------------------------------------------------------------

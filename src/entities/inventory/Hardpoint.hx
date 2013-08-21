@@ -34,9 +34,16 @@ class Hardpoint extends TooltipButton
 			return;
 
 		itemData = item;
+		initImage(itemData.assetPath, 3, 3);
 
-		initImage(itemData.assetPath);
 		setTooltipText(data.name + "\n" + itemData.name);
+	}
+
+	public function getData()
+	{
+		var copy:Dynamic = data;
+
+		return copy;
 	}
 
 	public function getLayerAsset():String

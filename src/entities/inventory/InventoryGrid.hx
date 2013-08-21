@@ -55,13 +55,6 @@ class InventoryGrid extends Entity
 	{
 		items.remove(item);
 
-		for(i in 0...inventoryItems.length)
-			if(inventoryItems[i].matches(item))
-			{
-				trace("removed");
-				scene.remove(inventoryItems[i]);
-			}
-
 		if(item.type == currentInventorySection)
 			refreshItems();
 	}
@@ -75,7 +68,7 @@ class InventoryGrid extends Entity
 			addItem(item);
 	}
 
-	public function addItem(item:ItemDTO) //private
+	private function addItem(item:ItemDTO)
 	{
 		var row:Int = Std.int(inventoryItems.length / _numRows);
 		var col:Int = Std.int(inventoryItems.length % _numCols);
@@ -96,7 +89,6 @@ class InventoryGrid extends Entity
 
 	private function drawEntity(row:Int, col:Int, data:Dynamic)
 	{
-		trace("draw");
 		var itemEntity:InventoryItem = new InventoryItem(row, col, _cellWidth, _cellHeight, data);
 
 		inventoryItems.push(itemEntity);

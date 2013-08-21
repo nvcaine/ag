@@ -30,7 +30,7 @@ class PlayerProxy
 			items: [
 				new ItemDTO({assetPath: "gfx/arma_1_icon.png", name:"Weapon 1", type: ItemTypeConsts.ITEM_WEAPON, layerAsset: "gfx/arma_1.png"}),
 				new ItemDTO({assetPath: "gfx/arma_2_icon.png", name:"Weapon 2", type: ItemTypeConsts.ITEM_WEAPON, layerAsset: "gfx/arma_2.png"}),
-				new ItemDTO({assetPath: "gfx/arma.png", name:"Utility 1", type: ItemTypeConsts.ITEM_UTILITY, layerAsset: "gfx/shield.png"})
+				new ItemDTO({assetPath: "gfx/shield_icon.png", name:"Utility 1", type: ItemTypeConsts.ITEM_UTILITY, layerAsset: "gfx/shield.png"})
 			]
 		};
 	}

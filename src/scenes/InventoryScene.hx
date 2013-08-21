@@ -68,7 +68,7 @@ class InventoryScene extends Scene
 
 		add(template);
 
-		addGraphic(new StatsView(), 0, 200, 0);
+		addGraphic(new StatsView(), 0, 300, 110);
 	}
 
 	private function drawInventory(items:Array<ItemDTO>)
@@ -80,6 +80,9 @@ class InventoryScene extends Scene
 
 	private function onBack(e:MouseEvent)
 	{
+		// save player info to player proxy
+		//template.saveTemplate();
+
 		em.dispatchEvent(new MenuEvent(MenuEvent.SHOW_MENU));
 	}
 
