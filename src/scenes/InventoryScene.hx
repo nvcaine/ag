@@ -35,8 +35,7 @@ class InventoryScene extends Scene
 
 		drawTemplate();
 
-		// get this from player proxy
-		drawInventory(PlayerProxy.cloneInstance().playerData.items);
+		drawInventory(PlayerProxy.cloneInstance().playerData.items); // direct reference
 	}
 
 	override public function end()
@@ -81,7 +80,7 @@ class InventoryScene extends Scene
 	private function onBack(e:MouseEvent)
 	{
 		// save player info to player proxy
-		//template.saveTemplate();
+		template.saveTemplate();
 
 		em.dispatchEvent(new MenuEvent(MenuEvent.SHOW_MENU));
 	}

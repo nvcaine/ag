@@ -34,7 +34,7 @@ class ShipTemplate extends Entity
 		for(i in 0...hardpoints.length)
 			hpData.push(hardpoints[i].getData());
 
-		PlayerProxy.cloneInstance().playerData.shipTemplate.hardpoints = hpData;
+		PlayerProxy.cloneInstance().playerData.shipTemplate.hardpoints = hpData; // direct reference
 	}
 
 	public function hasAvailableHardpoint(type:String)
@@ -65,6 +65,7 @@ class ShipTemplate extends Entity
 
 	private function updateTemplate()
 	{
+		trace("update");
 		if(graphic != null)
 			graphic.destroy();
 
@@ -97,8 +98,9 @@ class ShipTemplate extends Entity
 
 	private function drawShipTemplate()
 	{
-		drawHardpoints(PlayerProxy.cloneInstance().playerData.shipTemplate.hardpoints);
+		drawHardpoints(PlayerProxy.cloneInstance().playerData.shipTemplate.hardpoints); // direct reference
 
+		trace("ship update " + hardpoints.length);
 		updateTemplate();
 	}
 

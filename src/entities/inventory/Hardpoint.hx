@@ -26,6 +26,14 @@ class Hardpoint extends TooltipButton
 
 		setTooltipText(data.name);
 		addListener(MouseEvent.CLICK, onClick);
+
+		trace("empty");
+		if(data.item != null)
+		{
+			trace("pre-mounted:" + data.item.name);
+			mountItem(data.item);
+			data.item = null;
+		}
 	}
 
 	public function mountItem(item:ItemDTO)
@@ -42,6 +50,9 @@ class Hardpoint extends TooltipButton
 	public function getData()
 	{
 		var copy:Dynamic = data;
+
+		if(!isAvailable())
+			copy.item = itemData;
 
 		return copy;
 	}
