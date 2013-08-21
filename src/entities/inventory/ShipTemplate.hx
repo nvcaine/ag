@@ -65,7 +65,6 @@ class ShipTemplate extends Entity
 
 	private function updateTemplate()
 	{
-		trace("update");
 		if(graphic != null)
 			graphic.destroy();
 
@@ -98,10 +97,31 @@ class ShipTemplate extends Entity
 
 	private function drawShipTemplate()
 	{
-		drawHardpoints(PlayerProxy.cloneInstance().playerData.shipTemplate.hardpoints); // direct reference
+		var hpData:Array<Dynamic> = PlayerProxy.cloneInstance().playerData.shipTemplate.hardpoints;
 
-		trace("ship update " + hardpoints.length);
-		updateTemplate();
+		if(graphic != null)
+			graphic.destroy();
+
+		var elements:Array<Image> = [];
+		var base:Image = new Image(data.assetPath);
+
+		base.scaleX = base.scaleY = 3;
+
+		elements.push(base);
+
+		for(i in 0...hpData.length)
+			if(hpData[i].item != null)
+			{
+				var asset:Image = new Image(hpData[i].item.layerAsset);
+
+				asset.scaleX = asset.scaleY = 3;
+
+				elements.push(asset);
+			}
+
+		graphic = new Graphiclist(elements);
+
+		drawHardpoints(hpData); // direct reference
 	}
 
 	private function drawHardpoints(hardpointsData:Array<Dynamic>)

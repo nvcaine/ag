@@ -27,10 +27,8 @@ class Hardpoint extends TooltipButton
 		setTooltipText(data.name);
 		addListener(MouseEvent.CLICK, onClick);
 
-		trace("empty");
 		if(data.item != null)
 		{
-			trace("pre-mounted:" + data.item.name);
 			mountItem(data.item);
 			data.item = null;
 		}
