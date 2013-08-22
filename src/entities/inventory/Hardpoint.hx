@@ -29,12 +29,11 @@ class Hardpoint extends TooltipButton
 		if(data.item == null)
 		{
 			setTooltipText(data.name);
-
 			return;			
 		}
 
-		initImage(data.item.assetPath, 3, 3);
-		setTooltipText(data.name + "\n" + data.item.name);
+		mount(data.item);
+
 	}
 
 	public function mountItem(item:ItemDTO)
@@ -43,9 +42,7 @@ class Hardpoint extends TooltipButton
 			return;
 
 		data.item = item;
-		initImage(item.assetPath, 3, 3);
-
-		setTooltipText(data.name + "\n" + item.name);
+		mount(item);
 	}
 
 	public function getData():HardpointDTO
@@ -68,6 +65,12 @@ class Hardpoint extends TooltipButton
 	public function isAvailable():Bool
 	{
 		return (data.item == null);
+	}
+
+	private function mount(item:ItemDTO)
+	{
+		initImage(item.assetPath, 3, 3);
+		setTooltipText(data.name + "\n" + item.name);
 	}
 
 	private function onClick(e:MouseEvent)
