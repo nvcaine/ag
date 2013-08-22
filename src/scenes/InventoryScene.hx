@@ -17,6 +17,7 @@ import model.events.MenuEvent;
 import model.proxy.PlayerProxy;
 
 import nme.events.MouseEvent;
+//import nme.filters.GlowFilter;
 
 import org.events.EventManager;
 import org.ui.Button;
@@ -51,6 +52,8 @@ class InventoryScene extends Scene
 	private function init()
 	{
 		backB = new Button(10, 10, {defaultImage: "gfx/menu/back.png", downImage: "gfx/menu/back_down.png", overImage: "gfx/menu/back_over.png"});
+
+		//backB.filters = [new GlowFilter(0xFF0000)];
 
 		backB.addListener(MouseEvent.CLICK, onBack);
 		add(backB);

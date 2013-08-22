@@ -8,6 +8,8 @@ import flash.utils.Timer;
 
 import entities.game.Ship;
 
+import model.proxy.PlayerProxy;
+
 import nme.events.TimerEvent;
 import nme.utils.Timer;
 
@@ -64,10 +66,13 @@ class Player
 	{
 		var newData:Dynamic = data;
 
-		newData.addedStuff = [
-			{assetPath: "gfx/arma_2.png"},
-			{assetPath: "gfx/shield.png"}
-		];
+		newData.addedStuff = [];
+
+		var hpData:Array<Dynamic> = PlayerProxy.cloneInstance().playerData.shipTemplate.hardpoints;
+
+		for(i in 0...hpData.length)
+			if(hpData[i].item != null)
+				newData.addedStuff.push({assetPath: hpData[i].item.layerAsset});
 
 		entity = new Ship(data.x, data.y, newData);
 
