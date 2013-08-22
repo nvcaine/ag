@@ -6,7 +6,7 @@ class ItemTypeConsts
 	public static inline var ITEM_ENGINE:String = "engine";
 	public static inline var ITEM_UTILITY:String = "utility";
 
-	public static inline var TYPE_LIGHT:String = "light";
-	public static inline var TYPE_MEDIUM:String = "medium";
-	public static inline var TYPE_HEAVY:String = "heavy";
+	public static inline var CLASS_LIGHT:String = "light";
+	public static inline var CLASS_MEDIUM:String = "medium";
+	public static inline var CLASS_HEAVY:String = "heavy";
 }

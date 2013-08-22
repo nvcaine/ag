@@ -6,6 +6,7 @@ import com.haxepunk.graphics.Image;
 
 import model.consts.ItemTypeConsts;
 import model.dto.ItemDTO;
+import model.dto.HardpointDTO;
 import model.proxy.PlayerProxy;
 
 class ShipTemplate extends Entity
@@ -29,7 +30,7 @@ class ShipTemplate extends Entity
 
 	public function saveTemplate()
 	{
-		var hpData:Array<Dynamic> = [];
+		var hpData:Array<HardpointDTO> = [];
 
 		for(i in 0...hardpoints.length)
 			hpData.push(hardpoints[i].getData());
@@ -97,7 +98,7 @@ class ShipTemplate extends Entity
 
 	private function drawShipTemplate()
 	{
-		var hpData:Array<Dynamic> = PlayerProxy.cloneInstance().playerData.shipTemplate.hardpoints;
+		var hpData:Array<HardpointDTO> = PlayerProxy.cloneInstance().playerData.shipTemplate.hardpoints;
 
 		if(graphic != null)
 			graphic.destroy();
@@ -124,13 +125,13 @@ class ShipTemplate extends Entity
 		drawHardpoints(hpData); // direct reference
 	}
 
-	private function drawHardpoints(hardpointsData:Array<Dynamic>)
+	private function drawHardpoints(hardpointsData:Array<HardpointDTO>)
 	{
 		for(i in 0...hardpointsData.length)
 			drawHardpoint(x + hardpointsData[i].x, y + hardpointsData[i].y, hardpointsData[i]);
 	}
 
-	private function drawHardpoint(x:Float, y:Float, data:Dynamic)
+	private function drawHardpoint(x:Float, y:Float, data:HardpointDTO)
 	{
 		var hp:Hardpoint = new Hardpoint(x, y, data);
 

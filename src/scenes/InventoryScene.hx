@@ -66,7 +66,7 @@ class InventoryScene extends Scene
 
 	private function drawTemplate()
 	{
-		template = new ShipTemplate(0, 25, {assetPath: "gfx/nava_1.png"});
+		template = new ShipTemplate(0, 25, PlayerProxy.cloneInstance().playerData.shipTemplate);
 
 		add(template);
 

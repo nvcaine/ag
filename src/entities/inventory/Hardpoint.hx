@@ -1,6 +1,7 @@
 package entities.inventory;
 
 import model.dto.ItemDTO;
+import model.dto.HardpointDTO;
 import model.events.InventoryEvent;
 
 import nme.events.MouseEvent;
@@ -10,10 +11,9 @@ import org.ui.TooltipButton;
 
 class Hardpoint extends TooltipButton
 {
-	private var data:Dynamic; // HardpointDTO;
-	private var itemData:ItemDTO;
+	private var data:HardpointDTO;
 
-	public function new(x:Float, y:Float, data:Dynamic)
+	public function new(x:Float, y:Float, data:HardpointDTO)
 	{
 		super(x, y, {defaultImage:data.assetPath});
 
@@ -24,40 +24,40 @@ class Hardpoint extends TooltipButton
 	{
 		super.added();
 
-		setTooltipText(data.name);
 		addListener(MouseEvent.CLICK, onClick);
 
-		if(data.item != null)
+		if(data.item == null)
 		{
-			mountItem(data.item);
-			data.item = null;
+			setTooltipText(data.name);
+
+			return;			
 		}
+
+		initImage(data.item.assetPath, 3, 3);
+		setTooltipText(data.name + "\n" + data.item.name);
 	}
 
 	public function mountItem(item:ItemDTO)
 	{
-		if(!isAvailable())
+		if(!isAvailable() || !supports(item.type))
 			return;
 
-		itemData = item;
-		initImage(itemData.assetPath, 3, 3);
+		data.item = item;
+		initImage(item.assetPath, 3, 3);
 
-		setTooltipText(data.name + "\n" + itemData.name);
+		setTooltipText(data.name + "\n" + item.name);
 	}
 
-	public function getData()
+	public function getData():HardpointDTO
 	{
-		var copy:Dynamic = data;
-
-		if(!isAvailable())
-			copy.item = itemData;
+		var copy:HardpointDTO = data;
 
 		return copy;
 	}
 
 	public function getLayerAsset():String
 	{
-		return itemData.layerAsset;
+		return data.item.layerAsset;
 	}
 
 	public function supports(itemType:String):Bool
@@ -67,7 +67,7 @@ class Hardpoint extends TooltipButton
 
 	public function isAvailable():Bool
 	{
-		return (itemData == null);
+		return (data.item == null);
 	}
 
 	private function onClick(e:MouseEvent)
@@ -78,8 +78,8 @@ class Hardpoint extends TooltipButton
 		initImage(data.assetPath);
 		setTooltipText(data.name);
 		
-		var itemDataCopy:ItemDTO = itemData;
-		itemData = null;
+		var itemDataCopy:ItemDTO = data.item;
+		data.item = null;
 
 		EventManager.cloneInstance().dispatchEvent(new InventoryEvent(InventoryEvent.UNEQUIP_ITEM, itemDataCopy));
 	}
