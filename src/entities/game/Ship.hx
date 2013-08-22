@@ -62,11 +62,6 @@ class Ship extends MessageEntity
 		scene.add(createNewProjectile(x + width / 2 + 40, y + 10));
 	}
 
-	public function applyBuff(data:Dynamic)
-	{
-		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 1, 10));
-	}
-
 	private function createNewProjectile(x:Float, y:Float):Projectile
 	{
 		var data:Dynamic = {assetPath: "gfx/glontz.png", sound: "sfx/laser.mp3", width: 20, height: 5, damage: 50};

@@ -1,5 +1,6 @@
 package hud;
 
+import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import com.haxepunk.graphics.Canvas;
 import com.haxepunk.graphics.Graphiclist;
@@ -38,7 +39,17 @@ class GameHUD extends Graphiclist
 
 		playerProxy = PlayerProxy.cloneInstance();
 
+		currentHealth = MAX_HEALTH;
+
+		//trace(currentHealth + "-----------------------------------------------------------");
+
 		init();
+	}
+
+	public function clearListeners()
+	{
+		em.removeEventListener(HUDEvent.KILL_SCORE, onScore);
+		em.removeEventListener(HUDEvent.UPDATE_HEALTH, onUpdateHealth);
 	}
 
 	public function updateScore(defaultScore:Int = 1)
@@ -55,7 +66,13 @@ class GameHUD extends Graphiclist
 
 		currentHealth += health;
 
-		if(currentHealth <= 0)
+		if(currentHealth > MAX_HEALTH)
+			currentHealth = MAX_HEALTH;
+
+		if(currentHealth < 0)
+			currentHealth = 0;
+
+		if(currentHealth == 0)
 			em.dispatchEvent(new EntityEvent(EntityEvent.PLAYER_DEAD));
 
 		remove(healthBar);
@@ -70,8 +87,11 @@ class GameHUD extends Graphiclist
 		enemyScoreT = new Text(Std.string(enemyScore), 30, 27, 120, 16, textOptions);
 		xpText = new Text("Level " + playerProxy.level + " - " + playerProxy.experience + " / " + playerProxy.levelLimit, 30, 3, 120, 16, textOptions);
 
-		drawBackground();
+		var c = new Canvas(HXP.width, 100); // healthBar mask
+		c.drawGraphic(282, 13, new Rect(204 , 32 , 0x000000 ));
 
+		add(c);
+		add(new Image("gfx/hud.png"));
 		add(enemyScoreT);
 		add(xpText);
 
@@ -81,18 +101,8 @@ class GameHUD extends Graphiclist
 
 		em = EventManager.cloneInstance();
 
-		em.addEventListener(HUDEvent.KILL_SCORE, onScore);
-		em.addEventListener(HUDEvent.UPDATE_HEALTH, onUpdateHealth);
-	}
-
-	private function drawBackground()
-	{
-		var c = new Canvas(HXP.width, 100);
-		c.drawGraphic(282, 13, new Rect(204 , 32 , 0x000000 ));
-
-		add(c);
-
-		add(new Image("gfx/hud.png"));
+		em.addEventListener(HUDEvent.KILL_SCORE, onScore, false, 0, true);
+		em.addEventListener(HUDEvent.UPDATE_HEALTH, onUpdateHealth, false, 0, true);
 	}
 
 	private function drawHealth(value:Int)
@@ -133,6 +143,7 @@ class GameHUD extends Graphiclist
 
 	private function onUpdateHealth(e:HUDEvent)
 	{
+		trace("update handler:" + e.health + " / CH:" + currentHealth);
 		updateHealth(e.health);
 	}
 }

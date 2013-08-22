@@ -25,32 +25,27 @@ class GameScene extends Scene
 	private var enemyImages:Hash<String>;
 	private var level:Level;
 	private var player:Player;
+	private var hud:GameHUD;
 
 	override public function begin()
 	{
-		level.init();
-
+		init();
 	}
 
 	override public function end()
 	{
+		hud.clearListeners();
+
 		this.removeAll();
 
-		clearListeners(EventManager.cloneInstance(), [EntityEvent.ENTITY_EXPLOSION], [onEnemyExplode]);
+		clearListeners(EventManager.cloneInstance(), [EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP], [onEnemyExplode, onDropPickup]);
 	}	
 
 	override public function update()
 	{
 		super.update();
 
-		//camera.x += PlayerConsts.DEFAULT_SPEED;
-
 		player.handleInput();
-	}
-
-	public function restart()
-	{
-		init();
 	}
 
 	private function init()
@@ -71,7 +66,9 @@ class GameScene extends Scene
 
 	private function initHUD()
 	{
-		addGraphic(new GameHUD(), 0, 0, 653);
+		hud = new GameHUD();
+
+		addGraphic(hud, 0, 0, 653);
 	}
 
 	private function initListeners(listener:EventManager, events:Array<Dynamic>, handlers:Array<Dynamic>)

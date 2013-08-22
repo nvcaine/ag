@@ -36,13 +36,21 @@ class Level extends Entity
 		enemyImages = enemyAssets;
 	}
 
-	public function init()
+	private function init()
 	{
+		trace("init level");
 		drawBackground();
 
 		initGrid(50);
 
 		cameraSpeed = PlayerConsts.DEFAULT_SPEED;
+	}
+
+	override public function added()
+	{
+		super.added();
+
+		init();
 	}
 
 	override public function update()

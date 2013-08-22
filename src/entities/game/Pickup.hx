@@ -1,11 +1,7 @@
 package entities.game;
 
-//import com.haxepunk.Entity;
-//import com.haxepunk.graphics.Image;
-
-import entities.game.Ship;
-
 import model.consts.EntityTypeConsts;
+import model.events.HUDEvent;
 
 import org.actors.MessageEntity;
 
@@ -33,12 +29,11 @@ class Pickup extends MessageEntity
 
 	private function checkPlayerCollision()
 	{
-		var playerEntity:Ship = cast(collideTypes([EntityTypeConsts.PLAYER], x, y), Ship);
-
-		if(playerEntity == null)
+		if(collideTypes([EntityTypeConsts.PLAYER], x, y) == null)
 			return;
 
-		playerEntity.applyBuff(this.data);
+		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, 10));
+
 		scene.remove(this);
 	}
 }

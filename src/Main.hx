@@ -63,20 +63,16 @@ class Main extends Engine
 
 	private function onShowMenu(e:Event)
 	{
-		HXP.scene = cast(scenes.get(SceneConsts.MENU), MenuScene);
+		HXP.scene = scenes.get(SceneConsts.MENU);
 	}
 
 	private function onNewGame(e:Event)
 	{
-		var gameScene:GameScene = cast(scenes.get(SceneConsts.GAME), GameScene);
-
-		gameScene.restart();
-
-		HXP.scene = gameScene;
+		HXP.scene = scenes.get(SceneConsts.GAME);
 	}
 
 	private function onShowInventory(e:Event)
 	{
-		HXP.scene = cast(scenes.get(SceneConsts.INVENTORY), InventoryScene);
+		HXP.scene = scenes.get(SceneConsts.INVENTORY);
 	}
 }
