@@ -1,0 +1,13 @@
+[1mdiff --git a/src/entities/game/Enemy.hx b/src/entities/game/Enemy.hx[m
+[1mindex 48893fc..c69cc3c 100644[m
+[1m--- a/src/entities/game/Enemy.hx[m
+[1m+++ b/src/entities/game/Enemy.hx[m
+[36m@@ -80,7 +80,7 @@[m [mclass Enemy extends MessageEntity[m
+ [m
+ 	private function collideWithPlayer()[m
+ 	{[m
+[31m-		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, -data.damage));[m
+[32m+[m		[32msendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, 0/*-data.damage*/));[m
+ [m
+ 		die();[m
+ 	}[m

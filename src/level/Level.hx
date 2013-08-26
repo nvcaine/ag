@@ -38,7 +38,6 @@ class Level extends Entity
 
 	private function init()
 	{
-		trace("init level");
 		drawBackground();
 
 		initGrid(50);

@@ -41,8 +41,6 @@ class GameHUD extends Graphiclist
 
 		currentHealth = MAX_HEALTH;
 
-		//trace(currentHealth + "-----------------------------------------------------------");
-
 		init();
 	}
 
@@ -143,7 +141,6 @@ class GameHUD extends Graphiclist
 
 	private function onUpdateHealth(e:HUDEvent)
 	{
-		trace("update handler:" + e.health + " / CH:" + currentHealth);
 		updateHealth(e.health);
 	}
 }
