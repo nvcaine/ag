@@ -15,9 +15,11 @@ import org.actors.MessageEntity;
 
 class Ship extends MessageEntity
 {
-	private var velocity:Point;
-	private var yAcceleration:Int;
-	private var xAcceleration:Int;
+	private var maxSpeed:Float = 0;
+	private var xVelocity:Float = 0;
+	private var yVelocity:Float = 0;
+	private var yAcceleration:Float = 0;
+	private var xAcceleration:Float = 0;
 
 	public function new(x:Float, y:Float, data:Dynamic)
 	{
@@ -33,7 +35,7 @@ class Ship extends MessageEntity
 		moveVertically();
 		moveHorizontally();
 
-		moveBy(velocity.x, -PlayerConsts.DEFAULT_SPEED - velocity.y, EntityTypeConsts.LEVEL);
+		moveBy(xVelocity, -PlayerConsts.DEFAULT_SPEED + yVelocity, EntityTypeConsts.LEVEL);
 	}
 
 	override public function moveCollideX(e:Entity):Bool
@@ -50,7 +52,7 @@ class Ship extends MessageEntity
 		return true;
 	}
 
-	public function setAcceleration(xAcc:Int, yAcc:Int)
+	public function setAcceleration(xAcc:Float, yAcc:Float)
 	{
 		xAcceleration = xAcc;
 		yAcceleration = yAcc;
@@ -90,8 +92,7 @@ class Ship extends MessageEntity
 		type = EntityTypeConsts.PLAYER;
 
 		initGraphic(data);
-
-		velocity = new Point(0, 0);
+		maxSpeed = data.speed;
 	}
 
 	private function onLevelCollision()
@@ -99,26 +100,57 @@ class Ship extends MessageEntity
 		//sendMessage(new HUDEvent(HUDEvent.ENEMY_COLLISION));
 	}
 
-	// DO NOT manipulate x/y directly
 	private function moveVertically()
 	{
-		y += yAcceleration;
-
 		if(y < scene.camera.y)
+		{
+			yVelocity = 0;
 			y = scene.camera.y;
+			return;
+		}
 
-		if(y > scene.camera.y + HXP.height - height)
-			y = scene.camera.y + HXP.height - height;
+		if(y > scene.camera.y + HXP.height - 150)
+		{
+			y = scene.camera.y + HXP.height - 150;
+			yVelocity = 0;
+			return;
+		}
+
+		yVelocity += yAcceleration;
+
+		if(Math.abs(yVelocity) > maxSpeed)
+			yVelocity = maxSpeed * HXP.sign(yAcceleration);
+
+		if(yVelocity < 0)
+			yVelocity = Math.min(yVelocity + PlayerConsts.DRAG, 0);
+		else if(yVelocity > 0)
+			yVelocity = Math.max(yVelocity - PlayerConsts.DRAG, 0);
 	}
 
 	private function moveHorizontally()
 	{
-		x += xAcceleration;
-
 		if(x < 0)
+		{
+			xVelocity = 0;
 			x = 0;
+			return;
+		}
 
 		if(x > HXP.width - width)
+		{
+			xVelocity = 0;
 			x = HXP.width - width;
+			return;
+		}
+
+		xVelocity += xAcceleration;
+
+		if(Math.abs(xVelocity) > maxSpeed)
+			xVelocity = maxSpeed * HXP.sign(xAcceleration);
+
+		if(xVelocity < 0)
+			xVelocity = Math.min(xVelocity + PlayerConsts.DRAG, 0);
+		else if(xVelocity > 0)
+			xVelocity = Math.max(xVelocity - PlayerConsts.DRAG, 0);
 	}
 }

@@ -58,7 +58,7 @@ class GameScene extends Scene
 		initLevel();
 		initHUD();
 
-		player = new Player({x: (HXP.width / 2), y: HXP.height - 50, assetPath: "gfx/nava_1.png", width: 98, height: 98}, this);
+		player = new Player({x: (HXP.width / 2), y: HXP.height - 150, assetPath: "gfx/nava_1.png", width: 98, height: 98}, this);
 
 		camera.x = 0;
 		camera.y = 0;

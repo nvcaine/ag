@@ -36,16 +36,16 @@ class Player
 		var xAcc:Int = 0, yAcc:Int = 0;
 
 		if(Input.check("up"))
-			yAcc = -5;			
+			yAcc = -1;			
 
 		if(Input.check("down"))
-			yAcc = 5;
+			yAcc = 1;
 
 		if(Input.check("left"))
-			xAcc = -5;
+			xAcc = -1;
 
 		if(Input.check("right"))
-			xAcc = 5;
+			xAcc = 1;
 
 		if(Input.check("shoot") && canShoot)
 			shoot();
@@ -73,6 +73,8 @@ class Player
 		for(i in 0...hpData.length)
 			if(hpData[i].item != null)
 				newData.addedStuff.push({assetPath: hpData[i].item.layerAsset});
+
+		newData.speed = 10;
 
 		entity = new Ship(data.x, data.y, newData);
 
