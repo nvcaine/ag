@@ -74,7 +74,7 @@ class Player
 			if(hpData[i].item != null)
 				newData.addedStuff.push({assetPath: hpData[i].item.layerAsset});
 
-		newData.speed = 10;
+		newData.speed = 5;
 
 		entity = new Ship(data.x, data.y, newData);
 
