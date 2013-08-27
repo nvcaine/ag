@@ -80,15 +80,15 @@ class Enemy extends MessageEntity
 
 	private function collideWithPlayer()
 	{
-		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, -data.damage));
+		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, 0/*-data.damage*/));
 
 		die();
 	}
 
 	private function die(explode:Bool = true, score:Bool = false)
 	{
-		if(explode)
-			sendMessage(new EntityEvent(EntityEvent.ENTITY_EXPLOSION, this.x + width / 2, this.y + height / 2));
+		//if(explode)
+			//sendMessage(new EntityEvent(EntityEvent.ENTITY_EXPLOSION, this.x + width / 2, this.y + height / 2));
 
 		if(score)
 			sendMessage(new HUDEvent(HUDEvent.KILL_SCORE, data.score, 0, data.xp));

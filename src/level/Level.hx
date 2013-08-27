@@ -26,6 +26,7 @@ class Level extends Entity
 	private var cameraSpeed:Float = 0;
 	private var bossReached:Bool = false;
 
+	private var b:Backdrop;
 
 	public function new(enemyAssets:Hash<String>)
 	{
@@ -38,12 +39,11 @@ class Level extends Entity
 
 	private function init()
 	{
-		trace("init level");
 		drawBackground();
 
 		initGrid(50);
 
-		cameraSpeed = PlayerConsts.DEFAULT_SPEED;
+		//cameraSpeed = PlayerConsts.DEFAULT_SPEED;
 	}
 
 	override public function added()
@@ -60,8 +60,13 @@ class Level extends Entity
 		checkIfReachedCheckpoint();
 
 		spawnTimer -= HXP.elapsed;
+		
+		cameraSpeed += 1;//PlayerConsts.SPEED;
+		if(cameraSpeed > 240)
+			cameraSpeed = 0;
 
-		scene.camera.y -= cameraSpeed;
+		b.shift(0, 0);
+		//scene.camera.y -= cameraSpeed;
 
 		if(spawnTimer < 0 && !bossReached)
 			spawn();
@@ -111,10 +116,10 @@ class Level extends Entity
 
 	private function drawBackground()
 	{
-		var b:Backdrop = new Backdrop("gfx/bg.png", true, true);
+		b = new Backdrop("gfx/bg2.png", true, true);
 
-		b.scrollX = 0.5;
-		b.scrollY = 0.5;
+		//b.scrollX = 0.5;
+		//b.scrollY = 0.5;
 
 		graphic = b;
 	}

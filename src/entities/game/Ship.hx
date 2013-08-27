@@ -33,7 +33,7 @@ class Ship extends MessageEntity
 		moveVertically();
 		moveHorizontally();
 
-		moveBy(velocity.x, -PlayerConsts.DEFAULT_SPEED - velocity.y, EntityTypeConsts.LEVEL);
+		moveBy(velocity.x, /*-PlayerConsts.DEFAULT_SPEED*/ -velocity.y, EntityTypeConsts.LEVEL);
 	}
 
 	override public function moveCollideX(e:Entity):Bool

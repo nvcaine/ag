@@ -143,7 +143,6 @@ class GameHUD extends Graphiclist
 
 	private function onUpdateHealth(e:HUDEvent)
 	{
-		trace("update handler:" + e.health + " / CH:" + currentHealth);
 		updateHealth(e.health);
 	}
 }
