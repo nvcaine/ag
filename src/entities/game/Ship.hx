@@ -102,55 +102,49 @@ class Ship extends MessageEntity
 
 	private function moveVertically()
 	{
-		if(y < scene.camera.y)
-		{
-			yVelocity = 0;
-			y = scene.camera.y;
-			return;
-		}
-
-		if(y > scene.camera.y + HXP.height - 150)
-		{
-			y = scene.camera.y + HXP.height - 150;
-			yVelocity = 0;
-			return;
-		}
-
 		yVelocity += yAcceleration;
 
-		if(Math.abs(yVelocity) > maxSpeed)
-			yVelocity = maxSpeed * HXP.sign(yAcceleration);
-
-		if(yVelocity < 0)
-			yVelocity = Math.min(yVelocity + PlayerConsts.DRAG, 0);
-		else if(yVelocity > 0)
-			yVelocity = Math.max(yVelocity - PlayerConsts.DRAG, 0);
+		yVelocity = getVelocity(scene.camera.y, scene.camera.y + HXP.height - height, y, yVelocity);
+		yVelocity = getClampedVelocity(yVelocity, yAcceleration, maxSpeed);
+		yVelocity = getDraggedVelocity(yVelocity, PlayerConsts.DRAG);
 	}
 
 	private function moveHorizontally()
 	{
-		if(x < 0)
-		{
-			xVelocity = 0;
-			x = 0;
-			return;
-		}
-
-		if(x > HXP.width - width)
-		{
-			xVelocity = 0;
-			x = HXP.width - width;
-			return;
-		}
-
 		xVelocity += xAcceleration;
 
-		if(Math.abs(xVelocity) > maxSpeed)
-			xVelocity = maxSpeed * HXP.sign(xAcceleration);
+		xVelocity = getVelocity(0, HXP.width - this.width, this.x, xVelocity);
+		xVelocity = getClampedVelocity(xVelocity, xAcceleration, maxSpeed);
+		xVelocity = getDraggedVelocity(xVelocity, PlayerConsts.DRAG);
+	}
 
-		if(xVelocity < 0)
-			xVelocity = Math.min(xVelocity + PlayerConsts.DRAG, 0);
-		else if(xVelocity > 0)
-			xVelocity = Math.max(xVelocity - PlayerConsts.DRAG, 0);
+	private function getVelocity(min:Float, max:Float, currentY:Float, currentVelocity:Float):Float
+	{
+		if(currentY + currentVelocity < min)
+			return (min - currentY);
+
+		if(currentY + currentVelocity > max)
+			return (max - currentY);
+
+		return currentVelocity;
+	}
+
+	private function getClampedVelocity(velocity:Float, acceleration:Float, maxSpeed:Float)
+	{
+		if(Math.abs(velocity) > maxSpeed)
+			return maxSpeed * HXP.sign(acceleration);
+
+		return velocity;
+	}
+
+	private function getDraggedVelocity(velocity:Float, drag:Float):Float
+	{
+		if(velocity < 0)
+			return Math.min(velocity + drag, 0);
+
+		else if(velocity > 0)
+			return Math.max(velocity - drag, 0);
+
+		return 0;
 	}
 }

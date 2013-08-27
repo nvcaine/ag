@@ -62,8 +62,8 @@ class Level extends Entity
 
 		scene.camera.y -= cameraSpeed;
 
-		/*if(spawnTimer < 0 && !bossReached)
-			spawn();*/
+		if(spawnTimer < 0 && !bossReached)
+			spawn();
 	}
 
 	private function initGrid(gridCellSize:Int)
