@@ -3,6 +3,7 @@ package scenes;
 import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
+import com.haxepunk.graphics.Image;
 
 import flash.events.Event;
 
@@ -14,8 +15,12 @@ import hud.GameHUD;
 import level.Level;
 
 import model.events.EntityEvent;
+import model.events.LevelEvent;
+import model.events.MenuEvent;
 
+import nme.events.TimerEvent;
 import nme.geom.Point;
+import nme.utils.Timer;
 
 import org.events.EventManager;
 import org.actors.Player;
@@ -26,6 +31,7 @@ class GameScene extends Scene
 	private var level:Level;
 	private var player:Player;
 	private var hud:GameHUD;
+	private var timer:Timer;
 
 	override public function begin()
 	{
@@ -38,7 +44,10 @@ class GameScene extends Scene
 
 		this.removeAll();
 
-		clearListeners(EventManager.cloneInstance(), [EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP], [onEnemyExplode, onDropPickup]);
+		clearListeners(
+			EventManager.cloneInstance(),
+			[EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP, LevelEvent.KILLED_BOSS],
+			[onEnemyExplode, onDropPickup, onKilledBoss]);
 	}	
 
 	override public function update()
@@ -52,13 +61,16 @@ class GameScene extends Scene
 	{
 		removeAll();
 
-		initListeners(EventManager.cloneInstance(), [EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP], [onEnemyExplode, onDropPickup]);
+		initListeners(
+			EventManager.cloneInstance(),
+			[EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP, LevelEvent.KILLED_BOSS],
+			[onEnemyExplode, onDropPickup, onKilledBoss]);
 
 		loadEnemies();
 		initLevel();
 		initHUD();
 
-		player = new Player({x: (HXP.width / 2), y: HXP.height - 50, assetPath: "gfx/nava_1.png", width: 98, height: 98}, this);
+		player = new Player({x: (HXP.width / 2), y: HXP.height - 150, assetPath: "gfx/nava_1.png", width: 98, height: 98}, this);
 
 		camera.x = 0;
 		camera.y = 0;
@@ -111,5 +123,27 @@ class GameScene extends Scene
 		var p:Pickup = new Pickup(e.x, e.y, {assetPath: "gfx/pickup.png", width: 16, height: 16});
 
 		add(p);
+	}
+
+	private function onKilledBoss(e:LevelEvent)
+	{
+		var image:Image = new Image("gfx/welldone.png");
+
+		image.scrollX = image.scrollY = 0;
+
+		addGraphic(image, 0, 74, 200);
+
+		if(timer == null)
+			timer = new Timer(2000, 1);
+
+		timer.addEventListener(TimerEvent.TIMER_COMPLETE, onLevelDoneTimer);
+		timer.start();
+	}
+
+	private function onLevelDoneTimer(e:TimerEvent)
+	{
+		timer.removeEventListener(TimerEvent.TIMER_COMPLETE, onLevelDoneTimer);
+
+		EventManager.cloneInstance().dispatchEvent(new MenuEvent(MenuEvent.SHOW_INVENTORY));
 	}
 }

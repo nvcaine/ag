@@ -6,7 +6,8 @@ import com.haxepunk.graphics.Image;
 
 import model.consts.EntityTypeConsts;
 import model.consts.PlayerConsts;
-import model.events.HUDEvent;
+
+import model.events.LevelEvent;
 
 import nme.geom.Point;
 
@@ -26,5 +27,12 @@ class BossEnemy extends Enemy
 		else
 			if(x < 0)
 				dir = 1;
+	}
+
+	override private function die(explode:Bool = true, score:Bool = false)
+	{
+		super.die(explode, score);
+
+		sendMessage(new LevelEvent(LevelEvent.KILLED_BOSS, 0));
 	}
 }

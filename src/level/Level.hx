@@ -32,7 +32,7 @@ class Level extends Entity
 	{
 		super(0, 0);
 
-		checkpoints = [-500, -750, -3500];
+		checkpoints = [-500, -750, -1500];
 
 		enemyImages = enemyAssets;
 	}
@@ -43,7 +43,7 @@ class Level extends Entity
 
 		initGrid(50);
 
-		//cameraSpeed = PlayerConsts.DEFAULT_SPEED;
+		cameraSpeed = PlayerConsts.DEFAULT_SPEED;
 	}
 
 	override public function added()
@@ -61,12 +61,7 @@ class Level extends Entity
 
 		spawnTimer -= HXP.elapsed;
 		
-		cameraSpeed += 1;//PlayerConsts.SPEED;
-		if(cameraSpeed > 240)
-			cameraSpeed = 0;
-
-		b.shift(0, 0);
-		//scene.camera.y -= cameraSpeed;
+		scene.camera.y -= cameraSpeed;
 
 		if(spawnTimer < 0 && !bossReached)
 			spawn();
@@ -116,10 +111,10 @@ class Level extends Entity
 
 	private function drawBackground()
 	{
-		b = new Backdrop("gfx/bg2.png", true, true);
+		b = new Backdrop("gfx/bg.png", true, true);
 
-		//b.scrollX = 0.5;
-		//b.scrollY = 0.5;
+		b.scrollX = 0.5;
+		b.scrollY = 0.5;
 
 		graphic = b;
 	}

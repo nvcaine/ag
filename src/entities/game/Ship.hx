@@ -15,9 +15,11 @@ import org.actors.MessageEntity;
 
 class Ship extends MessageEntity
 {
-	private var velocity:Point;
-	private var yAcceleration:Int;
-	private var xAcceleration:Int;
+	private var maxSpeed:Float = 0;
+	private var xVelocity:Float = 0;
+	private var yVelocity:Float = 0;
+	private var yAcceleration:Float = 0;
+	private var xAcceleration:Float = 0;
 
 	public function new(x:Float, y:Float, data:Dynamic)
 	{
@@ -33,7 +35,7 @@ class Ship extends MessageEntity
 		moveVertically();
 		moveHorizontally();
 
-		moveBy(velocity.x, /*-PlayerConsts.DEFAULT_SPEED*/ -velocity.y, EntityTypeConsts.LEVEL);
+		moveBy(xVelocity, -PlayerConsts.DEFAULT_SPEED + yVelocity, EntityTypeConsts.LEVEL);
 	}
 
 	override public function moveCollideX(e:Entity):Bool
@@ -50,7 +52,7 @@ class Ship extends MessageEntity
 		return true;
 	}
 
-	public function setAcceleration(xAcc:Int, yAcc:Int)
+	public function setAcceleration(xAcc:Float, yAcc:Float)
 	{
 		xAcceleration = xAcc;
 		yAcceleration = yAcc;
@@ -90,8 +92,7 @@ class Ship extends MessageEntity
 		type = EntityTypeConsts.PLAYER;
 
 		initGraphic(data);
-
-		velocity = new Point(0, 0);
+		maxSpeed = data.speed;
 	}
 
 	private function onLevelCollision()
@@ -99,26 +100,51 @@ class Ship extends MessageEntity
 		//sendMessage(new HUDEvent(HUDEvent.ENEMY_COLLISION));
 	}
 
-	// DO NOT manipulate x/y directly
 	private function moveVertically()
 	{
-		y += yAcceleration;
+		yVelocity += yAcceleration;
 
-		if(y < scene.camera.y)
-			y = scene.camera.y;
-
-		if(y > scene.camera.y + HXP.height - height)
-			y = scene.camera.y + HXP.height - height;
+		yVelocity = getVelocity(scene.camera.y, scene.camera.y + HXP.height - height, y, yVelocity);
+		yVelocity = getClampedVelocity(yVelocity, yAcceleration, maxSpeed);
+		yVelocity = getDraggedVelocity(yVelocity, PlayerConsts.DRAG);
 	}
 
 	private function moveHorizontally()
 	{
-		x += xAcceleration;
+		xVelocity += xAcceleration;
 
-		if(x < 0)
-			x = 0;
+		xVelocity = getVelocity(0, HXP.width - this.width, this.x, xVelocity);
+		xVelocity = getClampedVelocity(xVelocity, xAcceleration, maxSpeed);
+		xVelocity = getDraggedVelocity(xVelocity, PlayerConsts.DRAG);
+	}
 
-		if(x > HXP.width - width)
-			x = HXP.width - width;
+	private function getVelocity(min:Float, max:Float, currentY:Float, currentVelocity:Float):Float
+	{
+		if(currentY + currentVelocity < min)
+			return (min - currentY);
+
+		if(currentY + currentVelocity > max)
+			return (max - currentY);
+
+		return currentVelocity;
+	}
+
+	private function getClampedVelocity(velocity:Float, acceleration:Float, maxSpeed:Float)
+	{
+		if(Math.abs(velocity) > maxSpeed)
+			return maxSpeed * HXP.sign(acceleration);
+
+		return velocity;
+	}
+
+	private function getDraggedVelocity(velocity:Float, drag:Float):Float
+	{
+		if(velocity < 0)
+			return Math.min(velocity + drag, 0);
+
+		else if(velocity > 0)
+			return Math.max(velocity - drag, 0);
+
+		return 0;
 	}
 }

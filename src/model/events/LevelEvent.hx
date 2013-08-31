@@ -5,6 +5,7 @@ import flash.events.Event;
 class LevelEvent extends Event
 {
 	public static inline var PASSED_CHECKPOINT:String = "passedCheckpoint";
+	public static inline var KILLED_BOSS:String = "killedBoss";
 
 	public var checkpoint:Int;
 

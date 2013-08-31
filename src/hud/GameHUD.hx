@@ -41,8 +41,6 @@ class GameHUD extends Graphiclist
 
 		currentHealth = MAX_HEALTH;
 
-		//trace(currentHealth + "-----------------------------------------------------------");
-
 		init();
 	}
 
