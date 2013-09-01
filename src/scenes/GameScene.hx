@@ -1,12 +1,11 @@
 package scenes;
 
-import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
-import com.haxepunk.graphics.Image;
 
 import flash.events.Event;
 
+import entities.game.EndLevelText;
 import entities.game.Explosion;
 import entities.game.Pickup;
 
@@ -16,11 +15,6 @@ import level.Level;
 
 import model.events.EntityEvent;
 import model.events.LevelEvent;
-import model.events.MenuEvent;
-
-import nme.events.TimerEvent;
-import nme.geom.Point;
-import nme.utils.Timer;
 
 import org.events.EventManager;
 import org.actors.Player;
@@ -31,7 +25,6 @@ class GameScene extends Scene
 	private var level:Level;
 	private var player:Player;
 	private var hud:GameHUD;
-	private var timer:Timer;
 
 	override public function begin()
 	{
@@ -127,23 +120,7 @@ class GameScene extends Scene
 
 	private function onKilledBoss(e:LevelEvent)
 	{
-		var image:Image = new Image("gfx/welldone.png");
-
-		image.scrollX = image.scrollY = 0;
-
-		addGraphic(image, 0, 74, 200);
-
-		if(timer == null)
-			timer = new Timer(2000, 1);
-
-		timer.addEventListener(TimerEvent.TIMER_COMPLETE, onLevelDoneTimer);
-		timer.start();
+		add(new EndLevelText(74, camera.y + 200));
 	}
 
-	private function onLevelDoneTimer(e:TimerEvent)
-	{
-		timer.removeEventListener(TimerEvent.TIMER_COMPLETE, onLevelDoneTimer);
-
-		EventManager.cloneInstance().dispatchEvent(new MenuEvent(MenuEvent.SHOW_INVENTORY));
-	}
 }
