@@ -58,7 +58,7 @@ class Main extends Engine
 
 	private function onPlayerDead(e:Event)
 	{
-		HXP.scene = cast(scenes.get(SceneConsts.MENU), MenuScene);
+		HXP.scene = scenes.get(SceneConsts.MENU);
 	}
 
 	private function onShowMenu(e:Event)

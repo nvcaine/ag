@@ -9,7 +9,7 @@ import entities.game.EndLevelText;
 import entities.game.Explosion;
 import entities.game.Pickup;
 
-import hud.GameHUD;
+import entities.game.GameHUD;//hud.GameHUD;
 
 import level.Level;
 
@@ -33,7 +33,7 @@ class GameScene extends Scene
 
 	override public function end()
 	{
-		hud.clearListeners();
+		//hud.clearListeners();
 
 		this.removeAll();
 
@@ -71,9 +71,9 @@ class GameScene extends Scene
 
 	private function initHUD()
 	{
-		hud = new GameHUD();
+		hud = new GameHUD({background: "gfx/hud2.png", hpBar: "gfx/hp.png", energyBar: "gfx/energy.png"});
 
-		addGraphic(hud, 0, 0, 653);
+		addGraphic(hud, 0, 0, 668);
 	}
 
 	private function initListeners(listener:EventManager, events:Array<Dynamic>, handlers:Array<Dynamic>)

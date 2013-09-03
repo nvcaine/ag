@@ -60,8 +60,8 @@ class InventoryScene extends Scene
 
 		em = EventManager.cloneInstance();
 
-		em.addEventListener(InventoryEvent.EQUIP_ITEM, onEquip);
-		em.addEventListener(InventoryEvent.UNEQUIP_ITEM, onUnequip);
+		em.addEventListener(InventoryEvent.EQUIP_ITEM, onEquip, false, 0, true);
+		em.addEventListener(InventoryEvent.UNEQUIP_ITEM, onUnequip, false, 0, true);
 	}
 
 	private function drawTemplate()

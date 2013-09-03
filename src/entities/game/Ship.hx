@@ -64,9 +64,14 @@ class Ship extends MessageEntity
 		scene.add(createNewProjectile(x + width / 2 + 40, y + 10));
 	}
 
+	public function updateEnergy(energy:Int)
+	{
+		sendMessage(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, energy));
+	}
+
 	private function createNewProjectile(x:Float, y:Float):Projectile
 	{
-		var data:Dynamic = {assetPath: "gfx/glontz.png", sound: "sfx/laser.mp3", width: 20, height: 5, damage: 50};
+		var data:Dynamic = {assetPath: "gfx/glontz.png", sound: "sfx/laser.mp3", width: 20, height: 5, damage: 50, energy: 5};
 
 		return new Projectile(x, y, data);
 	}

@@ -19,16 +19,27 @@ class Projectile extends MessageEntity
 {
 	public var damage(get, null):Int;
 
+	private var data:Dynamic;
+
 	public function new(x:Float, y:Float, data:Dynamic) // a dto will come in handy here
 	{
 		super(x, y);
 
-		init(data);
+		this.data = data;
 	}
 
 	public function get():Int
 	{
 		return damage;
+	}
+
+	override public function added()
+	{
+		super.added();
+
+		init(data);
+
+		sendMessage(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, -Std.int(data.energy)));
 	}
 
 	override public function moveCollideY(e:Entity):Bool
@@ -61,14 +72,4 @@ class Projectile extends MessageEntity
 
 		Assets.getSound(data.sound).play(0, 1, new SoundTransform(0.15));
 	}
-
-	// duplicate code
-	/*private function initGraphic(data:Dynamic)
-	{
-		var g:Image = new Image(data.assetPath);
-		
-		graphic = g;
-
-		setHitbox(data.width, data.height);
-	}*/
 }

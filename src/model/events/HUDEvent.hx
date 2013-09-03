@@ -7,17 +7,20 @@ class HUDEvent extends Event
 	public static inline var KILL_SCORE:String = "killScore";
 	//public static inline var ENEMY_COLLISION:String = "enemyCollision";
 	public static inline var UPDATE_HEALTH:String = "updateHealth";
+	public static inline var UPDATE_ENERGY:String = "updateEnergy";
 
 	public var score:Int;
 	public var health:Int;
+	public var energy:Int;
 	public var xp:Int;
 
-	public function new(type:String, score:Int = 0, health:Int = 0, xp:Int = 0, bubbles:Bool = false, cancelable:Bool = false)
+	public function new(type:String, score:Int = 0, health:Int = 0, xp:Int = 0, energy:Int = 0, bubbles:Bool = false, cancelable:Bool = false)
 	{
 		super(type, bubbles, cancelable);
 
 		this.score = score;
 		this.health = health;
 		this.xp = xp;
+		this.energy = energy;
 	}
 }

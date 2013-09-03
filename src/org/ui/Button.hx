@@ -30,7 +30,7 @@ class Button extends Entity
 
 	public function addListener(type:String, handler:Dynamic->Void)
 	{
-		dispatcher.addEventListener(type, handler);
+		dispatcher.addEventListener(type, handler, false, 0, true);
 	}
 
 	public function clearListener(type:String, handler:Dynamic->Void)

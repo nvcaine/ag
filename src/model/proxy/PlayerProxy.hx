@@ -23,6 +23,7 @@ class PlayerProxy
 		playerData = {
 			shipTemplate: {
 				assetPath: "gfx/nava_1.png",
+				energyRegen: 1,
 				hardpoints: [
 					new HardpointDTO({
 						name:"Hardpoint 1", assetPath:"gfx/hardpoint.png", type: ItemTypeConsts.ITEM_WEAPON, x:100, y:100,

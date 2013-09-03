@@ -20,7 +20,9 @@ class Player
 	private var entity:Ship;
 	private var scene:GameScene;
 	private var canShoot:Bool;
+	private var regenerateEnergy:Bool;
 	private var t:Timer;
+	private var et:Timer;
 
 	public function new(data:Dynamic, scene:GameScene)
 	{
@@ -50,6 +52,9 @@ class Player
 		if(Input.check("shoot") && canShoot)
 			shoot();
 
+		if(regenerateEnergy)
+			updateEnergy();
+
 		entity.setAcceleration(xAcc, yAcc);
 	}
 
@@ -57,9 +62,13 @@ class Player
 	{
 		t = new Timer(200);
 
-		t.addEventListener("timer", onTimer);
+		t.addEventListener("timer", onTimer, false, 0, true);
 
 		canShoot = true;
+
+		et = new Timer(100);
+		et.addEventListener("timer", onEnergyTimer, false, 0 , true);
+		regenerateEnergy = true;
 	}
 
 	private function initEntity(data:Dynamic)
@@ -88,6 +97,7 @@ class Player
 		Input.define("shoot", [Key.X]);
 		Input.define("left", [Key.LEFT, Key.A]);
 		Input.define("right", [Key.RIGHT, Key.D]);
+		Input.define("regen", [Key.Z]);
 	}
 
 	private function shoot()
@@ -104,5 +114,21 @@ class Player
 		//t.removeEventListener("timer", onTimer); - // should remove the listener, so as not to prevent garbage collection
 
 		canShoot = true;
+	}
+
+	private function updateEnergy()
+	{
+		// this should be handled by the hud directly
+
+		et.start();
+
+		entity.updateEnergy(PlayerProxy.cloneInstance().playerData.shipTemplate.energyRegen);
+
+		regenerateEnergy = false;
+	}
+
+	private function onEnergyTimer(e:TimerEvent)
+	{
+		regenerateEnergy = true;
 	}
 }

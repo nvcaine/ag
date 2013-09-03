@@ -35,13 +35,15 @@ class Explosion extends Entity
 		var i:Int;
 
 		for(i in 0...200)
-			e.emit("exp", 16, 16);
+		//{
+			e.emit("exp", 8, 8);
 
 		for(i in 0...200)
-			e.emit("exp2", 16, 16);
+			e.emit("exp2", 8, 8);
+		//}
 
 		for(i in 0...100)
-			e.emit("exp3", 16, 16);
+			e.emit("exp3", 8, 8);
 		
 		var sound = Assets.getSound("sfx/explode.mp3");
 
@@ -51,7 +53,7 @@ class Explosion extends Entity
 	private function initEmitter()
 	{
 		//e = new Emitter(new Bitmap(Assets.getBitmapData("gfx/particle.png")), 5, 5);//new BitmapData(5, 5, false, 0xFFFFFF), 5, 5);
-		e = new Emitter("gfx/particle.png", 31, 31);
+		e = new Emitter("gfx/particle.png", 16, 16);
 
 		// outter ring
 		e.newType("exp", [0]);
