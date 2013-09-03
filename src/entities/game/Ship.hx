@@ -8,6 +8,7 @@ import com.haxepunk.graphics.Image;
 import model.consts.EntityTypeConsts;
 import model.consts.PlayerConsts;
 import model.events.HUDEvent;
+import model.proxy.PlayerProxy;
 
 import nme.geom.Point;
 
@@ -60,8 +61,11 @@ class Ship extends MessageEntity
 
 	public function shoot()
 	{
-		scene.add(createNewProjectile(x + width / 2 - 40, y + 10));
-		scene.add(createNewProjectile(x + width / 2 + 40, y + 10));
+		if(PlayerProxy.cloneInstance().getAvailableEnergy() >= 10)
+			scene.add(createNewProjectile(x + width / 2 - 40, y + 10));
+
+		if(PlayerProxy.cloneInstance().getAvailableEnergy() >= 10)
+			scene.add(createNewProjectile(x + width / 2 + 40, y + 10));
 	}
 
 	public function updateEnergy(energy:Int)

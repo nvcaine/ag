@@ -15,6 +15,8 @@ class PlayerProxy
 
 	private static var instance:PlayerProxy;
 
+	private var availableEnergy:Int;
+
 	private function new()
 	{
 		reset();
@@ -46,6 +48,16 @@ class PlayerProxy
 			instance = new PlayerProxy();
 
 		return instance;
+	}
+
+	public function updateEnergy(value:Int)
+	{
+		availableEnergy = value;
+	}
+
+	public function getAvailableEnergy()
+	{
+		return availableEnergy;
 	}
 
 	public function increaseExperience(amount:Int)

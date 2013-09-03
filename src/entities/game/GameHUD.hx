@@ -10,6 +10,8 @@ import nme.geom.Rectangle;
 
 import org.events.EventManager;
 
+import model.proxy.PlayerProxy;
+
 class GameHUD extends Graphiclist
 {
 	static inline var MAX_HEALTH:Int = 100;
@@ -27,9 +29,6 @@ class GameHUD extends Graphiclist
 	public function new(data:Dynamic)
 	{
 		super();
-
-		currentHealth = MAX_HEALTH;
-		currentEnergy = MAX_ENERGY;
 
 		this.data = data;
 		init(data);
@@ -64,6 +63,8 @@ class GameHUD extends Graphiclist
 
 		//remove(energyBar);
 
+		PlayerProxy.cloneInstance().updateEnergy(currentEnergy);
+
 		drawEnergy();
 	}
 
@@ -75,8 +76,13 @@ class GameHUD extends Graphiclist
 
 		add(bg);
 
+		currentHealth = MAX_HEALTH;
+		currentEnergy = MAX_ENERGY;
+
 		drawHealth();
 		drawEnergy();
+
+		PlayerProxy.cloneInstance().updateEnergy(currentEnergy);
 	}
 
 	private function initListener()
@@ -157,5 +163,7 @@ class GameHUD extends Graphiclist
 			currentEnergy = MAX_ENERGY;
 
 		drawEnergy();
+
+		PlayerProxy.cloneInstance().updateEnergy(currentEnergy);
 	}
 }

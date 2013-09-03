@@ -32,7 +32,7 @@ class Level extends Entity
 	{
 		super(0, 0);
 
-		checkpoints = [-500, -750, -1500];
+		checkpoints = [-500, -750, -2500];
 
 		enemyImages = enemyAssets;
 	}

@@ -2,8 +2,6 @@ package entities.game;
 
 import com.haxepunk.HXP;
 import com.haxepunk.Entity;
-/*import com.haxepunk.graphics.Canvas;
-import com.haxepunk.graphics.Image;*/
 
 import flash.events.EventDispatcher;
 
