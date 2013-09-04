@@ -24,20 +24,50 @@ class PlayerProxy
 		// loaded from server
 		playerData = {
 			shipTemplate: {
+
 				assetPath: "gfx/nava_1.png",
 				energyRegen: 1,
+
 				hardpoints: [
 					new HardpointDTO({
-						name:"Hardpoint 1", assetPath:"gfx/hardpoint.png", type: ItemTypeConsts.ITEM_WEAPON, x:100, y:100,
-						item: new ItemDTO({assetPath: "gfx/arma_3_icon.png", name:"Weapon 3", type: ItemTypeConsts.ITEM_WEAPON, layerAsset: "gfx/arma_3.png"})
+						name:"Hardpoint 1",
+						assetPath:"gfx/hardpoint.png",
+						type: ItemTypeConsts.ITEM_WEAPON,
+						x:100, y:100,
+						
+						item: new ItemDTO({
+							assetPath: "gfx/arma_3_icon.png",
+							name:"Weapon 3",
+							type: ItemTypeConsts.ITEM_WEAPON,
+							layerAsset: "gfx/arma_3.png"})
 						}),
-					new HardpointDTO({name:"Hardpoint 2", assetPath:"gfx/hardpoint.png", type: ItemTypeConsts.ITEM_UTILITY, x:200, y:200})
+
+					new HardpointDTO({
+						name:"Hardpoint 2",
+						assetPath:"gfx/hardpoint.png",
+						type: ItemTypeConsts.ITEM_UTILITY,
+						x:200, y:200})
 				]
 			},
+
 			items: [
-				new ItemDTO({assetPath: "gfx/arma_1_icon.png", name:"Weapon 1", type: ItemTypeConsts.ITEM_WEAPON, layerAsset: "gfx/arma_1.png"}),
-				new ItemDTO({assetPath: "gfx/arma_2_icon.png", name:"Weapon 2", type: ItemTypeConsts.ITEM_WEAPON, layerAsset: "gfx/arma_2.png"}),
-				new ItemDTO({assetPath: "gfx/shield_icon.png", name:"Utility 1", type: ItemTypeConsts.ITEM_UTILITY, layerAsset: "gfx/shield.png"})
+				new ItemDTO({
+					assetPath: "gfx/arma_1_icon.png",
+					name:"Weapon 1",
+					type: ItemTypeConsts.ITEM_WEAPON,
+					layerAsset: "gfx/arma_1.png"}),
+
+				new ItemDTO({
+					assetPath: "gfx/arma_2_icon.png",
+					name:"Weapon 2",
+					type: ItemTypeConsts.ITEM_WEAPON,
+					layerAsset: "gfx/arma_2.png"}),
+
+				new ItemDTO({
+					assetPath: "gfx/shield_icon.png",
+					name:"Utility 1",
+					type: ItemTypeConsts.ITEM_UTILITY,
+					layerAsset: "gfx/shield.png"})
 			]
 		};
 	}

@@ -19,6 +19,14 @@ import model.events.LevelEvent;
 import org.events.EventManager;
 import org.actors.Player;
 
+
+
+
+import entities.game.GameEntity;
+import model.proxy.PlayerProxy;
+
+
+
 class GameScene extends Scene
 {
 	private var enemyImages:Hash<String>;
@@ -29,6 +37,10 @@ class GameScene extends Scene
 	override public function begin()
 	{
 		init();
+
+		var e:GameEntity = new GameEntity(300, 0, PlayerProxy.cloneInstance().playerData.shipTemplate);
+
+		add(e);
 	}
 
 	override public function end()

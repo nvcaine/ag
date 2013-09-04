@@ -12,8 +12,6 @@ import entities.game.Enemy;
 
 import model.consts.EntityTypeConsts;
 import model.consts.PlayerConsts;
-// import model.dto.EnemyDTO;
-//import model.events.LevelEvent;
 
 class Level extends Entity
 {
@@ -37,15 +35,6 @@ class Level extends Entity
 		enemyImages = enemyAssets;
 	}
 
-	private function init()
-	{
-		drawBackground();
-
-		initGrid(50);
-
-		cameraSpeed = PlayerConsts.DEFAULT_SPEED;
-	}
-
 	override public function added()
 	{
 		super.added();
@@ -67,12 +56,19 @@ class Level extends Entity
 			spawn();
 	}
 
+	private function init()
+	{
+		drawBackground();
+
+		initGrid(50);
+
+		cameraSpeed = PlayerConsts.DEFAULT_SPEED;
+	}
+
 	private function initGrid(gridCellSize:Int)
 	{
 		var mask:Grid = new Grid(500, 700, gridCellSize, gridCellSize); // level W/H
 		var maskEntity = new Entity(0, 0, null, mask);
-
-		//mask.setRect(20, 20, 1, 1);
 
 		maskEntity.type = EntityTypeConsts.LEVEL;
 
@@ -88,8 +84,6 @@ class Level extends Entity
 
 	private function addEntity(x:Float, y:Float, size:Int)
 	{
-		//trace("entity: " + x + " " + y + " " + size);
-
 		var a:Entity = new Entity(x, y);
 
 		a.graphic = Image.createRect(size, size, 0xDDEEFF);
@@ -99,8 +93,6 @@ class Level extends Entity
 
 	private function addLevelEntity(x:Float, y:Float, gridMask:Grid, gridCellSize:Int)
 	{
-		// there is a conflict between the graphics and the grid
-		// which appera to make the player go through "walls"
 		var row:Int = Std.int(x / gridCellSize);
 		var col:Int = Std.int(y / gridCellSize);
 
