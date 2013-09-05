@@ -2,16 +2,19 @@ package level;
 
 import com.haxepunk.Entity;
 import com.haxepunk.HXP;
+
 import com.haxepunk.graphics.Backdrop;
 import com.haxepunk.graphics.Canvas;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.masks.Grid;
 
 import entities.game.BossEnemy;
-import entities.game.Enemy;
+import entities.game.EnemyShip;
 
 import model.consts.EntityTypeConsts;
 import model.consts.PlayerConsts;
+
+import model.proxy.EnemyProxy;
 
 class Level extends Entity
 {
@@ -113,15 +116,11 @@ class Level extends Entity
 
 	private function spawn()
 	{
-		var enemyIndex:Int = Std.random(2);
-		var enemyAsset:String = (enemyIndex % 2 == 0) ? enemyImages.get("enemy1") : enemyImages.get("enemy2");
-		var enemyXP:Int = (enemyIndex % 2 == 0) ? 10 : 5;
-		var enemyData:Dynamic = {type: "asd", health: 100, damage: 25, score: 5, speed: 3, assetPath: enemyAsset, width: 32, height: 32, xp: enemyXP};
-		var x:Float = Math.random() * (HXP.width - 32);
+		var enemyData:Dynamic = Reflect.copy(EnemyProxy.cloneInstance().enemyTemplate);
 
-		scene.add(new Enemy(x, scene.camera.y, enemyData));
+		scene.add(new EnemyShip(HXP.width / 2, scene.camera.y + 100, enemyData));
 
-		spawnTimer = 1;
+		spawnTimer = 3;
 	}
 
 	private function checkIfReachedCheckpoint()

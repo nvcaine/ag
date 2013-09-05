@@ -37,10 +37,6 @@ class GameScene extends Scene
 	override public function begin()
 	{
 		init();
-
-		var e:GameEntity = new GameEntity(300, 0, PlayerProxy.cloneInstance().playerData.shipTemplate);
-
-		add(e);
 	}
 
 	override public function end()
