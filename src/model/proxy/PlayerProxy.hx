@@ -27,6 +27,7 @@ class PlayerProxy
 
 				assetPath: "gfx/nava_1.png",
 				energyRegen: 1,
+				width:98, height: 98, speed: 5,
 
 				hardpoints: [
 					new HardpointDTO({

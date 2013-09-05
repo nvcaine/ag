@@ -6,23 +6,29 @@ import com.haxepunk.utils.Key;
 import flash.events.TimerEvent;
 import flash.utils.Timer;
 
-import entities.game.Ship;
+import entities.game.PlayerShip;
+
+import model.events.HUDEvent;
 
 import model.proxy.PlayerProxy;
 
 import nme.events.TimerEvent;
 import nme.utils.Timer;
 
+import org.events.EventManager;
+
 import scenes.GameScene;
 
 class Player
 {
-	private var entity:Ship;
+	private var entity:PlayerShip;
 	private var scene:GameScene;
 	private var canShoot:Bool;
 	private var regenerateEnergy:Bool;
 	private var t:Timer;
 	private var et:Timer;
+
+	private var em:EventManager;
 
 	public function new(data:Dynamic, scene:GameScene)
 	{
@@ -31,6 +37,8 @@ class Player
 		initEntity(data);
 		initTimer();
 		defineInput();
+
+		em = EventManager.cloneInstance();
 	}
 
 	public function handleInput()
@@ -73,7 +81,7 @@ class Player
 
 	private function initEntity(data:Dynamic)
 	{
-		var newData:Dynamic = data;
+		/*var newData:Dynamic = data;
 
 		newData.addedStuff = [];
 
@@ -83,9 +91,9 @@ class Player
 			if(hpData[i].item != null)
 				newData.addedStuff.push({assetPath: hpData[i].item.layerAsset});
 
-		newData.speed = 5;
+		newData.speed = 5;*/
 
-		entity = new Ship(data.x, data.y, newData);
+		entity = new PlayerShip(data.x, data.y, PlayerProxy.cloneInstance().playerData.shipTemplate);
 
 		this.scene.add(entity);
 	}
@@ -104,7 +112,7 @@ class Player
 	{
 		t.start();
 
-		entity.shoot();
+		entity.shoot(PlayerProxy.cloneInstance().getAvailableEnergy(), 10);
 
 		canShoot = false;
 	}
@@ -122,7 +130,8 @@ class Player
 
 		et.start();
 
-		entity.updateEnergy(PlayerProxy.cloneInstance().playerData.shipTemplate.energyRegen);
+		//entity.updateEnergy(PlayerProxy.cloneInstance().playerData.shipTemplate.energyRegen);
+		em.dispatchEvent(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, PlayerProxy.cloneInstance().playerData.shipTemplate.energyRegen));
 
 		regenerateEnergy = false;
 	}

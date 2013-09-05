@@ -24,6 +24,8 @@ class GameEntity extends MessageEntity
 		super.added();
 
 		graphic = getEntityGraphic(data.assetPath, getLayerAssets(data.hardpoints));
+
+		setHitbox(data.width, data.height);
 	}
 
 	private function getLayerAssets(hardpointsData:Array<HardpointDTO>):Array<String>

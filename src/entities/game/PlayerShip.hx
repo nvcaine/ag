@@ -1,22 +1,12 @@
 package entities.game;
 
-import com.haxepunk.Entity;
 import com.haxepunk.HXP;
-import com.haxepunk.graphics.Graphiclist;
-import com.haxepunk.graphics.Image;
 
 import model.consts.EntityTypeConsts;
 import model.consts.PlayerConsts;
-import model.events.HUDEvent;
-import model.proxy.PlayerProxy;
 
-import nme.geom.Point;
-
-import org.actors.MessageEntity;
-
-class Ship extends MessageEntity
+class PlayerShip extends GameEntity
 {
-	private var maxSpeed:Float = 0;
 	private var xVelocity:Float = 0;
 	private var yVelocity:Float = 0;
 	private var yAcceleration:Float = 0;
@@ -24,9 +14,9 @@ class Ship extends MessageEntity
 
 	public function new(x:Float, y:Float, data:Dynamic)
 	{
-		super(x, y);
+		super(x, y, data);
 
-		init(data);
+		this.type = EntityTypeConsts.PLAYER;
 	}
 
 	override public function update()
@@ -39,74 +29,31 @@ class Ship extends MessageEntity
 		moveBy(xVelocity, -PlayerConsts.DEFAULT_SPEED + yVelocity, EntityTypeConsts.LEVEL);
 	}
 
-	override public function moveCollideX(e:Entity):Bool
-	{
-		onLevelCollision();
-
-		return true;
-	}
-
-	override public function moveCollideY(e:Entity):Bool
-	{
-		onLevelCollision();
-
-		return true;
-	}
-
 	public function setAcceleration(xAcc:Float, yAcc:Float)
 	{
 		xAcceleration = xAcc;
 		yAcceleration = yAcc;
 	}
 
-	public function shoot()
+	public function shoot(availableEnergy:Float, requiredEnergy:Float)
 	{
-		if(PlayerProxy.cloneInstance().getAvailableEnergy() >= 10)
-			scene.add(createNewProjectile(x + width / 2 - 40, y + 10));
+		if(availableEnergy < requiredEnergy)
+			return;
 
-		if(PlayerProxy.cloneInstance().getAvailableEnergy() >= 10)
-			scene.add(createNewProjectile(x + width / 2 + 40, y + 10));
-	}
-
-	public function updateEnergy(energy:Int)
-	{
-		sendMessage(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, energy));
+		scene.add(createNewProjectile(x + width / 2 - 40, y + 10));
+		scene.add(createNewProjectile(x + width / 2 + 32, y + 10));
 	}
 
 	private function createNewProjectile(x:Float, y:Float):Projectile
 	{
-		var data:Dynamic = {assetPath: "gfx/glontz.png", sound: "sfx/laser.mp3", width: 20, height: 5, damage: 50, energy: 5};
+		var data:Dynamic = {
+			assetPath: "gfx/glontz.png",
+			sound: "sfx/laser.mp3",
+			width: 20, height: 5,
+			damage: 50, energy: 5
+		};
 
 		return new Projectile(x, y, data);
-	}
-
-	override private function initGraphic(data:Dynamic)
-	{
-		var layers:Array<Image> = [];
-		var g:Graphiclist = new Graphiclist();
-
-		if(data.addedStuff != null)
-			for(i in 0...data.addedStuff.length)
-				layers.push(new Image(data.addedStuff[i].assetPath));
-
-		layers.push(new Image(data.assetPath));
-
-		graphic = new Graphiclist(layers);
-
-		setGraphicHitbox(data);
-	}
-
-	private function init(data:Dynamic)
-	{
-		type = EntityTypeConsts.PLAYER;
-
-		initGraphic(data);
-		maxSpeed = data.speed;
-	}
-
-	private function onLevelCollision()
-	{
-		//sendMessage(new HUDEvent(HUDEvent.ENEMY_COLLISION));
 	}
 
 	private function moveVertically()
@@ -114,7 +61,7 @@ class Ship extends MessageEntity
 		yVelocity += yAcceleration;
 
 		yVelocity = getVelocity(scene.camera.y, scene.camera.y + HXP.height - height, y, yVelocity);
-		yVelocity = getClampedVelocity(yVelocity, yAcceleration, maxSpeed);
+		yVelocity = getClampedVelocity(yVelocity, yAcceleration, data.speed);
 		yVelocity = getDraggedVelocity(yVelocity, PlayerConsts.DRAG);
 	}
 
@@ -123,7 +70,7 @@ class Ship extends MessageEntity
 		xVelocity += xAcceleration;
 
 		xVelocity = getVelocity(0, HXP.width - this.width, this.x, xVelocity);
-		xVelocity = getClampedVelocity(xVelocity, xAcceleration, maxSpeed);
+		xVelocity = getClampedVelocity(xVelocity, xAcceleration, data.speed);
 		xVelocity = getDraggedVelocity(xVelocity, PlayerConsts.DRAG);
 	}
 

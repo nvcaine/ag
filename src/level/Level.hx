@@ -8,7 +8,7 @@ import com.haxepunk.graphics.Canvas;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.masks.Grid;
 
-import entities.game.BossEnemy;
+//import entities.game.BossEnemy;
 import entities.game.EnemyShip;
 
 import model.consts.EntityTypeConsts;
@@ -133,12 +133,12 @@ class Level extends Entity
 			checkpoints.splice(0, 1);
 
 			//dispatcher.dispatchEvent(new LevelEvent(LevelEvent.PASSED_CHECKPOINT, ++checkPointsPassed));
-			if(checkpoints.length == 0)
-				spawnBoss();
+			/*if(checkpoints.length == 0)
+				spawnBoss();*/
 		}
 	}
 
-	private function spawnBoss()
+	/*private function spawnBoss()
 	{
 		bossReached = true;
 		cameraSpeed = 0;
@@ -147,5 +147,5 @@ class Level extends Entity
 		var enemyData:Dynamic = {type: "boss", health: 300, damage: 25, score: 100, speed: 0.5, assetPath: "gfx/boss.png", width: 128, height: 128, xp: 100};
 
 		scene.add(new BossEnemy(HXP.width / 2, y, enemyData));
-	}
+	}*/
 }
