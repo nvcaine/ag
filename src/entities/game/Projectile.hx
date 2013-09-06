@@ -40,18 +40,11 @@ class Projectile extends MessageEntity
 		sendMessage(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, -Std.int(data.energy)));
 	}
 
-	override public function moveCollideY(e:Entity):Bool
-	{
-		scene.remove(this);
-
-		return true;
-	}
-
 	override public function update()
 	{
-		moveBy(0, -10, EntityTypeConsts.ENEMY);
+		moveBy(0, -10);
 
-		if(x - scene.camera.x > HXP.width)
+		if(this.y < scene.camera.y)
 		{
 			scene.remove(this);
 			return;

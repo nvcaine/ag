@@ -11,6 +11,7 @@ import entities.game.PlayerShip;
 import model.events.HUDEvent;
 
 import model.proxy.PlayerProxy;
+import model.proxy.ProjectileProxy;
 
 import nme.events.TimerEvent;
 import nme.utils.Timer;
@@ -81,18 +82,6 @@ class Player
 
 	private function initEntity(data:Dynamic)
 	{
-		/*var newData:Dynamic = data;
-
-		newData.addedStuff = [];
-
-		var hpData:Array<Dynamic> = PlayerProxy.cloneInstance().playerData.shipTemplate.hardpoints;
-
-		for(i in 0...hpData.length)
-			if(hpData[i].item != null)
-				newData.addedStuff.push({assetPath: hpData[i].item.layerAsset});
-
-		newData.speed = 5;*/
-
 		entity = new PlayerShip(data.x, data.y, PlayerProxy.cloneInstance().playerData.shipTemplate);
 
 		this.scene.add(entity);
@@ -112,7 +101,7 @@ class Player
 	{
 		t.start();
 
-		entity.shoot(PlayerProxy.cloneInstance().getAvailableEnergy(), 10);
+		entity.shoot(ProjectileProxy.cloneInstance().projectileTemplate, PlayerProxy.cloneInstance().getAvailableEnergy(), 10);
 
 		canShoot = false;
 	}

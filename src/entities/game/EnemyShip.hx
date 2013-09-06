@@ -1,9 +1,14 @@
 package entities.game;
 
-import model.consts.EntityTypeConsts;
-//import nme.geom.Point;
-
+import com.haxepunk.Entity;
+import com.haxepunk.HXP;
 import com.haxepunk.tweens.motion.LinearPath;
+
+import entities.game.Projectile;
+
+import model.consts.EntityTypeConsts;
+import model.events.HUDEvent;
+import model.events.EntityEvent;
 
 class EnemyShip extends GameEntity
 {
@@ -20,7 +25,6 @@ class EnemyShip extends GameEntity
 	{
 		super.added();
 
-		//trace(data.waypoints.length);
 		initWaypointsTween(data.waypoints, data.speed);
 	}
 
@@ -28,11 +32,19 @@ class EnemyShip extends GameEntity
 	{
 		super.update();
 
-		//checkCollision(PROJECTILE, onProjectileCollision);
-		//checkCollision(PLAYER, onPlayerCollision);
+		checkCollision(EntityTypeConsts.PROJECTILE, collideWithProjectile);
+		checkCollision(EntityTypeConsts.PLAYER, collideWithPlayer);
 
-		this.x = tween.x;
-		this.y = tween.y + data.speed;
+		updateTween();
+
+		if(data.health <= 0)
+		{
+			die(true, true);
+			dropPickup(100);
+		}
+
+		if(this.y > scene.camera.y + HXP.height)
+			die(false);
 	}
 
 	private function initWaypointsTween(waypoints:Array<Dynamic>, duration:Float)
@@ -46,5 +58,51 @@ class EnemyShip extends GameEntity
 		tween.start();
 
 		this.addTween(tween);
+	}
+
+	private function updateTween()
+	{
+		this.x = tween.x;
+		this.y = tween.y + data.speed;		
+	}
+
+	private function checkCollision(entityType:String, handler:Entity->Void)
+	{
+		var entity:Entity = collide(entityType, this.x, this.y);
+
+		if(entity != null)
+			handler(entity);
+	}
+
+	private function collideWithProjectile(e:Entity)
+	{
+		var entity:Projectile = cast(e, Projectile);
+
+		data.health -= entity.damage;
+		scene.remove(entity);
+	}
+
+	private function collideWithPlayer(e:Entity)
+	{
+		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, Std.int(-data.damage)));
+		die();
+	}
+
+	private function die(explode:Bool = true, score:Bool = false)
+	{
+		if(explode)
+			sendMessage(new EntityEvent(EntityEvent.ENTITY_EXPLOSION, this.x + width / 2, this.y + height / 2));
+
+		if(score)
+			sendMessage(new HUDEvent(HUDEvent.KILL_SCORE, data.score, 0, data.xp));
+
+		graphic = null;
+
+		scene.remove(this);
+	}
+
+	private function dropPickup(chance:Float)
+	{
+		sendMessage(new EntityEvent(EntityEvent.DROP_PICKUP, this.x + width / 2, this.y + height / 2));
 	}
 }

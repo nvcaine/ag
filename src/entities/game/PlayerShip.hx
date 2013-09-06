@@ -9,6 +9,7 @@ class PlayerShip extends GameEntity
 {
 	private var xVelocity:Float = 0;
 	private var yVelocity:Float = 0;
+
 	private var yAcceleration:Float = 0;
 	private var xAcceleration:Float = 0;
 
@@ -35,25 +36,18 @@ class PlayerShip extends GameEntity
 		yAcceleration = yAcc;
 	}
 
-	public function shoot(availableEnergy:Float, requiredEnergy:Float)
+	public function shoot(template:Dynamic, ?availableEnergy:Float, ?requiredEnergy:Float)
 	{
-		if(availableEnergy < requiredEnergy)
+		if((availableEnergy != null && requiredEnergy != null) && availableEnergy < requiredEnergy)
 			return;
 
-		scene.add(createNewProjectile(x + width / 2 - 40, y + 10));
-		scene.add(createNewProjectile(x + width / 2 + 32, y + 10));
+		scene.add(createNewProjectile(width / 2 - 40, 10, template));
+		scene.add(createNewProjectile(width / 2 + 32, 10, template));
 	}
 
-	private function createNewProjectile(x:Float, y:Float):Projectile
+	private function createNewProjectile(xOffset:Float, yOffset:Float, projectileData:Dynamic):Projectile
 	{
-		var data:Dynamic = {
-			assetPath: "gfx/glontz.png",
-			sound: "sfx/laser.mp3",
-			width: 20, height: 5,
-			damage: 50, energy: 5
-		};
-
-		return new Projectile(x, y, data);
+		return new Projectile(this.x + xOffset, this.y + yOffset, projectileData);
 	}
 
 	private function moveVertically()
