@@ -4,6 +4,7 @@ import com.haxepunk.HXP;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
 
+import entities.game.misc.Projectile;
 import entities.game.ships.PlayerShip;
 
 import model.events.HUDEvent;
@@ -24,17 +25,22 @@ class Player
 	private var scene:GameScene;
 
 	private var shootTimer:Float = 0.25;
+	private var energyRegenTimer:Float = 0.1;
 
 	private var em:EventManager;
+	private var playerProxy:PlayerProxy;
 
-	public function new(data:Dynamic, scene:GameScene)
+	public function new(x:Float, y:Float, scene:GameScene)
 	{
 		this.scene = scene;
 
-		initEntity(data);
-		defineInput();
-
 		em = EventManager.cloneInstance();
+		playerProxy = PlayerProxy.cloneInstance();
+
+		entity = scene.add(new PlayerShip(x, y, playerProxy.playerData.shipTemplate));
+		entity.layer = 0;
+
+		defineInput();
 	}
 
 	public function handleInput()
@@ -54,18 +60,33 @@ class Player
 			xAcc = 1;
 
 		if(Input.check("shoot") && shootTimer < 0)
-			shoot();
+			shoot(ProjectileProxy.cloneInstance().projectileTemplate, playerProxy.getAvailableEnergy(), 10);
+
+		if(energyRegenTimer < 0)
+			regenerateEnergy(playerProxy.playerData.shipTemplate.energyRegen);
 
 		entity.setAcceleration(xAcc, yAcc);
+
 		shootTimer -= HXP.elapsed;
+		energyRegenTimer -=  HXP.elapsed;
 	}
 
-	private function initEntity(data:Dynamic)
+	public function shoot(template:Dynamic, ?availableEnergy:Float, ?requiredEnergy:Float)
 	{
-		entity = new PlayerShip(data.x, data.y, PlayerProxy.cloneInstance().playerData.shipTemplate);
-		entity.layer = 0;
+		if((availableEnergy != null && requiredEnergy != null) && availableEnergy < requiredEnergy)
+			return;
 
-		this.scene.add(entity);
+		scene.add(createNewProjectile(entity.width / 2 - 40, 10, template));
+		scene.add(createNewProjectile(entity.width / 2 + 32, 10, template));
+
+		shootTimer = 0.25;
+
+		// parse items, call "fire" on weapons
+	}
+
+	private function createNewProjectile(xOffset:Float, yOffset:Float, projectileData:Dynamic):Projectile
+	{
+		return new Projectile(entity.x + xOffset, entity.y + yOffset, projectileData);
 	}
 
 	private function defineInput()
@@ -78,10 +99,10 @@ class Player
 		Input.define("regen", [Key.Z]);
 	}
 
-	private function shoot()
+	private function regenerateEnergy(amount:Int)
 	{
-		entity.shoot(ProjectileProxy.cloneInstance().projectileTemplate, PlayerProxy.cloneInstance().getAvailableEnergy(), 10);
+		em.dispatchEvent(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, amount));
 
-		shootTimer = 0.25;
+		energyRegenTimer = 0.1;
 	}
 }

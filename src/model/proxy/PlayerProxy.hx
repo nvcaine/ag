@@ -6,14 +6,13 @@ import model.dto.HardpointDTO;
 
 class PlayerProxy
 {
+	private static var instance:PlayerProxy;
+
 	public var level:Int = 1;
 	public var balance:Int = 0;
 	public var experience:Int = 0;
 	public var levelLimit:Int = 100;
-
 	public var playerData:Dynamic;
-
-	private static var instance:PlayerProxy;
 
 	private var availableEnergy:Int;
 

@@ -56,7 +56,7 @@ class GameScene extends Scene
 		add(new Level());
 		addGraphic(new GameHUD({background: "gfx/hud2.png", healthBar: "gfx/hp.png", energyBar: "gfx/energy.png"}), 0, 0, 668);
 
-		player = new Player({x: (HXP.width / 2), y: HXP.height - 150, assetPath: "gfx/nava_1.png", width: 98, height: 98}, this);
+		player = new Player(HXP.width / 2, HXP.height - 150, this);
 	}
 
 	private function initListeners(listener:EventManager, events:Array<Dynamic>, handlers:Array<Dynamic>)

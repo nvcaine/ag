@@ -24,8 +24,8 @@ class PlayerShip extends ShipEntity
 
 	override public function update()
 	{
-		moveVertically();
-		moveHorizontally();
+		xVelocity = getAcceleratedVelocity(xVelocity, xAcceleration, 0, HXP.width - width, x, data.speed, PlayerConsts.DRAG);
+		yVelocity = getAcceleratedVelocity(yVelocity, yAcceleration, 0, HXP.height - height, y, data.speed, PlayerConsts.DRAG);
 
 		moveBy(xVelocity, yVelocity, EntityTypeConsts.LEVEL);
 	}
@@ -36,49 +36,26 @@ class PlayerShip extends ShipEntity
 		yAcceleration = yAcc;
 	}
 
-	public function shoot(template:Dynamic, ?availableEnergy:Float, ?requiredEnergy:Float)
+	private function getAcceleratedVelocity(velocity:Float, acceleration:Float, min:Float, max:Float, currentValue:Float, speed:Float, drag:Float)
 	{
-		if((availableEnergy != null && requiredEnergy != null) && availableEnergy < requiredEnergy)
-			return;
+		var result:Float = velocity + acceleration;
 
-		scene.add(createNewProjectile(width / 2 - 40, 10, template));
-		scene.add(createNewProjectile(width / 2 + 32, 10, template));
+		result = getVelocity(min, max, currentValue, result);
+		result = getClampedVelocity(result, acceleration, speed);
+		result = getDraggedVelocity(result, drag);
 
-		// parse items, call "fire" on weapons
+		return result;
 	}
 
-	private function createNewProjectile(xOffset:Float, yOffset:Float, projectileData:Dynamic):Projectile
+	private function getVelocity(min:Float, max:Float, currentValue:Float, velocity:Float):Float
 	{
-		return new Projectile(this.x + xOffset, this.y + yOffset, projectileData);
-	}
+		if(currentValue + velocity < min)
+			return (min - currentValue);
 
-	private function moveVertically()
-	{
-		yVelocity += yAcceleration;
+		if(currentValue + velocity > max)
+			return (max - currentValue);
 
-		yVelocity = getVelocity(scene.camera.y, scene.camera.y + HXP.height - height, y, yVelocity);
-		yVelocity = getClampedVelocity(yVelocity, yAcceleration, data.speed);
-		yVelocity = getDraggedVelocity(yVelocity, PlayerConsts.DRAG);
-	}
-
-	private function moveHorizontally()
-	{
-		xVelocity += xAcceleration;
-
-		xVelocity = getVelocity(0, HXP.width - this.width, this.x, xVelocity);
-		xVelocity = getClampedVelocity(xVelocity, xAcceleration, data.speed);
-		xVelocity = getDraggedVelocity(xVelocity, PlayerConsts.DRAG);
-	}
-
-	private function getVelocity(min:Float, max:Float, currentY:Float, currentVelocity:Float):Float
-	{
-		if(currentY + currentVelocity < min)
-			return (min - currentY);
-
-		if(currentY + currentVelocity > max)
-			return (max - currentY);
-
-		return currentVelocity;
+		return velocity;
 	}
 
 	private function getClampedVelocity(velocity:Float, acceleration:Float, maxSpeed:Float)
