@@ -1,10 +1,8 @@
 package org.actors;
 
+import com.haxepunk.HXP;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
-
-import flash.events.TimerEvent;
-import flash.utils.Timer;
 
 import entities.game.ships.PlayerShip;
 
@@ -24,10 +22,8 @@ class Player
 {
 	private var entity:PlayerShip;
 	private var scene:GameScene;
-	private var canShoot:Bool;
-	//private var regenerateEnergy:Bool;
-	private var t:Timer;
-	//private var et:Timer;
+
+	private var shootTimer:Float = 0.25;
 
 	private var em:EventManager;
 
@@ -36,7 +32,6 @@ class Player
 		this.scene = scene;
 
 		initEntity(data);
-		initTimer();
 		defineInput();
 
 		em = EventManager.cloneInstance();
@@ -58,26 +53,11 @@ class Player
 		if(Input.check("right"))
 			xAcc = 1;
 
-		if(Input.check("shoot") && canShoot)
+		if(Input.check("shoot") && shootTimer < 0)
 			shoot();
 
-		/*if(regenerateEnergy)
-			updateEnergy();*/
-
 		entity.setAcceleration(xAcc, yAcc);
-	}
-
-	private function initTimer()
-	{
-		t = new Timer(200);
-
-		t.addEventListener("timer", onTimer, false, 0, true);
-
-		canShoot = true;
-
-		/*et = new Timer(100);
-		et.addEventListener("timer", onEnergyTimer, false, 0 , true);
-		regenerateEnergy = true;*/
+		shootTimer -= HXP.elapsed;
 	}
 
 	private function initEntity(data:Dynamic)
@@ -100,34 +80,8 @@ class Player
 
 	private function shoot()
 	{
-		t.start();
-
 		entity.shoot(ProjectileProxy.cloneInstance().projectileTemplate, PlayerProxy.cloneInstance().getAvailableEnergy(), 10);
 
-		canShoot = false;
+		shootTimer = 0.25;
 	}
-
-	private function onTimer(e:TimerEvent)
-	{
-		//t.removeEventListener("timer", onTimer); - // should remove the listener, so as not to prevent garbage collection
-
-		canShoot = true;
-	}
-
-	/*private function updateEnergy()
-	{
-		// this should be handled by the hud directly
-
-		et.start();
-
-		//entity.updateEnergy(PlayerProxy.cloneInstance().playerData.shipTemplate.energyRegen);
-		em.dispatchEvent(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, PlayerProxy.cloneInstance().playerData.shipTemplate.energyRegen));
-
-		regenerateEnergy = false;
-	}
-
-	private function onEnergyTimer(e:TimerEvent)
-	{
-		regenerateEnergy = true;
-	}*/
 }

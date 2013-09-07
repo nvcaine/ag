@@ -28,7 +28,10 @@ class Level extends Entity
 		spawnTimer -= HXP.elapsed;
 		
 		if(spawnTimer < 0)
+		{
+			trace(HXP.elapsed);
 			spawn();
+		}
 	}
 
 	private function init()
