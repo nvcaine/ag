@@ -43,6 +43,8 @@ class PlayerShip extends ShipEntity
 
 		scene.add(createNewProjectile(width / 2 - 40, 10, template));
 		scene.add(createNewProjectile(width / 2 + 32, 10, template));
+
+		// parse items, call "fire" on weapons
 	}
 
 	private function createNewProjectile(xOffset:Float, yOffset:Float, projectileData:Dynamic):Projectile

@@ -4,6 +4,7 @@ import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 
 import entities.game.EndLevelText;
+import entities.game.Player;
 import entities.game.level.Level;
 import entities.game.misc.Explosion;
 import entities.game.misc.Pickup;
@@ -13,7 +14,6 @@ import model.events.EntityEvent;
 import model.events.LevelEvent;
 import model.proxy.PlayerProxy;
 
-import org.actors.Player;
 import org.events.EventManager;
 
 class GameScene extends Scene

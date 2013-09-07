@@ -1,4 +1,4 @@
-package org.actors;
+package entities.game;
 
 import com.haxepunk.HXP;
 import com.haxepunk.utils.Input;
