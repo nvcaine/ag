@@ -113,10 +113,7 @@ class GameScene extends Scene
 
 	private function onEnemyExplode(e:EntityEvent)
 	{
-		var ex:Explosion = new Explosion(e.x, e.y);
-
-		add(ex);
-		ex.explode();
+		add(new Explosion(e.x, e.y));
 	}
 
 	private function onDropPickup(e:EntityEvent)

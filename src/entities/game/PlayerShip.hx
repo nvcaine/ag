@@ -27,7 +27,7 @@ class PlayerShip extends GameEntity
 		moveVertically();
 		moveHorizontally();
 
-		moveBy(xVelocity, -PlayerConsts.DEFAULT_SPEED + yVelocity, EntityTypeConsts.LEVEL);
+		moveBy(xVelocity, yVelocity, EntityTypeConsts.LEVEL);
 	}
 
 	public function setAcceleration(xAcc:Float, yAcc:Float)

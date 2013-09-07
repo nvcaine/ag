@@ -18,8 +18,12 @@ class Explosion extends Entity
 	{
 		super(x, y);
 
-		initEmitter();
-		graphic = e;
+		init();
+	}
+
+	override public function added()
+	{
+		explode();
 	}
 
 	override public function update()
@@ -35,12 +39,10 @@ class Explosion extends Entity
 		var i:Int;
 
 		for(i in 0...200)
-		//{
 			e.emit("exp", 8, 8);
 
 		for(i in 0...200)
 			e.emit("exp2", 8, 8);
-		//}
 
 		for(i in 0...100)
 			e.emit("exp3", 8, 8);
@@ -50,9 +52,8 @@ class Explosion extends Entity
 		sound.play();
 	}
 
-	private function initEmitter()
+	private function init()
 	{
-		//e = new Emitter(new Bitmap(Assets.getBitmapData("gfx/particle.png")), 5, 5);//new BitmapData(5, 5, false, 0xFFFFFF), 5, 5);
 		e = new Emitter("gfx/particle.png", 16, 16);
 
 		// outter ring
@@ -72,5 +73,7 @@ class Explosion extends Entity
 		e.setMotion("exp3", 0, 25, 1, 360, 50, 1, Ease.quadOut);
 		e.setAlpha("exp3", 2, 0.05);
 		e.setColor("exp3", 0xFFFF77, 0xFF0000, Ease.quadOut);
+
+		graphic = e;
 	}
 }

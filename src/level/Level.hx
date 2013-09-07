@@ -4,7 +4,6 @@ import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 
 import com.haxepunk.graphics.Backdrop;
-import com.haxepunk.graphics.Canvas;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.masks.Grid;
 
@@ -53,7 +52,7 @@ class Level extends Entity
 
 		spawnTimer -= HXP.elapsed;
 		
-		scene.camera.y -= cameraSpeed;
+		//scene.camera.y -= cameraSpeed;
 
 		if(spawnTimer < 0 && !bossReached)
 			spawn();
@@ -63,7 +62,7 @@ class Level extends Entity
 	{
 		drawBackground();
 
-		initGrid(50);
+		//initGrid(50); the grid is obsolete as "ground" elements can also be part of waves
 
 		cameraSpeed = PlayerConsts.DEFAULT_SPEED;
 	}

@@ -7,6 +7,7 @@ import model.events.MenuEvent;
 
 import nme.events.MouseEvent;
 
+import org.actors.ScrollingBackground;
 import org.events.EventManager;
 import org.ui.Button;
 
@@ -30,6 +31,8 @@ class MenuScene extends Scene
 
 		newGameB.addListener(MouseEvent.CLICK, onNewGame);
 		inventoryB.addListener(MouseEvent.CLICK, onInventory);
+
+		//add(new ScrollingBackground(0, 0, 15));
 
 		add(newGameB);
 		add(inventoryB);
