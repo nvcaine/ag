@@ -12,7 +12,7 @@ class ProjectileProxy
 			assetPath: "gfx/glontz.png",
 			sound: "sfx/laser.mp3",
 			width: 20, height: 5,
-			damage: 10, energy: 5
+			damage: 10, energy: 2
 		};
 	}
 

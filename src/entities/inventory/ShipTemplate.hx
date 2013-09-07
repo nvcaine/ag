@@ -23,8 +23,6 @@ class ShipTemplate extends Entity
 
 	override public function added()
 	{
-		super.added();
-
 		init();
 	}
 

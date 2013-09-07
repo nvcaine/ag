@@ -26,7 +26,7 @@ class PlayerProxy
 			shipTemplate: {
 
 				assetPath: "gfx/nava_1.png",
-				energyRegen: 1,
+				hp: 100, energy: 100, energyRegen: 1,
 				width:98, height: 98, speed: 5,
 
 				hardpoints: [
@@ -79,6 +79,16 @@ class PlayerProxy
 			instance = new PlayerProxy();
 
 		return instance;
+	}
+
+	public function getMaxHealth():Int
+	{
+		return playerData.shipTemplate.hp;
+	}
+
+	public function getMaxEnergy():Int
+	{
+		return playerData.shipTemplate.energy;
 	}
 
 	public function updateEnergy(value:Int)

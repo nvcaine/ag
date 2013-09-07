@@ -40,8 +40,6 @@ class InventoryItem extends TooltipButton
 
 	override public function added()
 	{
-		super.added();
-
 		addListener(MouseEvent.CLICK, onClick);
 
 		setTooltipText(data.name);

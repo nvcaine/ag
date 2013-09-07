@@ -1,4 +1,4 @@
-package entities.game;
+package entities.game.misc;
 
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Emitter;
@@ -28,8 +28,6 @@ class Explosion extends Entity
 
 	override public function update()
 	{
-		super.update();
-
 		if(e.particleCount == 0)
 			scene.remove(this);
 	}

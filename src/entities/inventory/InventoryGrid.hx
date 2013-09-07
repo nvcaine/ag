@@ -43,8 +43,6 @@ class InventoryGrid extends Entity
 
 	override public function added()
 	{
-		super.added();
-
 		drawBackground(x, y);
 		drawInventoryHeader();
 

@@ -14,7 +14,6 @@ class StatsView extends Graphiclist
 		super();
 
 		init();
-
 	}
 
 	private function init()

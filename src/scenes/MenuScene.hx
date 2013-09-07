@@ -32,8 +32,6 @@ class MenuScene extends Scene
 		newGameB.addListener(MouseEvent.CLICK, onNewGame);
 		inventoryB.addListener(MouseEvent.CLICK, onInventory);
 
-		//add(new ScrollingBackground(0, 0, 15));
-
 		add(newGameB);
 		add(inventoryB);
 	}

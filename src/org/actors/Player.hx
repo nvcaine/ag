@@ -6,7 +6,7 @@ import com.haxepunk.utils.Key;
 import flash.events.TimerEvent;
 import flash.utils.Timer;
 
-import entities.game.PlayerShip;
+import entities.game.ships.PlayerShip;
 
 import model.events.HUDEvent;
 
@@ -25,9 +25,9 @@ class Player
 	private var entity:PlayerShip;
 	private var scene:GameScene;
 	private var canShoot:Bool;
-	private var regenerateEnergy:Bool;
+	//private var regenerateEnergy:Bool;
 	private var t:Timer;
-	private var et:Timer;
+	//private var et:Timer;
 
 	private var em:EventManager;
 
@@ -61,8 +61,8 @@ class Player
 		if(Input.check("shoot") && canShoot)
 			shoot();
 
-		if(regenerateEnergy)
-			updateEnergy();
+		/*if(regenerateEnergy)
+			updateEnergy();*/
 
 		entity.setAcceleration(xAcc, yAcc);
 	}
@@ -75,14 +75,15 @@ class Player
 
 		canShoot = true;
 
-		et = new Timer(100);
+		/*et = new Timer(100);
 		et.addEventListener("timer", onEnergyTimer, false, 0 , true);
-		regenerateEnergy = true;
+		regenerateEnergy = true;*/
 	}
 
 	private function initEntity(data:Dynamic)
 	{
 		entity = new PlayerShip(data.x, data.y, PlayerProxy.cloneInstance().playerData.shipTemplate);
+		entity.layer = 0;
 
 		this.scene.add(entity);
 	}
@@ -113,7 +114,7 @@ class Player
 		canShoot = true;
 	}
 
-	private function updateEnergy()
+	/*private function updateEnergy()
 	{
 		// this should be handled by the hud directly
 
@@ -128,5 +129,5 @@ class Player
 	private function onEnergyTimer(e:TimerEvent)
 	{
 		regenerateEnergy = true;
-	}
+	}*/
 }

@@ -1,4 +1,4 @@
-package entities.game;
+package entities.game.misc;
 
 import com.haxepunk.HXP;
 import com.haxepunk.Entity;
@@ -33,8 +33,6 @@ class Projectile extends MessageEntity
 
 	override public function added()
 	{
-		super.added();
-
 		init(data);
 
 		sendMessage(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, -Std.int(data.energy)));
@@ -49,8 +47,6 @@ class Projectile extends MessageEntity
 			scene.remove(this);
 			return;
 		}
-
-		super.update();
 	}
 
 	private function init(data:Dynamic)

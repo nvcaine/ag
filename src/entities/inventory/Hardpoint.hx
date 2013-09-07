@@ -22,8 +22,6 @@ class Hardpoint extends TooltipButton
 
 	override public function added()
 	{
-		super.added();
-
 		addListener(MouseEvent.CLICK, onClick);
 
 		if(data.item == null)

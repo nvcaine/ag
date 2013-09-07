@@ -1,24 +1,28 @@
-package entities.game;
+package entities.game.ships;
 
 import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import com.haxepunk.tweens.motion.LinearPath;
 
-import entities.game.Projectile;
+import entities.game.misc.Projectile;
 
 import model.consts.EntityTypeConsts;
 import model.events.HUDEvent;
 import model.events.EntityEvent;
 
+import com.haxepunk.tweens.TweenEvent;
+
 class EnemyShip extends GameEntity
 {
 	private var tween:LinearPath;
+	private var finishedWaypoints:Bool;
 
 	public function new(x:Float, y:Float, data:Dynamic)
 	{
 		super(x, y, data);
 
 		this.type = EntityTypeConsts.ENEMY; // don't confuse with data.type (which refers to the type of enemy)
+		this.finishedWaypoints = false;
 	}
 
 	override public function added()
@@ -30,12 +34,13 @@ class EnemyShip extends GameEntity
 
 	override public function update()
 	{
-		super.update();
-
 		checkCollision(EntityTypeConsts.PROJECTILE, collideWithProjectile);
 		checkCollision(EntityTypeConsts.PLAYER, collideWithPlayer);
 
-		updateTween();
+		if(!finishedWaypoints)
+			updateTween();
+		else
+			moveBy(0, 3);
 
 		if(data.health <= 0)
 		{
@@ -55,15 +60,17 @@ class EnemyShip extends GameEntity
 			tween.addPoint(this.x + waypoint.x, this.y + waypoint.y);
 
 		tween.setMotion(duration);
-		tween.start();
+		tween.addEventListener(TweenEvent.FINISH, onPassedWaypoints, false, 0, true);
 
 		this.addTween(tween);
+
+		tween.start();
 	}
 
 	private function updateTween()
 	{
 		this.x = tween.x;
-		this.y = tween.y + data.speed;		
+		this.y = tween.y;// + data.speed;		
 	}
 
 	private function checkCollision(entityType:String, handler:Entity->Void)
@@ -97,6 +104,7 @@ class EnemyShip extends GameEntity
 			sendMessage(new HUDEvent(HUDEvent.KILL_SCORE, data.score, 0, data.xp));
 
 		graphic = null;
+		tween.removeEventListener(TweenEvent.FINISH, onPassedWaypoints);
 
 		scene.remove(this);
 	}
@@ -104,5 +112,13 @@ class EnemyShip extends GameEntity
 	private function dropPickup(chance:Float)
 	{
 		sendMessage(new EntityEvent(EntityEvent.DROP_PICKUP, this.x + width / 2, this.y + height / 2));
+	}
+
+	private function onPassedWaypoints(e:TweenEvent)
+	{
+		//finishedWaypoints = true;
+
+		//tween.removeEventListener(TweenEvent.FINISH, onPassedWaypoints);
+		tween.start();
 	}
 }

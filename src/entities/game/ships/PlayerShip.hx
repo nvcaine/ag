@@ -1,6 +1,8 @@
-package entities.game;
+package entities.game.ships;
 
 import com.haxepunk.HXP;
+
+import entities.game.misc.Projectile;
 
 import model.consts.EntityTypeConsts;
 import model.consts.PlayerConsts;
@@ -22,8 +24,6 @@ class PlayerShip extends GameEntity
 
 	override public function update()
 	{
-		super.update();
-
 		moveVertically();
 		moveHorizontally();
 

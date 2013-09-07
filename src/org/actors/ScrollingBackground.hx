@@ -6,11 +6,12 @@ import com.haxepunk.graphics.Image;
 
 class ScrollingBackground extends Entity
 {
-	private var currentPass:Int = 0;
-	private var speed:Int;
 	private var bgImages:Array<Entity>;
 
-	public function new(x, y, speed:Int = 0)
+	private var currentPass:Int = 0;
+	private var speed:Float;
+
+	public function new(x, y, speed:Float = 0)
 	{
 		super(x, y);
 
@@ -48,26 +49,29 @@ class ScrollingBackground extends Entity
 
 	private function translateImages()
 	{
+		var e:Entity;
+
 		for(i in 0...bgImages.length)
 		{
-			var e:Entity = bgImages[getCurrentIndex(i, currentPass, bgImages.length)];
+			e = bgImages[getRelativeIndex(i, currentPass, bgImages.length)];
 
 			e.moveBy(0, this.speed);
+		}
 
-			if(e.y >= HXP.height)
-			{
-				var topTileIndex:Int = getCurrentIndex(i + bgImages.length - 1, currentPass, bgImages.length);
+		e = bgImages[getRelativeIndex(0, currentPass, bgImages.length)];
+		if(e.y >= HXP.height)
+		{
+			var topTileIndex:Int = getRelativeIndex(bgImages.length - 1, currentPass, bgImages.length);
 
-				e.y = bgImages[topTileIndex].y - cast(e.graphic, Image).height;
-				currentPass++;
-			}
+			e.y = bgImages[topTileIndex].y - cast(e.graphic, Image).height;
+			currentPass++;
 		}
 
 		if(currentPass >= bgImages.length)
 			currentPass = 0;
 	}
 
-	private function getCurrentIndex(relative:Int, pass:Int, length:Int)
+	private function getRelativeIndex(relative:Int, pass:Int, length:Int)
 	{
 		if(relative + pass >= length)
 			return relative + pass - length;

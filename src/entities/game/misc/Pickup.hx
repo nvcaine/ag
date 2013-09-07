@@ -1,4 +1,4 @@
-package entities.game;
+package entities.game.misc;
 
 import model.consts.EntityTypeConsts;
 import model.events.HUDEvent;
@@ -22,7 +22,7 @@ class Pickup extends MessageEntity
 
 	override public function update()
 	{
-		super.update();
+		moveBy(0, 3);
 
 		checkPlayerCollision();
 	}

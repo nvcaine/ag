@@ -1,4 +1,4 @@
-package entities.game;
+package entities.game.ships;
 
 import com.haxepunk.graphics.Graphiclist;
 import com.haxepunk.graphics.Image;
@@ -21,8 +21,6 @@ class GameEntity extends MessageEntity
 
 	override public function added()
 	{
-		super.added();
-
 		graphic = getEntityGraphic(data.assetPath, getLayerAssets(data.hardpoints));
 
 		setHitbox(data.width, data.height);

@@ -3,36 +3,22 @@ package scenes;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 
-import flash.events.Event;
-
 import entities.game.EndLevelText;
-import entities.game.Explosion;
-import entities.game.Pickup;
-
-import entities.game.GameHUD;//hud.GameHUD;
-
-import level.Level;
+import entities.game.level.Level;
+import entities.game.misc.Explosion;
+import entities.game.misc.Pickup;
+import entities.game.ui.GameHUD;
 
 import model.events.EntityEvent;
 import model.events.LevelEvent;
-
-import org.events.EventManager;
-import org.actors.Player;
-
-
-
-
-import entities.game.GameEntity;
 import model.proxy.PlayerProxy;
 
-
+import org.actors.Player;
+import org.events.EventManager;
 
 class GameScene extends Scene
 {
-	private var enemyImages:Hash<String>;
-	private var level:Level;
 	private var player:Player;
-	private var hud:GameHUD;
 
 	override public function begin()
 	{
@@ -67,21 +53,10 @@ class GameScene extends Scene
 			[EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP, LevelEvent.KILLED_BOSS],
 			[onEnemyExplode, onDropPickup, onKilledBoss]);
 
-		loadEnemies();
-		initLevel();
-		initHUD();
+		add(new Level());
+		addGraphic(new GameHUD({background: "gfx/hud2.png", healthBar: "gfx/hp.png", energyBar: "gfx/energy.png"}), 0, 0, 668);
 
 		player = new Player({x: (HXP.width / 2), y: HXP.height - 150, assetPath: "gfx/nava_1.png", width: 98, height: 98}, this);
-
-		camera.x = 0;
-		camera.y = 0;
-	}
-
-	private function initHUD()
-	{
-		hud = new GameHUD({background: "gfx/hud2.png", hpBar: "gfx/hp.png", energyBar: "gfx/energy.png"});
-
-		addGraphic(hud, 0, 0, 668);
 	}
 
 	private function initListeners(listener:EventManager, events:Array<Dynamic>, handlers:Array<Dynamic>)
@@ -96,21 +71,6 @@ class GameScene extends Scene
 			listener.removeEventListener(events[i], handlers[i]);
 	}
 
-	private function initLevel()
-	{
-		level = new Level(enemyImages);
-
-		add(level);
-	}
-
-	private function loadEnemies()
-	{
-		enemyImages = new Hash<String>();
-
-		enemyImages.set("enemy1", "gfx/enemy.png");
-		enemyImages.set("enemy2", "gfx/bonb.png");
-	}
-
 	private function onEnemyExplode(e:EntityEvent)
 	{
 		add(new Explosion(e.x, e.y));
@@ -118,9 +78,7 @@ class GameScene extends Scene
 
 	private function onDropPickup(e:EntityEvent)
 	{
-		var p:Pickup = new Pickup(e.x, e.y, {assetPath: "gfx/pickup.png", width: 16, height: 16});
-
-		add(p);
+		add(new Pickup(e.x, e.y, {assetPath: "gfx/pickup.png", width: 16, height: 16}));
 	}
 
 	private function onKilledBoss(e:LevelEvent)
