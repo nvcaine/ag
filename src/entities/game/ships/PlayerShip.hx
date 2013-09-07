@@ -7,7 +7,7 @@ import entities.game.misc.Projectile;
 import model.consts.EntityTypeConsts;
 import model.consts.PlayerConsts;
 
-class PlayerShip extends GameEntity
+class PlayerShip extends ShipEntity
 {
 	private var xVelocity:Float = 0;
 	private var yVelocity:Float = 0;

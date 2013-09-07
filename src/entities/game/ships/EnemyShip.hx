@@ -12,7 +12,7 @@ import model.events.EntityEvent;
 
 import com.haxepunk.tweens.TweenEvent;
 
-class EnemyShip extends GameEntity
+class EnemyShip extends ShipEntity
 {
 	private var tween:LinearPath;
 	private var finishedWaypoints:Bool;

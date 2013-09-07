@@ -8,7 +8,7 @@ import model.dto.HardpointDTO;
 import org.actors.MessageEntity;
 
 // MessageEntity contains graphic logic - unnecessary graphic logic
-class GameEntity extends MessageEntity
+class ShipEntity extends MessageEntity
 {
 	private var data:Dynamic;
 
