@@ -2,7 +2,9 @@ package entities.inventory;
 
 import com.haxepunk.graphics.Image;
 
+import model.consts.ItemTypeConsts;
 import model.dto.ItemDTO;
+import model.dto.WeaponDTO;
 import model.events.InventoryEvent;
 
 import nme.events.MouseEvent;
@@ -39,7 +41,12 @@ class InventoryItem extends TooltipButton
 	{
 		addListener(MouseEvent.CLICK, onClick);
 
-		setTooltipText(data.name);
+		setTooltipText(data.getTooltipLabel());
+	}
+
+	override public function removed()
+	{
+		scene.remove(tooltip);
 	}
 
 	override private function initImage(imageAsset:String, scaleX:Int = 1, scaleY:Int = 1)

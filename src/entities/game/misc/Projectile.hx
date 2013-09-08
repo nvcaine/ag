@@ -1,12 +1,7 @@
 package entities.game.misc;
 
-import com.haxepunk.HXP;
-import com.haxepunk.Entity;
-
-import flash.events.EventDispatcher;
-
-import model.events.HUDEvent;
 import model.consts.EntityTypeConsts;
+import model.dto.ProjectileDTO;
 
 import nme.Assets;
 import nme.media.SoundTransform;
@@ -17,9 +12,9 @@ class Projectile extends MessageEntity
 {
 	public var damage(get, null):Int;
 
-	private var data:Dynamic;
+	private var data:ProjectileDTO;
 
-	public function new(x:Float, y:Float, data:Dynamic) // a dto will come in handy here
+	public function new(x:Float, y:Float, data:ProjectileDTO)
 	{
 		super(x, y);
 
@@ -34,19 +29,14 @@ class Projectile extends MessageEntity
 	override public function added()
 	{
 		init(data);
-
-		sendMessage(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, -Std.int(data.energy)));
 	}
 
 	override public function update()
 	{
-		moveBy(0, -10);
+		moveBy(0, -data.speed);
 
-		if(this.y < scene.camera.y)
-		{
+		if(this.y < 0)
 			scene.remove(this);
-			return;
-		}
 	}
 
 	private function init(data:Dynamic)

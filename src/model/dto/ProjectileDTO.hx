@@ -7,4 +7,5 @@ class ProjectileDTO extends AbstractDTO
 	public var height:Int;
 	public var assetPath:String;
 	public var sound:String;
+	public var speed:Float;
 }

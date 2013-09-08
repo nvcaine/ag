@@ -4,16 +4,17 @@ import com.haxepunk.HXP;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
 
+import entities.game.Weapon;
 import entities.game.misc.Projectile;
 import entities.game.ships.PlayerShip;
 
+import model.consts.ItemTypeConsts;
+import model.dto.HardpointDTO;
+import model.dto.ItemDTO;
+import model.dto.WeaponDTO;
 import model.events.HUDEvent;
-
 import model.proxy.PlayerProxy;
 import model.proxy.ProjectileProxy;
-
-import nme.events.TimerEvent;
-import nme.utils.Timer;
 
 import org.events.EventManager;
 
@@ -24,8 +25,8 @@ class Player
 	private var entity:PlayerShip;
 	private var scene:GameScene;
 
-	private var shootTimer:Float = 0.25;
 	private var energyRegenTimer:Float = 0.1;
+	private var weapons:Array<Weapon>;
 
 	private var em:EventManager;
 	private var playerProxy:PlayerProxy;
@@ -41,6 +42,7 @@ class Player
 		entity.layer = 0;
 
 		defineInput();
+		initWeaponTimers(playerProxy.playerData.shipTemplate.hardpoints);
 	}
 
 	public function handleInput()
@@ -59,34 +61,25 @@ class Player
 		if(Input.check("right"))
 			xAcc = 1;
 
-		if(Input.check("shoot") && shootTimer < 0)
-			shoot(ProjectileProxy.cloneInstance().projectileTemplate, playerProxy.getAvailableEnergy(), 10);
+		if(Input.check("shoot"))
+			for(weapon in weapons)
+				weapon.fire(entity.x, entity.y, scene);
 
 		if(energyRegenTimer < 0)
 			regenerateEnergy(playerProxy.playerData.shipTemplate.energyRegen);
 
 		entity.setAcceleration(xAcc, yAcc);
 
-		shootTimer -= HXP.elapsed;
 		energyRegenTimer -=  HXP.elapsed;
 	}
 
-	public function shoot(template:Dynamic, ?availableEnergy:Float, ?requiredEnergy:Float)
+	private function initWeaponTimers(hardpointsInfo:Array<HardpointDTO>)
 	{
-		if((availableEnergy != null && requiredEnergy != null) && availableEnergy < requiredEnergy)
-			return;
+		weapons = [];
 
-		scene.add(createNewProjectile(entity.width / 2 - 40, 10, template));
-		scene.add(createNewProjectile(entity.width / 2 + 32, 10, template));
-
-		shootTimer = 0.25;
-
-		// parse items, call "fire" on weapons
-	}
-
-	private function createNewProjectile(xOffset:Float, yOffset:Float, projectileData:Dynamic):Projectile
-	{
-		return new Projectile(entity.x + xOffset, entity.y + yOffset, projectileData);
+		for(hardpoint in hardpointsInfo)
+			if(hardpoint.item != null && hardpoint.item.type == ItemTypeConsts.ITEM_WEAPON)
+				weapons.push(new Weapon(cast(hardpoint.item, WeaponDTO), hardpoint.x, hardpoint.y));
 	}
 
 	private function defineInput()

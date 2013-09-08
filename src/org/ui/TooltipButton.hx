@@ -1,5 +1,7 @@
 package org.ui;
 
+import com.haxepunk.HXP;
+
 import org.consts.TooltipPositionConsts;
 
 import nme.events.MouseEvent;
@@ -17,24 +19,8 @@ class TooltipButton extends Button
 		init();
 	}
 
-	override public function added()
-	{
-		if(text == null)
-			return;
-
-		setTooltipText(text);
-	}
-
 	public function setTooltipText(text:String)
 	{
-		if(tooltip == null)
-		{
-			tooltip = new Tooltip(x, y);
-			tooltip.visible = false;
-
-			scene.add(tooltip);
-		}
-
 		tooltip.setText(text);
 	}
 
@@ -45,16 +31,24 @@ class TooltipButton extends Button
 		tooltip.x = ttPos.x;
 		tooltip.y = ttPos.y;
 
-		tooltip.visible = true;
+		if(tooltip.x < 0)
+			tooltip.x = 5;
+		
+		if(tooltip.x + width > HXP.width)
+			tooltip.x = HXP.width - width - 5;
+
+		scene.add(tooltip);
 	}
 
 	public function hideTooltip()
 	{
-		tooltip.visible = false;
+		scene.remove(tooltip);
 	}
 
 	private function init()
 	{
+		tooltip = new Tooltip(x, y);
+
 		this.addListener(MouseEvent.MOUSE_OVER, onMouseOver);
 		this.addListener(MouseEvent.MOUSE_OUT, onMouseOut);
 	}

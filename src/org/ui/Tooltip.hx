@@ -5,7 +5,6 @@ import com.haxepunk.graphics.Graphiclist;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Text;
 
-
 class Tooltip extends Entity
 {
 	private var tf:Text;

@@ -1,19 +1,26 @@
 package model.proxy;
 
+import model.dto.ProjectileDTO;
+
 class ProjectileProxy
 {
-	public var projectileTemplate:Dynamic;
+	public var projectileTemplates:Array<ProjectileDTO>;
 
 	private static var instance:ProjectileProxy;
 
 	private function new()
 	{
-		projectileTemplate = {
-			assetPath: "gfx/glontz.png",
-			sound: "sfx/laser.mp3",
-			width: 20, height: 5,
-			damage: 10, energy: 2
-		};
+		projectileTemplates = [
+			new ProjectileDTO({
+				assetPath: "gfx/glontz.png", sound: "sfx/laser.mp3",
+				width: 6, height: 12, speed: 15
+			}),
+
+			new ProjectileDTO({
+				assetPath: "gfx/glontz2.png", sound: "sfx/laser1.mp3",
+				width: 6, height: 15, speed: 25
+			}),
+		];
 	}
 
 	public static function cloneInstance():ProjectileProxy

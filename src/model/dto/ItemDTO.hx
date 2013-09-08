@@ -10,4 +10,9 @@ class ItemDTO extends AbstractDTO
 	public var offset:Point;
 	public var assetPath:String;
 	public var layerAsset:String;
+
+	public function getTooltipLabel():String
+	{
+		return name;
+	}
 }

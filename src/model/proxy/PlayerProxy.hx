@@ -3,6 +3,7 @@ package model.proxy;
 import model.consts.ItemTypeConsts;
 import model.dto.ItemDTO;
 import model.dto.HardpointDTO;
+import model.dto.WeaponDTO;
 
 class PlayerProxy
 {
@@ -33,41 +34,34 @@ class PlayerProxy
 						name:"Hardpoint 1",
 						assetPath:"gfx/hardpoint.png",
 						type: ItemTypeConsts.ITEM_WEAPON,
-						x:100, y:100,
+						x:30, y:80,
 						
-						item: new ItemDTO({
-							assetPath: "gfx/arma_3_icon.png",
-							name:"Weapon 3",
-							type: ItemTypeConsts.ITEM_WEAPON,
-							layerAsset: "gfx/arma_3.png"})
-						}),
+						item: ItemsProxy.cloneInstance().itemTemplates[0]
+					}),
+
+					new HardpointDTO({
+						name:"Hardpoint 1",
+						assetPath:"gfx/hardpoint.png",
+						type: ItemTypeConsts.ITEM_WEAPON,
+						x:215, y:80,
+
+						item: ItemsProxy.cloneInstance().itemTemplates[1]					
+					}),
+
 
 					new HardpointDTO({
 						name:"Hardpoint 2",
 						assetPath:"gfx/hardpoint.png",
 						type: ItemTypeConsts.ITEM_UTILITY,
-						x:200, y:200})
+						x:200, y:200
+					})
 				]
 			},
 
 			items: [
-				new ItemDTO({
-					assetPath: "gfx/arma_1_icon.png",
-					name:"Weapon 1",
-					type: ItemTypeConsts.ITEM_WEAPON,
-					layerAsset: "gfx/arma_1.png"}),
-
-				new ItemDTO({
-					assetPath: "gfx/arma_2_icon.png",
-					name:"Weapon 2",
-					type: ItemTypeConsts.ITEM_WEAPON,
-					layerAsset: "gfx/arma_2.png"}),
-
-				new ItemDTO({
-					assetPath: "gfx/shield_icon.png",
-					name:"Utility 1",
-					type: ItemTypeConsts.ITEM_UTILITY,
-					layerAsset: "gfx/shield.png"})
+				ItemsProxy.cloneInstance().itemTemplates[2],
+				ItemsProxy.cloneInstance().itemTemplates[3],
+				ItemsProxy.cloneInstance().itemTemplates[1]
 			]
 		};
 	}

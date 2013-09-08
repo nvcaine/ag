@@ -27,8 +27,10 @@ class InventoryScene extends Scene
 {
 	private var backB:Button;
 	private var em:EventManager;
+
 	private var grid:InventoryGrid;
 	private var template:ShipTemplate;
+	private var stats:StatsView;
 
 	override public function begin()
 	{
@@ -67,10 +69,10 @@ class InventoryScene extends Scene
 	private function drawTemplate()
 	{
 		template = new ShipTemplate(0, 25, PlayerProxy.cloneInstance().playerData.shipTemplate);
+		stats = new StatsView(300, 110);
 
 		add(template);
-
-		addGraphic(new StatsView(), 0, 300, 110);
+		add(stats);
 	}
 
 	private function drawInventory(items:Array<ItemDTO>)
@@ -82,7 +84,6 @@ class InventoryScene extends Scene
 
 	private function onBack(e:MouseEvent)
 	{
-		// save player info to player proxy
 		template.saveTemplate();
 
 		em.dispatchEvent(new MenuEvent(MenuEvent.SHOW_MENU));
@@ -94,6 +95,7 @@ class InventoryScene extends Scene
 		{
 			template.equipItem(e.data);
 			grid.unequip(e.data);
+			stats.updateStats();
 		}
 	}
 
@@ -101,5 +103,6 @@ class InventoryScene extends Scene
 	{
 		grid.equip(e.data);
 		template.unequipItem(e.data);
+		stats.updateStats();
 	}
 }
