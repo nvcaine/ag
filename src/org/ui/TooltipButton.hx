@@ -8,6 +8,7 @@ import nme.geom.Point;
 class TooltipButton extends Button
 {
 	private var tooltip:Tooltip;
+	private var text:String;
 
 	public function new(x:Float, y:Float, data:Dynamic)
 	{
@@ -18,16 +19,22 @@ class TooltipButton extends Button
 
 	override public function added()
 	{
-		super.added();
+		if(text == null)
+			return;
 
-		tooltip = new Tooltip(x, y);
-		tooltip.visible = false;
-
-		scene.add(tooltip);
+		setTooltipText(text);
 	}
 
 	public function setTooltipText(text:String)
 	{
+		if(tooltip == null)
+		{
+			tooltip = new Tooltip(x, y);
+			tooltip.visible = false;
+
+			scene.add(tooltip);
+		}
+
 		tooltip.setText(text);
 	}
 

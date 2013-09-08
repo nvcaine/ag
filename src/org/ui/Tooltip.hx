@@ -19,6 +19,9 @@ class Tooltip extends Entity
 
 	public function setText(text:String, ?options:TextOptions)
 	{
+		if(text == null)
+			return;
+
 		var textOptions:TextOptions = {font: "font/xoloniumregular.ttf", color: 0x00FF00};
 
 		tf = new Text(text, 0, 0, 0, 0, textOptions);

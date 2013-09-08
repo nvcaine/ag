@@ -17,16 +17,13 @@ class InventoryItem extends TooltipButton
 	private var em:EventManager;
 	public var data:ItemDTO;
 
-	public function new(row:Int, col:Int, cellWidth:Int, cellHeight:Int, data:Dynamic)
+	public function new(row:Int, col:Int, cellWidth:Int, cellHeight:Int, data:ItemDTO)
 	{
 		var pos:Point = getCoords(row, col, cellWidth, cellHeight);
 
 		super(pos.x, pos.y, {defaultImage: data.assetPath});
 
-		if(Type.getClassName(Type.getClass(data)) != "model.dto.ItemDTO")
-			this.data = new ItemDTO(data);
-		else
-			this.data = data;
+		this.data = data;
 
 		setHitbox(cellWidth, cellHeight);
 
