@@ -11,9 +11,9 @@ class ScrollingBackground extends Entity
 	private var currentPass:Int = 0;
 	private var speed:Float;
 
-	public function new(x, y, speed:Float = 0)
+	public function new(speed:Float = 0)
 	{
-		super(x, y);
+		super(0, 0);
 
 		this.speed = speed;
 		bgImages = [];
@@ -23,7 +23,7 @@ class ScrollingBackground extends Entity
 	{
 		super.added();
 
-		initImages(["gfx/bg.png", "gfx/bg.png", "gfx/bg.png"]);
+		initImages(["gfx/bg2.jpg", "gfx/bg2.jpg"]);
 	}
 
 	override public function update()

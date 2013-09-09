@@ -1,29 +1,29 @@
-package entities.game.misc;
+package entities.game;
 
+import com.haxepunk.HXP;
+import com.haxepunk.Entity;
+
+import flash.events.EventDispatcher;
+
+import model.events.HUDEvent;
 import model.consts.EntityTypeConsts;
-import model.dto.ProjectileDTO;
 
 import nme.Assets;
 import nme.media.SoundTransform;
 
 import org.actors.MessageEntity;
-import org.actors.GravityField;
 
 class Projectile extends MessageEntity
 {
-	public var gravityField:GravityField;
-
 	public var damage(get, null):Int;
 
-	private var data:ProjectileDTO;
+	private var data:Dynamic;
 
-	public function new(x:Float, y:Float, data:ProjectileDTO)
+	public function new(x:Float, y:Float, data:Dynamic) // a dto will come in handy here
 	{
 		super(x, y);
 
 		this.data = data;
-
-		gravityField = new GravityField();
 	}
 
 	public function get():Int
@@ -33,18 +33,24 @@ class Projectile extends MessageEntity
 
 	override public function added()
 	{
+		super.added();
+
 		init(data);
+
+		sendMessage(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, -Std.int(data.energy)));
 	}
 
 	override public function update()
 	{
-		moveBy(0, -data.speed);
+		moveBy(0, -10);
 
-		gravityField.positionX = x;
-		gravityField.positionY = y;
-
-		if(this.y < 0)
+		if(this.y < scene.camera.y)
+		{
 			scene.remove(this);
+			return;
+		}
+
+		super.update();
 	}
 
 	private function init(data:Dynamic)

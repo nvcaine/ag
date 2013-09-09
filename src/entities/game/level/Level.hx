@@ -8,6 +8,7 @@ import entities.game.ships.EnemyShip;
 import model.proxy.EnemyProxy;
 
 import org.actors.ScrollingBackground;
+import org.actors.ParticleBackground;
 
 class Level extends Entity
 {
@@ -23,17 +24,18 @@ class Level extends Entity
 		init();
 	}
 
-	override public function update()
+	/*override public function update()
 	{
 		spawnTimer -= HXP.elapsed;
 		
 		if(spawnTimer < 0)
 			spawn();
-	}
+	}*/
 
 	private function init()
 	{
-		scene.add(new ScrollingBackground(0, 0, 2.33));
+		//scene.add(new ScrollingBackground(2.33));
+		scene.add(new ParticleBackground(0.15));
 	}
 
 	private function spawn()
