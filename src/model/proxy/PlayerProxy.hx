@@ -36,7 +36,7 @@ class PlayerProxy
 						type: ItemTypeConsts.ITEM_WEAPON,
 						x:30, y:80,
 						
-						item: ItemsProxy.cloneInstance().itemTemplates[0]
+						item: ItemsProxy.cloneInstance().itemTemplates[1]
 					}),
 
 					new HardpointDTO({
