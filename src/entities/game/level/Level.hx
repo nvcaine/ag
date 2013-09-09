@@ -24,18 +24,19 @@ class Level extends Entity
 		init();
 	}
 
-	/*override public function update()
+	override public function update()
 	{
 		spawnTimer -= HXP.elapsed;
 		
 		if(spawnTimer < 0)
 			spawn();
-	}*/
+	}
 
 	private function init()
 	{
-		//scene.add(new ScrollingBackground(2.33));
-		scene.add(new ParticleBackground(0.25));
+		scene.add(new ScrollingBackground(2.33));
+		scene.add(new ParticleBackground(0.0025, 8.5, 3));
+		scene.add(new ParticleBackground(0.025, 4, 2));
 	}
 
 	private function spawn()

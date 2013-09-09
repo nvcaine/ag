@@ -9,12 +9,16 @@ class ParticleBackground extends Entity
 {
 	private var spawnDelay:Float;
 	private var spawnTimer:Float = 0;
+	private var velocity:Float;
+	private var size:Int;
 
-	public function new(spawnDelay:Float)
+	public function new(spawnDelay:Float, velocity:Float, size:Int)
 	{
 		super(0, 0);
 
 		this.spawnDelay = spawnDelay;
+		this.velocity = velocity;
+		this.size = size;
 	}
 
 	override public function update()
@@ -34,7 +38,7 @@ class ParticleBackground extends Entity
 	{
 		var randX:Int = Std.random(HXP.width - 3) + 3;
 
-		scene.add(new BackgroundParticle(randX, 0));
+		scene.add(new BackgroundParticle(randX, 0, velocity, size));
 	}
 
 	private function getUpdateFields():Array<GravityField>

@@ -15,13 +15,16 @@ class BackgroundParticle extends Entity
 	private var fields:Array<GravityField>;
 
 	private var velX:Float = 0;
-	private var velY:Float = 5.5;
+	private var velY:Float = 8.5;
+	private var size:Int;
 
-	public function new(x:Float, y:Float)
+	public function new(x:Float, y:Float, velocity:Float, size:Int)
 	{
 		super(x, y);
 
 		this.fields = [];
+		this.velY = velocity;
+		this.size = size;
 	}
 
 	public function updateFields(fields:Array<GravityField>)
@@ -36,25 +39,28 @@ class BackgroundParticle extends Entity
 
 	override public function update()
 	{
-		var acceleration:Point = getAcceleration();
-
-		velX += acceleration.x;
-		velY += acceleration.y;
-
-		if(Math.isNaN(velX) || Math.isNaN(velY) || y > HXP.height || y < 0 || x < 0 || x > HXP.width)
+		if(y > HXP.height || y < 0 || x < 0 || x > HXP.width)
 		{
 			scene.remove(this);
 			return;
 		}
 
+		var acceleration:Point = getAcceleration();
+
+		if(!Math.isNaN(acceleration.x) && !Math.isNaN(acceleration.y))
+		{
+			velX += acceleration.x;
+			velY += acceleration.y;
+		}
+
 		moveBy(velX, velY);
 
-		//initGraphic();
+		initGraphic();
 	}
 
 	private function initGraphic()
 	{
-		graphic = new Graphiclist([/*new Text(Std.string(y) + ": " + Std.string(velY)),*/ Image.createCircle(2, 0xFFFFFF)]);
+		graphic = Image.createRect(size, size, 0xFFFF33, 0.75);
 	}
 
 	private function getAcceleration():Point
