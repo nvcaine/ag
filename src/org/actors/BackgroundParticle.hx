@@ -17,14 +17,16 @@ class BackgroundParticle extends Entity
 	private var velX:Float = 0;
 	private var velY:Float = 8.5;
 	private var size:Int;
+	private var alpha:Float;
 
-	public function new(x:Float, y:Float, velocity:Float, size:Int)
+	public function new(x:Float, y:Float, velocity:Float, size:Int, alpha:Float)
 	{
 		super(x, y);
 
 		this.fields = [];
 		this.velY = velocity;
 		this.size = size;
+		this.alpha = alpha;
 	}
 
 	public function updateFields(fields:Array<GravityField>)
@@ -60,7 +62,7 @@ class BackgroundParticle extends Entity
 
 	private function initGraphic()
 	{
-		graphic = Image.createRect(size, size, 0xFFFF33, 0.75);
+		graphic = Image.createRect(size, size, 0xFFFFFF, alpha);
 	}
 
 	private function getAcceleration():Point

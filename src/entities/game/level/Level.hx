@@ -28,23 +28,32 @@ class Level extends Entity
 	{
 		spawnTimer -= HXP.elapsed;
 		
-		if(spawnTimer < 0)
-			spawn();
+		/*if(spawnTimer < 0)
+			spawn();*/
+
+		updateWaves();
+	}
+
+	private function updateWaves()
+	{
+		currentWave = getCurrentWave();
+
+		currentWave.update();
 	}
 
 	private function init()
 	{
 		scene.add(new ScrollingBackground(2.33));
-		scene.add(new ParticleBackground(0.0025, 8.5, 3));
-		scene.add(new ParticleBackground(0.025, 4, 2));
+		scene.add(new ParticleBackground(0.025, 6, 2, 0.75));
+		scene.add(new ParticleBackground(0.05, 3, 1, 0.5));
 	}
 
-	private function spawn()
+	/*private function spawn()
 	{
 		var enemyData:Dynamic = Reflect.copy(EnemyProxy.cloneInstance().enemyTemplate);
 
 		scene.add(new EnemyShip(HXP.width / 2, 10, enemyData));
 
 		spawnTimer = 2.66;
-	}
+	}*/
 }
