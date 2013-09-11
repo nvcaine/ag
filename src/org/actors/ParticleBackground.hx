@@ -10,16 +10,16 @@ class ParticleBackground extends Entity
 	private var spawnDelay:Float;
 	private var spawnTimer:Float = 0;
 	private var velocity:Float;
-	private var size:Int;
+	private var size:Float;
 	private var alpha:Float;
 
-	public function new(spawnDelay:Float, velocity:Float, size:Int, alpha:Float)
+	public function new(spawnDelay:Float, velocity:Float, scale:Float, alpha:Float)
 	{
 		super(0, 0);
 
 		this.spawnDelay = spawnDelay;
 		this.velocity = velocity;
-		this.size = size;
+		this.size = scale;
 		this.alpha = alpha;
 	}
 
@@ -63,6 +63,24 @@ class ParticleBackground extends Entity
 		scene.getClass(BackgroundParticle, particles);
 
 		for(particle in particles)
-			particle.updateFields(fields);
+		{
+			var strongFields:Array<GravityField> = [];
+
+			for(field in fields)
+				if(fieldForce(field, particle.x, particle.y) != 0)
+					strongFields.push(field);
+
+			particle.updateFields(strongFields);
+		}
+	}
+
+	private function fieldForce(field:GravityField, px:Float, py:Float):Float
+	{
+		var distance:Float = Math.sqrt((field.positionX - px) * (field.positionX - px) + (field.positionY - py) * (field.positionY - py));
+
+		if(distance < Math.abs(field.mass))
+			return field.mass;
+
+		return 0;
 	}
 }

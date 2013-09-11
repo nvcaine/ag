@@ -16,10 +16,10 @@ class BackgroundParticle extends Entity
 
 	private var velX:Float = 0;
 	private var velY:Float = 8.5;
-	private var size:Int;
+	private var size:Float;
 	private var alpha:Float;
 
-	public function new(x:Float, y:Float, velocity:Float, size:Int, alpha:Float)
+	public function new(x:Float, y:Float, velocity:Float, size:Float, alpha:Float)
 	{
 		super(x, y);
 
@@ -62,7 +62,11 @@ class BackgroundParticle extends Entity
 
 	private function initGraphic()
 	{
-		graphic = Image.createRect(size, size, 0xFFFFFF, alpha);
+		var g:Image = Image.createRect(1, 1, 0xFFFFFF, alpha);
+
+		g.scale = size;
+
+		graphic = g;
 	}
 
 	private function getAcceleration():Point
@@ -75,7 +79,7 @@ class BackgroundParticle extends Entity
 			var vectorX:Float = field.positionX - x;
 			var vectorY:Float = field.positionY - y;
 
-			var force:Float = field.mass / Math.pow((vectorX * vectorX + field.mass / 2 + vectorY * vectorY + field.mass / 2), 1.5); 
+			var force:Float = field.mass / Math.pow(((vectorX * vectorX) + (vectorY * vectorY) + (field.mass * size)), 1.5); 
 
 			//if(Math.isNaN(force))
 				//trace("(" + field.positionX + " - " + x + ")" + "(" + field.positionY + " - " + y + ")");

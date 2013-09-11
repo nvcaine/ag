@@ -31,21 +31,22 @@ class Level extends Entity
 		/*if(spawnTimer < 0)
 			spawn();*/
 
-		updateWaves();
+		//updateWaves();
 	}
 
-	private function updateWaves()
+	/*private function updateWaves()
 	{
 		currentWave = getCurrentWave();
 
 		currentWave.update();
-	}
+	}*/
 
 	private function init()
 	{
-		scene.add(new ScrollingBackground(2.33));
-		scene.add(new ParticleBackground(0.025, 6, 2, 0.75));
-		scene.add(new ParticleBackground(0.05, 3, 1, 0.5));
+		//scene.add(new ScrollingBackground(2.33));
+		scene.add(new ParticleBackground(0.15, 8, 3.99, 0.5));
+		scene.add(new ParticleBackground(0.055, 4, 2.75, 0.5));
+		scene.add(new ParticleBackground(0.05, 2, 2, 0.75));
 	}
 
 	/*private function spawn()
