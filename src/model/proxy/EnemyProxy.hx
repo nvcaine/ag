@@ -8,6 +8,7 @@ import model.dto.HardpointDTO;
 class EnemyProxy
 {
 	public var enemyTemplate:Dynamic;
+	public var waypoints:Array<Dynamic>;
 
 	private static var instance:EnemyProxy;
 
@@ -41,15 +42,15 @@ class EnemyProxy
 					assetPath:"gfx/hardpoint.png",
 					type: ItemTypeConsts.ITEM_UTILITY,
 					x:200, y:200})
-			],
-
-			waypoints: [
-				{x: 0, y: 0},
-				{x: -100, y: 200},
-				{x: 100, y: 200},
-				{x: 0, y: 0}
 			]
 		};
+
+		waypoints = [
+			{x: 0, y: 0},
+			{x: -100, y: 200},
+			{x: 100, y: 200},
+			{x: 0, y: 0}
+		];
 	}
 
 	public static function cloneInstance():EnemyProxy

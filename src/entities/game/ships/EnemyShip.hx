@@ -15,33 +15,48 @@ import com.haxepunk.tweens.TweenEvent;
 class EnemyShip extends ShipEntity
 {
 	private var tween:LinearPath;
-	private var finishedWaypoints:Bool;
 
-	public function new(x:Float, y:Float, data:Dynamic)
+	private var waypoints:Dynamic;
+
+	public function new(x:Float, y:Float, data:Dynamic, ?waypoints:Array<Dynamic>)
 	{
 		super(x, y, data);
 
+		this.layer = 0;
+
 		this.type = EntityTypeConsts.ENEMY; // don't confuse with data.type (which refers to the type of enemy)
-		this.finishedWaypoints = false;
+
+		if(waypoints != null)
+			this.waypoints = waypoints;
 	}
 
 	override public function added()
 	{
 		super.added();
 
-		initWaypointsTween(data.waypoints, data.speed);
+		if(waypoints != null)
+			initWaypointsTween(waypoints, data.speed);
 	}
 
 	override public function update()
 	{
 		checkCollision(EntityTypeConsts.PROJECTILE, collideWithProjectile);
 		checkCollision(EntityTypeConsts.PLAYER, collideWithPlayer);
+		checkHealth();
 
-		if(!finishedWaypoints)
+		move();
+	}
+
+	private function move()
+	{
+		if(waypoints != null)
 			updateTween();
 		else
-			moveBy(0, 3);
+			moveBy(0, data.speed);
+	}
 
+	private function checkHealth()
+	{
 		if(data.health <= 0)
 		{
 			die(true, true);
@@ -104,7 +119,9 @@ class EnemyShip extends ShipEntity
 			sendMessage(new HUDEvent(HUDEvent.KILL_SCORE, data.score, 0, data.xp));
 
 		graphic = null;
-		tween.removeEventListener(TweenEvent.FINISH, onPassedWaypoints);
+
+		if(waypoints != null)
+			tween.removeEventListener(TweenEvent.FINISH, onPassedWaypoints);
 
 		scene.remove(this);
 	}
