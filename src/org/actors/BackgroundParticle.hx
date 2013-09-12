@@ -16,8 +16,8 @@ class BackgroundParticle extends Entity
 
 	private var velX:Float = 0;
 	private var velY:Float = 8.5;
-	private var size:Float;
 	private var alpha:Float;
+	public var size(get_size, null):Float;
 
 	public function new(x:Float, y:Float, velocity:Float, size:Float, alpha:Float)
 	{
@@ -27,6 +27,11 @@ class BackgroundParticle extends Entity
 		this.velY = velocity;
 		this.size = size;
 		this.alpha = alpha;
+	}
+
+	private function get_size():Float
+	{
+		return this.size;
 	}
 
 	public function updateFields(fields:Array<GravityField>)
@@ -47,17 +52,21 @@ class BackgroundParticle extends Entity
 			return;
 		}
 
-		var acceleration:Point = getAcceleration();
-
-		if(!Math.isNaN(acceleration.x) && !Math.isNaN(acceleration.y))
+		if(fields.length > 0)
 		{
-			velX += acceleration.x;
-			velY += acceleration.y;
+			if(size == 1)
+				trace(fields.length);
+
+			var acceleration:Point = getAcceleration();
+
+			if(!Math.isNaN(acceleration.x) && !Math.isNaN(acceleration.y))
+			{
+				velX += acceleration.x;
+				velY += acceleration.y;
+			}
 		}
 
 		moveBy(velX, velY);
-
-		initGraphic();
 	}
 
 	private function initGraphic()
@@ -78,11 +87,7 @@ class BackgroundParticle extends Entity
 		{
 			var vectorX:Float = field.positionX - x;
 			var vectorY:Float = field.positionY - y;
-
 			var force:Float = field.mass / Math.pow(((vectorX * vectorX) + (vectorY * vectorY) + (field.mass * size)), 1.5); 
-
-			//if(Math.isNaN(force))
-				//trace("(" + field.positionX + " - " + x + ")" + "(" + field.positionY + " - " + y + ")");
 
 			totalAccX += vectorX * force;
 			totalAccY += vectorY * force;

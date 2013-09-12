@@ -12,8 +12,9 @@ class ParticleBackground extends Entity
 	private var velocity:Float;
 	private var size:Float;
 	private var alpha:Float;
+	private var react:Bool;
 
-	public function new(spawnDelay:Float, velocity:Float, scale:Float, alpha:Float)
+	public function new(spawnDelay:Float, velocity:Float, scale:Float, alpha:Float, react:Bool = true)
 	{
 		super(0, 0);
 
@@ -21,19 +22,19 @@ class ParticleBackground extends Entity
 		this.velocity = velocity;
 		this.size = scale;
 		this.alpha = alpha;
+
+		this.react = react;
 	}
 
 	override public function update()
 	{
 		spawnTimer -= HXP.elapsed;
 
-		updateFields(getUpdateFields());
+		if(react)
+			updateFields(getUpdateFields());
 
 		if(spawnTimer < 0)
-		{
-			spawnTimer = spawnDelay;
 			spawn();
-		}
 	}
 
 	private function spawn()
@@ -41,6 +42,8 @@ class ParticleBackground extends Entity
 		var randX:Int = Std.random(HXP.width - 3) + 3;
 
 		scene.add(new BackgroundParticle(randX, 0, velocity, size, alpha));
+
+		spawnTimer = spawnDelay;
 	}
 
 	private function getUpdateFields():Array<GravityField>
@@ -58,20 +61,19 @@ class ParticleBackground extends Entity
 
 	private function updateFields(fields:Array<GravityField>)
 	{
-		var particles:Array<BackgroundParticle> = [];
-
-		scene.getClass(BackgroundParticle, particles);
+		var particles:Array<BackgroundParticle> = cast(scene, scenes.GameScene).getBackgroundParticles(size);
 
 		for(particle in particles)
-		{
-			var strongFields:Array<GravityField> = [];
+			if(particle.size == size)
+			{
+				var strongFields:Array<GravityField> = [];
 
-			for(field in fields)
-				if(fieldForce(field, particle.x, particle.y) != 0)
-					strongFields.push(field);
+				for(field in fields)
+					if(fieldForce(field, particle.x, particle.y) != 0)
+						strongFields.push(field);
 
-			particle.updateFields(strongFields);
-		}
+				particle.updateFields(strongFields);
+			}
 	}
 
 	private function fieldForce(field:GravityField, px:Float, py:Float):Float

@@ -43,10 +43,10 @@ class Level extends Entity
 
 	private function init()
 	{
-		//scene.add(new ScrollingBackground(2.33));
-		scene.add(new ParticleBackground(0.15, 8, 3.99, 0.5));
-		scene.add(new ParticleBackground(0.055, 4, 2.75, 0.5));
-		scene.add(new ParticleBackground(0.05, 2, 2, 0.75));
+		scene.add(new ScrollingBackground(2.33));
+		scene.add(new ParticleBackground(0.3, 6, 5, 0.75));
+		scene.add(new ParticleBackground(0.1, 3.5, 3, 0.75));
+		scene.add(new ParticleBackground(0.075, 2, 2, 1, false));
 	}
 
 	/*private function spawn()

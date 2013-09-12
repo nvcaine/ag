@@ -1,5 +1,6 @@
 package scenes;
 
+import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 
@@ -15,6 +16,8 @@ import model.events.LevelEvent;
 import model.proxy.PlayerProxy;
 
 import org.events.EventManager;
+
+import org.actors.BackgroundParticle;
 
 class GameScene extends Scene
 {
@@ -42,6 +45,19 @@ class GameScene extends Scene
 		super.update();
 
 		player.handleInput();
+	}
+
+	public function getBackgroundParticles(size:Float):Array<BackgroundParticle>
+	{
+		var result:Array<BackgroundParticle> = [];
+
+		getClass(BackgroundParticle, result);
+
+		for(particle in result)
+			if(particle.size != size)
+				result.remove(particle);
+
+		return result;
 	}
 
 	private function init()

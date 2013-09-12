@@ -32,8 +32,7 @@ class EnemyShip extends GameEntity
 	{
 		super.update();
 
-		checkCollision(EntityTypeConsts.PROJECTILE, collideWithProjectile);
-		checkCollision(EntityTypeConsts.PLAYER, collideWithPlayer);
+		checkCollision([EntityTypeConsts.PROJECTILE, EntityTypeConsts.PLAYER], [collideWithProjectile, collideWithPlayer]);
 
 		updateTween();
 
@@ -66,12 +65,15 @@ class EnemyShip extends GameEntity
 		this.y = tween.y + data.speed;		
 	}
 
-	private function checkCollision(entityType:String, handler:Entity->Void)
+	private function checkCollision(entityType:Array<String>, handler:Array<Entity->Void>)
 	{
-		var entity:Entity = collide(entityType, this.x, this.y);
+		for(i in 0...entityType.length)
+		{
+			var entity:Entity = collide(entityType, this.x, this.y);
 
-		if(entity != null)
-			handler(entity);
+			if(entity != null)
+				handler[i](entity);
+		}
 	}
 
 	private function collideWithProjectile(e:Entity)
