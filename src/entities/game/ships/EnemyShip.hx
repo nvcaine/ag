@@ -63,7 +63,7 @@ class EnemyShip extends ShipEntity
 			dropPickup(100);
 		}
 
-		if(this.y > scene.camera.y + HXP.height)
+		if(this.y > HXP.height)
 			die(false);
 	}
 
@@ -133,9 +133,8 @@ class EnemyShip extends ShipEntity
 
 	private function onPassedWaypoints(e:TweenEvent)
 	{
-		//finishedWaypoints = true;
+		tween.removeEventListener(TweenEvent.FINISH, onPassedWaypoints);
 
-		//tween.removeEventListener(TweenEvent.FINISH, onPassedWaypoints);
-		tween.start();
+		this.waypoints = null;
 	}
 }

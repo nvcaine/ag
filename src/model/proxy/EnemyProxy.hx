@@ -16,7 +16,7 @@ class EnemyProxy
 	{
 		enemyTemplate = {
 
-			assetPath: "gfx/nava_1.png",
+			assetPath: "gfx/enemy_01.png",
 			energyRegen: 1,
 			type: "enemy",
 			health: 100, damage: 25, speed: 3,
@@ -24,7 +24,7 @@ class EnemyProxy
 			score: 5, xp: 10,
 
 			hardpoints: [
-				new HardpointDTO({
+				/*new HardpointDTO({
 					name:"Hardpoint 1",
 					assetPath:"gfx/hardpoint.png",
 					type: ItemTypeConsts.ITEM_WEAPON,
@@ -41,7 +41,7 @@ class EnemyProxy
 					name:"Hardpoint 2",
 					assetPath:"gfx/hardpoint.png",
 					type: ItemTypeConsts.ITEM_UTILITY,
-					x:200, y:200})
+					x:200, y:200})*/
 			]
 		};
 
@@ -60,5 +60,4 @@ class EnemyProxy
 
 		return instance;
 	}
-
 }

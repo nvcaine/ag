@@ -36,7 +36,7 @@ class GameScene extends Scene
 
 		clearListeners(
 			EventManager.cloneInstance(),
-			[EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP, LevelEvent.KILLED_BOSS],
+			[EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP, LevelEvent.FINISHED_LEVEL],
 			[onEnemyExplode, onDropPickup, onKilledBoss]);
 	}	
 
@@ -66,7 +66,7 @@ class GameScene extends Scene
 
 		initListeners(
 			EventManager.cloneInstance(),
-			[EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP, LevelEvent.KILLED_BOSS],
+			[EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP, LevelEvent.FINISHED_LEVEL],
 			[onEnemyExplode, onDropPickup, onKilledBoss]);
 
 		add(new Level());

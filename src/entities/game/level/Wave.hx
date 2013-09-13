@@ -1,42 +1,39 @@
 package entities.game.level;
 
+import com.haxepunk.Entity;
+import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 
 import entities.game.ships.EnemyShip;
 
 import model.proxy.EnemyProxy;
 
-class Wave
+class Wave extends Entity
 {
-	private var data:Dynamic;
-	private var scene:Scene;
+	private var waves:Array<Dynamic>;
 
-	public function new(scene:Scene)
+	public function new()
 	{
-		data = {
-			enemies: [{
-				template: EnemyProxy.cloneInstance().enemyTemplate,
-				waypoints: EnemyProxy.cloneInstance().waypoints,
-				startX: 50, startY: 20
-			}, {
-				template: EnemyProxy.cloneInstance().enemyTemplate,
-				waypoints: EnemyProxy.cloneInstance().waypoints,
-				startX: 300, startY: 20
-			}, {
-				template: EnemyProxy.cloneInstance().enemyTemplate,
-				waypoints: EnemyProxy.cloneInstance().waypoints,
-				startX: 450, startY: 20
-			}]
-		};
+		super(0, 0);
 
-		this.scene = scene;
-
-		init();
 	}
 
-	private function init()
+	override public function added()
 	{
-		var enemies:Array<Dynamic> = data.enemies;
+		initWave(waves[0]);
+	}
+
+	override public function update()
+	{
+		if(waveTimer < 0)
+			initWave(waves[currentWave]);
+
+		waveTimer -= HXP.elapsed;
+	}
+
+	private function initWave(waveData:Dynamic)
+	{
+		var enemies:Array<Dynamic> = waveData.enemies;
 
 		for(t in enemies)
 		{
@@ -44,5 +41,8 @@ class Wave
 
 			scene.add(enemy);
 		}
+
+		waveTimer = waveData.duration;
+		currentWave++;
 	}
 }
