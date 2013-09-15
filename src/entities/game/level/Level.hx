@@ -7,7 +7,6 @@ import entities.game.ships.EnemyShip;
 
 import model.events.LevelEvent;
 import model.proxy.EnemyProxy;
-import model.proxy.LevelProxy;
 
 import org.actors.MessageEntity;
 import org.actors.ScrollingBackground;
@@ -15,19 +14,18 @@ import org.actors.ParticleBackground;
 
 class Level extends MessageEntity
 {
+	private var waves:Array<Dynamic>;
 	private var spawnTimer:Float = 0;
 	private var currentWave:Int = 0;
 
 	private var enemyProxy:EnemyProxy;
 
-	private var waves:Array<Dynamic>;
-
-	public function new()
+	public function new(wavesData:Array<Dynamic>)
 	{
 		super(0, 0);
 
 		enemyProxy = EnemyProxy.cloneInstance();
-		waves = LevelProxy.cloneInstance().waves;
+		waves = wavesData;
 	}
 
 	override public function added()
@@ -42,15 +40,19 @@ class Level extends MessageEntity
 		spawnTimer -= HXP.elapsed;
 		
 		if(spawnTimer < 0)
+			updateWaves();
+	}
+
+	private function updateWaves()
+	{
+		if(currentWave >= waves.length)
 		{
-			if(currentWave < waves.length)
-				initWave(waves[currentWave]);
-			else
-			{
-				sendMessage(new LevelEvent(LevelEvent.FINISHED_LEVEL));
-				scene.remove(this);
-			}
+			sendMessage(new LevelEvent(LevelEvent.FINISHED_LEVEL));
+			scene.remove(this);
+			return;
 		}
+
+		initWave(waves[currentWave]);
 	}
 
 	private function init()

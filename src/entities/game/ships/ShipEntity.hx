@@ -16,7 +16,7 @@ class ShipEntity extends MessageEntity
 	{
 		super(x, y);
 
-		this.data = data;
+		this.data = Reflect.copy(data);
 	}
 
 	override public function added()

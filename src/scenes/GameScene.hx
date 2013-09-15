@@ -13,15 +13,22 @@ import entities.game.ui.GameHUD;
 
 import model.events.EntityEvent;
 import model.events.LevelEvent;
+
 import model.proxy.PlayerProxy;
+import model.proxy.LevelProxy;
 
 import org.events.EventManager;
 
 import org.actors.BackgroundParticle;
 
+
 class GameScene extends Scene
 {
 	private var player:Player;
+
+	private var endTimer:Float = 0.05;
+	private var killedBoss:Bool = false;
+	private var endCount:Int = 0;
 
 	override public function begin()
 	{
@@ -45,6 +52,18 @@ class GameScene extends Scene
 		super.update();
 
 		player.handleInput();
+
+		if(killedBoss && endCount < 10)
+		{
+			endTimer -= HXP.elapsed;
+
+			if(endTimer < 0)
+			{
+				endCount++;
+				add(new EndLevelText(74, camera.y + 200));
+				endTimer = 0.05;
+			}
+		}
 	}
 
 	public function getBackgroundParticles(size:Float):Array<BackgroundParticle>
@@ -69,10 +88,14 @@ class GameScene extends Scene
 			[EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP, LevelEvent.FINISHED_LEVEL],
 			[onEnemyExplode, onDropPickup, onKilledBoss]);
 
-		add(new Level());
+		add(new Level(LevelProxy.cloneInstance().waves.concat([])));
 		addGraphic(new GameHUD({background: "gfx/hud2.png", healthBar: "gfx/hp.png", energyBar: "gfx/energy.png"}), 0, 0, 668);
 
 		player = new Player(HXP.width / 2, HXP.height - 150, this);
+
+		endTimer = 0.05;
+		killedBoss = false;
+		endCount = 0;
 	}
 
 	private function initListeners(listener:EventManager, events:Array<Dynamic>, handlers:Array<Dynamic>)
@@ -99,7 +122,6 @@ class GameScene extends Scene
 
 	private function onKilledBoss(e:LevelEvent)
 	{
-		add(new EndLevelText(74, camera.y + 200));
+		killedBoss = true;
 	}
-
 }
