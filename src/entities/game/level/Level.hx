@@ -59,9 +59,9 @@ class Level extends MessageEntity
 	{
 		scene.add(new ScrollingBackground(1));
 
-		scene.add(new ParticleBackground(0.3, 6, 5, 0.75));
+		/*scene.add(new ParticleBackground(0.3, 6, 5, 0.75));
 		scene.add(new ParticleBackground(0.1, 3.5, 3, 0.75));
-		scene.add(new ParticleBackground(0.075, 2, 2, 1, false));
+		scene.add(new ParticleBackground(0.075, 2, 2, 1, false));*/
 	}
 
 	private function initWave(waveData:Dynamic)
