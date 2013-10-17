@@ -36,7 +36,7 @@ class PlayerProxy
 						type: ItemTypeConsts.ITEM_WEAPON,
 						x:30, y:80,
 						
-						item: ItemsProxy.cloneInstance().itemTemplates[1]
+						item: ItemsProxy.cloneInstance().itemTemplates[5]
 					}),
 
 					new HardpointDTO({
@@ -45,7 +45,7 @@ class PlayerProxy
 						type: ItemTypeConsts.ITEM_WEAPON,
 						x:215, y:80,
 
-						item: ItemsProxy.cloneInstance().itemTemplates[1]					
+						item: ItemsProxy.cloneInstance().itemTemplates[4]
 					}),
 
 

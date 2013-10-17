@@ -14,6 +14,8 @@ class EnemyProxy
 
 	private function new()
 	{
+		// ship templates proxy
+
 		enemyTemplate = {
 
 			assetPath: "gfx/enemy_01.png",

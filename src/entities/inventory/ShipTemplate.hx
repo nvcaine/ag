@@ -9,6 +9,11 @@ import model.dto.ItemDTO;
 import model.dto.HardpointDTO;
 import model.proxy.PlayerProxy;
 
+import nme.Assets;
+import nme.display.BitmapData;
+import nme.geom.Point;
+import nme.geom.Rectangle;
+
 class ShipTemplate extends Entity
 {
 	private var hardpoints:Array<Hardpoint>;
@@ -64,27 +69,24 @@ class ShipTemplate extends Entity
 
 	private function updateTemplate()
 	{
-		if(graphic != null)
-			graphic.destroy();
+		var base:BitmapData = Assets.getBitmapData(data.assetPath).clone();
 
-		var elements:Array<Image> = [];
-		var base:Image = new Image(data.assetPath);
-
-		base.scaleX = base.scaleY = 3;
-
-		elements.push(base);
-
-		for(i in 0...hardpoints.length)
-			if(!hardpoints[i].isAvailable())
+		for(hardpoint in hardpoints)
+			if(!hardpoint.isAvailable())
 			{
-				var asset:Image = new Image(hardpoints[i].getLayerAsset());
+				var hardpointData:HardpointDTO = hardpoint.getData();
+				var layerAsset:BitmapData = Assets.getBitmapData(hardpoint.getLayerAsset()).clone();
+				var offset:Point = new Point(hardpointData.x / 3 + 15 - layerAsset.width, hardpointData.y / 3 + 15 - layerAsset.height);
+				var rect:Rectangle = new Rectangle(0, 0, layerAsset.width, layerAsset.height);
 
-				asset.scaleX = asset.scaleY = 3;
-
-				elements.push(asset);
+				base.copyPixels(layerAsset, rect , offset, null, null, true);
 			}
 
-		graphic = new Graphiclist(elements);
+		var resultImage:Image = new Image(base);
+
+		resultImage.scaleX = resultImage.scaleY = 3;
+
+		graphic = resultImage;
 	}
 
 	private function init()
@@ -97,28 +99,23 @@ class ShipTemplate extends Entity
 	private function drawShipTemplate()
 	{
 		var hpData:Array<HardpointDTO> = PlayerProxy.cloneInstance().playerData.shipTemplate.hardpoints;
+		var base:BitmapData = Assets.getBitmapData(data.assetPath).clone();
 
-		if(graphic != null)
-			graphic.destroy();
-
-		var elements:Array<Image> = [];
-		var base:Image = new Image(data.assetPath);
-
-		base.scaleX = base.scaleY = 3;
-
-		elements.push(base);
-
-		for(i in 0...hpData.length)
-			if(hpData[i].item != null)
+		for(hardpoint in hpData)
+			if(hardpoint.item != null)
 			{
-				var asset:Image = new Image(hpData[i].item.layerAsset);
+				var layerAsset:BitmapData = Assets.getBitmapData(hardpoint.item.layerAsset).clone();
+				var offset:Point = new Point(hardpoint.x / 3 + 15 - layerAsset.width, hardpoint.y / 3 + 15 - layerAsset.height);
+				var rect:Rectangle = new Rectangle(0, 0, layerAsset.width, layerAsset.height);
 
-				asset.scaleX = asset.scaleY = 3;
-
-				elements.push(asset);
+				base.copyPixels(layerAsset, rect , offset, null, null, true);
 			}
 
-		graphic = new Graphiclist(elements);
+		var baseImage:Image = new Image(base);
+
+		baseImage.scaleX = baseImage.scaleY = 3;
+
+		graphic = baseImage;
 
 		drawHardpoints(hpData); // direct reference
 	}

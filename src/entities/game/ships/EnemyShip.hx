@@ -2,6 +2,7 @@ package entities.game.ships;
 
 import com.haxepunk.Entity;
 import com.haxepunk.HXP;
+import com.haxepunk.graphics.Image;
 import com.haxepunk.tweens.motion.LinearPath;
 
 import entities.game.misc.Projectile;

@@ -12,10 +12,12 @@ class ItemsProxy
 
 	private function new()
 	{
+		// weapons should have a hardpoint asset too
+
 		itemTemplates = [
 			new WeaponDTO({
-				assetPath: "gfx/arma_3_icon.png", layerAsset: "gfx/arma_3.png",
 				name:"Weapon 3", type: ItemTypeConsts.ITEM_WEAPON,
+				assetPath: "gfx/arma_3_icon.png", layerAsset: "gfx/arma_3.png",
 				fireDelay: 1, damage: 30, energy: 10,
 				projectile: ProjectileProxy.cloneInstance().projectileTemplates[0]
 			}),
@@ -37,6 +39,20 @@ class ItemsProxy
 			new ItemDTO({
 				name:"Utility 1", type: ItemTypeConsts.ITEM_UTILITY,
 				assetPath: "gfx/shield_icon.png", layerAsset: "gfx/shield.png"
+			}),
+
+			new WeaponDTO({
+				name:"Weapon 4", type: ItemTypeConsts.ITEM_WEAPON,
+				assetPath: "gfx/arma_3_icon.png", layerAsset: "gfx/arma_4.png",
+				fireDelay: 0.15, damage: 5, energy: 1,
+				projectile: ProjectileProxy.cloneInstance().projectileTemplates[0]
+			}),
+
+			new WeaponDTO({
+				name:"Weapon 5", type: ItemTypeConsts.ITEM_WEAPON,
+				assetPath: "gfx/arma_3_icon.png", layerAsset: "gfx/arma_5.png",
+				fireDelay: 0.15, damage: 5, energy: 1,
+				projectile: ProjectileProxy.cloneInstance().projectileTemplates[0]
 			})
 	];
 	}

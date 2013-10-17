@@ -4,6 +4,14 @@ import com.haxepunk.graphics.Graphiclist;
 import com.haxepunk.graphics.Image;
 
 import model.dto.HardpointDTO;
+import model.dto.ItemDTO;
+
+import nme.Assets;
+
+import nme.display.BitmapData;
+
+import nme.geom.Point;
+import nme.geom.Rectangle;
 
 import org.actors.MessageEntity;
 
@@ -21,31 +29,30 @@ class ShipEntity extends MessageEntity
 
 	override public function added()
 	{
-		graphic = getEntityGraphic(data.assetPath, getLayerAssets(data.hardpoints));
+		graphic = getEntityGraphic(data.assetPath, data.hardpoints);
 
 		setHitbox(data.width, data.height);
 	}
 
-	private function getLayerAssets(hardpointsData:Array<HardpointDTO>):Array<String>
+	private function getEntityGraphic(baseAsset:String, hardpoints:Array<HardpointDTO>):Image
 	{
-		var assets:Array<String> = [];
+		var base:BitmapData = Assets.getBitmapData(baseAsset);
 
-		for(hardpoint in hardpointsData)
-			if(hardpoint.item != null)
-				assets.push(hardpoint.item.layerAsset);
+		for(hardpoint in hardpoints)
+			equipHardpointItem(base, hardpoint);
 
-		return assets;
+		return new Image(base);
 	}
 
-	private function getEntityGraphic(baseAsset:String, assets:Array<String>):Graphiclist
+	private function equipHardpointItem(base:BitmapData, hardpoint:HardpointDTO)
 	{
-		var images:Array<Image> = [];
+		if(hardpoint.item == null)
+			return;
 
-		for(asset in assets)
-			images.push(new Image(asset));
+		var layerAsset:BitmapData = Assets.getBitmapData(hardpoint.item.layerAsset);
+		var offset:Point = new Point(hardpoint.x / 3 + 15 - layerAsset.width, hardpoint.y / 3 + 15 - layerAsset.height);
+		var rect:Rectangle = new Rectangle(0, 0, layerAsset.width, layerAsset.height);
 
-		images.push(new Image(baseAsset));
-
-		return new Graphiclist(images);
+		base.copyPixels(layerAsset, rect , offset, null, null, true);
 	}
 }
