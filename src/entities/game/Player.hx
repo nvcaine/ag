@@ -16,6 +16,9 @@ import model.events.HUDEvent;
 import model.proxy.PlayerProxy;
 import model.proxy.ProjectileProxy;
 
+import nme.Assets;
+import nme.display.BitmapData;
+
 import org.events.EventManager;
 
 import scenes.GameScene;
@@ -79,7 +82,13 @@ class Player
 
 		for(hardpoint in hardpointsInfo)
 			if(hardpoint.item != null && hardpoint.item.type == ItemTypeConsts.ITEM_WEAPON)
-				weapons.push(new Weapon(cast(hardpoint.item, WeaponDTO), hardpoint.x, hardpoint.y));
+			{
+				var weaponData:WeaponDTO = cast(hardpoint.item, WeaponDTO);
+				var projectileBitmapData:BitmapData = Assets.getBitmapData(weaponData.projectile.assetPath);
+				var weaponAsset:BitmapData = Assets.getBitmapData(hardpoint.item.layerAsset);
+
+				weapons.push(new Weapon(weaponData, hardpoint.x + (weaponAsset.width - projectileBitmapData.width) / 2, hardpoint.y - weaponAsset.height));
+			}
 	}
 
 	private function defineInput()

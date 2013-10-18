@@ -11,6 +11,7 @@ import model.proxy.PlayerProxy;
 
 import nme.Assets;
 import nme.display.BitmapData;
+import nme.filters.GlowFilter;
 import nme.geom.Point;
 import nme.geom.Rectangle;
 
@@ -18,6 +19,8 @@ class ShipTemplate extends Entity
 {
 	private var hardpoints:Array<Hardpoint>;
 	private var data:Dynamic;
+
+	private var playerProxy:PlayerProxy;
 
 	public function new(x:Float, y:Float, data:Dynamic)
 	{
@@ -28,23 +31,26 @@ class ShipTemplate extends Entity
 
 	override public function added()
 	{
-		init();
+		playerProxy = PlayerProxy.cloneInstance();
+
+		drawShipTemplate(playerProxy.getHardpoints(), 3);
+		drawHardpoints(playerProxy.getHardpoints(), 3);
 	}
 
 	public function saveTemplate()
 	{
 		var hpData:Array<HardpointDTO> = [];
 
-		for(i in 0...hardpoints.length)
-			hpData.push(hardpoints[i].getData());
+		for(hardpoint in hardpoints)
+			hpData.push(hardpoint.getData());
 
-		PlayerProxy.cloneInstance().playerData.shipTemplate.hardpoints = hpData; // direct reference
+		playerProxy.saveHardpointData(hpData);
 	}
 
 	public function hasAvailableHardpoint(type:String)
 	{
-		for(i in 0...hardpoints.length)
-			if(hardpoints[i].isAvailable() && hardpoints[i].supports(type))
+		for(hardpoint in hardpoints)
+			if(hardpoint.isAvailable() && hardpoint.supports(type))
 				return true;
 
 		return false;
@@ -59,76 +65,65 @@ class ShipTemplate extends Entity
 
 		hardpoint.mountItem(item);
 
-		updateTemplate();
+		drawShipTemplate(getUsedHardpointsData(hardpoints), 3);
 	}
 
 	public function unequipItem(item:ItemDTO)
 	{
-		updateTemplate();
+		drawShipTemplate(getUsedHardpointsData(hardpoints), 3);
 	}
 
-	private function updateTemplate()
+	private function drawShipTemplate(hpData:Array<HardpointDTO>, scale:Int)
 	{
 		var base:BitmapData = Assets.getBitmapData(data.assetPath).clone();
+		var baseImage:Image = new Image(getTemplateBitmapData(base, hpData));
+
+		baseImage.scaleX = baseImage.scaleY = scale;
+
+		graphic = baseImage;
+	}
+
+	private function getUsedHardpointsData(hardpoints:Array<Hardpoint>)
+	{
+		var result:Array<HardpointDTO> = [];
 
 		for(hardpoint in hardpoints)
 			if(!hardpoint.isAvailable())
-			{
-				var hardpointData:HardpointDTO = hardpoint.getData();
-				var layerAsset:BitmapData = Assets.getBitmapData(hardpoint.getLayerAsset()).clone();
-				var offset:Point = new Point(hardpointData.x / 3 + 15 - layerAsset.width, hardpointData.y / 3 + 15 - layerAsset.height);
-				var rect:Rectangle = new Rectangle(0, 0, layerAsset.width, layerAsset.height);
+				result.push(hardpoint.getData());
 
-				base.copyPixels(layerAsset, rect , offset, null, null, true);
-			}
-
-		var resultImage:Image = new Image(base);
-
-		resultImage.scaleX = resultImage.scaleY = 3;
-
-		graphic = resultImage;
+		return result;
 	}
 
-	private function init()
+	private function getTemplateBitmapData(base:BitmapData, hpData:Array<HardpointDTO>):BitmapData
 	{
-		hardpoints = [];
-
-		drawShipTemplate();
-	}
-
-	private function drawShipTemplate()
-	{
-		var hpData:Array<HardpointDTO> = PlayerProxy.cloneInstance().playerData.shipTemplate.hardpoints;
-		var base:BitmapData = Assets.getBitmapData(data.assetPath).clone();
+		var result:BitmapData = base.clone();
 
 		for(hardpoint in hpData)
 			if(hardpoint.item != null)
 			{
 				var layerAsset:BitmapData = Assets.getBitmapData(hardpoint.item.layerAsset).clone();
-				var offset:Point = new Point(hardpoint.x / 3 + 15 - layerAsset.width, hardpoint.y / 3 + 15 - layerAsset.height);
+				var offset:Point = new Point(hardpoint.x, hardpoint.y - layerAsset.height + 15);
 				var rect:Rectangle = new Rectangle(0, 0, layerAsset.width, layerAsset.height);
 
-				base.copyPixels(layerAsset, rect , offset, null, null, true);
+				result.copyPixels(layerAsset, rect, offset, null, null, true);
 			}
 
-		var baseImage:Image = new Image(base);
+		result.applyFilter(result, new Rectangle(0, 0, result.width, result.height), new Point(0, 0), new GlowFilter(0x00FF00, 1, 5, 5));
 
-		baseImage.scaleX = baseImage.scaleY = 3;
-
-		graphic = baseImage;
-
-		drawHardpoints(hpData); // direct reference
+		return result;
 	}
 
-	private function drawHardpoints(hardpointsData:Array<HardpointDTO>)
+	private function drawHardpoints(hardpointsData:Array<HardpointDTO>, scale:Int)
 	{
+		hardpoints = [];
+
 		for(i in 0...hardpointsData.length)
-			drawHardpoint(x + hardpointsData[i].x, y + hardpointsData[i].y, hardpointsData[i]);
+			drawHardpoint(hardpointsData[i].x, hardpointsData[i].y, hardpointsData[i], scale);
 	}
 
-	private function drawHardpoint(x:Float, y:Float, data:HardpointDTO)
+	private function drawHardpoint(xOffset:Float, yOffset:Float, data:HardpointDTO, scale:Int)
 	{
-		var hp:Hardpoint = new Hardpoint(x, y, data);
+		var hp:Hardpoint = new Hardpoint(x + xOffset * scale, y + yOffset * scale, data);
 
 		hardpoints.push(hp);
 

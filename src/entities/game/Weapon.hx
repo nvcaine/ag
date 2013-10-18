@@ -24,8 +24,8 @@ class Weapon
 	{
 		this.data = data;
 
-		this.xOffset = xOffset / 3; // inventory scale factor
-		this.yOffset = yOffset / 3;
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
 
 		em = EventManager.cloneInstance();
 	}

@@ -34,7 +34,7 @@ class PlayerProxy
 						name:"Hardpoint 1",
 						assetPath:"gfx/hardpoint.png",
 						type: ItemTypeConsts.ITEM_WEAPON,
-						x:30, y:80,
+						x:10, y:26,
 						
 						item: ItemsProxy.cloneInstance().itemTemplates[5]
 					}),
@@ -43,7 +43,7 @@ class PlayerProxy
 						name:"Hardpoint 1",
 						assetPath:"gfx/hardpoint.png",
 						type: ItemTypeConsts.ITEM_WEAPON,
-						x:215, y:80,
+						x:70, y:26,
 
 						item: ItemsProxy.cloneInstance().itemTemplates[4]
 					}),
@@ -53,7 +53,7 @@ class PlayerProxy
 						name:"Hardpoint 2",
 						assetPath:"gfx/hardpoint.png",
 						type: ItemTypeConsts.ITEM_UTILITY,
-						x:200, y:200
+						x:70, y:70
 					})
 				]
 			},
@@ -92,6 +92,16 @@ class PlayerProxy
 	public function getAvailableEnergy()
 	{
 		return availableEnergy;
+	}
+
+	public function getHardpoints():Array<HardpointDTO>
+	{
+		return playerData.shipTemplate.hardpoints.concat();
+	}
+
+	public function saveHardpointData(data:Array<HardpointDTO>)
+	{
+		playerData.shipTemplate.hardpoints = data;
 	}
 
 	public function increaseExperience(amount:Int)

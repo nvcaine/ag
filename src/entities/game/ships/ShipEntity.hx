@@ -50,7 +50,7 @@ class ShipEntity extends MessageEntity
 			return;
 
 		var layerAsset:BitmapData = Assets.getBitmapData(hardpoint.item.layerAsset);
-		var offset:Point = new Point(hardpoint.x / 3 + 15 - layerAsset.width, hardpoint.y / 3 + 15 - layerAsset.height);
+		var offset:Point = new Point(hardpoint.x, hardpoint.y - layerAsset.height + 15);
 		var rect:Rectangle = new Rectangle(0, 0, layerAsset.width, layerAsset.height);
 
 		base.copyPixels(layerAsset, rect , offset, null, null, true);
