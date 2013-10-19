@@ -67,6 +67,12 @@ class GameHUD extends Graphiclist
 		em.addEventListener(HUDEvent.UPDATE_ENERGY, onUpdateEnergy, false, 0, true);
 	}
 
+	public function clearListeners()
+	{
+		em.removeEventListener(HUDEvent.UPDATE_HEALTH, onUpdateHealth);
+		em.removeEventListener(HUDEvent.UPDATE_ENERGY, onUpdateEnergy);
+	}
+
 	private function drawEnergy()
 	{
 		remove(energyBar);

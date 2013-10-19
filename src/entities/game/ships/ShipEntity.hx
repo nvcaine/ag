@@ -36,7 +36,7 @@ class ShipEntity extends MessageEntity
 
 	private function getEntityGraphic(baseAsset:String, hardpoints:Array<HardpointDTO>):Image
 	{
-		var base:BitmapData = Assets.getBitmapData(baseAsset);
+		var base:BitmapData = Assets.getBitmapData(baseAsset, false);
 
 		for(hardpoint in hardpoints)
 			equipHardpointItem(base, hardpoint);

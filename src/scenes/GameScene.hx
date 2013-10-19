@@ -25,6 +25,7 @@ import org.actors.BackgroundParticle;
 class GameScene extends Scene
 {
 	private var player:Player;
+	private var hud:GameHUD;
 
 	private var endTimer:Float = 0.05;
 	private var killedBoss:Bool = false;
@@ -32,19 +33,22 @@ class GameScene extends Scene
 
 	override public function begin()
 	{
+		this.removeAll();
+
 		init();
 	}
 
 	override public function end()
 	{
-		//hud.clearListeners();
-
 		this.removeAll();
 
 		clearListeners(
 			EventManager.cloneInstance(),
 			[EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP, LevelEvent.FINISHED_LEVEL],
 			[onEnemyExplode, onDropPickup, onKilledBoss]);
+
+		hud.clearListeners();
+		hud = null;
 	}	
 
 	override public function update()
@@ -66,7 +70,7 @@ class GameScene extends Scene
 		}
 	}
 
-	public function getBackgroundParticles(size:Float):Array<BackgroundParticle>
+	/*public function getBackgroundParticles(size:Float):Array<BackgroundParticle>
 	{
 		var result:Array<BackgroundParticle> = [];
 
@@ -77,19 +81,19 @@ class GameScene extends Scene
 				result.remove(particle);
 
 		return result;
-	}
+	}*/
 
 	private function init()
 	{
-		removeAll();
-
 		initListeners(
 			EventManager.cloneInstance(),
 			[EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP, LevelEvent.FINISHED_LEVEL],
 			[onEnemyExplode, onDropPickup, onKilledBoss]);
 
 		add(new Level(LevelProxy.cloneInstance().waves.concat([])));
-		addGraphic(new GameHUD({background: "gfx/hud2.png", healthBar: "gfx/hp.png", energyBar: "gfx/energy.png"}), 0, 0, 668);
+
+		hud = new GameHUD({background: "gfx/hud2.png", healthBar: "gfx/hp.png", energyBar: "gfx/energy.png"});
+		addGraphic(hud, 0, 0, 668);
 
 		player = new Player(HXP.width / 2, HXP.height - 150, this);
 

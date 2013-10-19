@@ -61,7 +61,7 @@ class ParticleBackground extends Entity
 
 	private function updateFields(fields:Array<GravityField>)
 	{
-		var particles:Array<BackgroundParticle> = cast(scene, scenes.GameScene).getBackgroundParticles(size);
+		var particles:Array<BackgroundParticle> = [];//cast(scene, scenes.GameScene).getBackgroundParticles(size);
 
 		for(particle in particles)
 			if(particle.size == size)

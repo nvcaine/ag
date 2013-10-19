@@ -75,7 +75,7 @@ class ShipTemplate extends Entity
 
 	private function drawShipTemplate(hpData:Array<HardpointDTO>, scale:Int)
 	{
-		var base:BitmapData = Assets.getBitmapData(data.assetPath).clone();
+		var base:BitmapData = Assets.getBitmapData(data.assetPath, false);
 		var baseImage:Image = new Image(getTemplateBitmapData(base, hpData));
 
 		baseImage.scaleX = baseImage.scaleY = scale;
@@ -101,7 +101,7 @@ class ShipTemplate extends Entity
 		for(hardpoint in hpData)
 			if(hardpoint.item != null)
 			{
-				var layerAsset:BitmapData = Assets.getBitmapData(hardpoint.item.layerAsset).clone();
+				var layerAsset:BitmapData = Assets.getBitmapData(hardpoint.item.layerAsset);
 				var offset:Point = new Point(hardpoint.x, hardpoint.y - layerAsset.height + 15);
 				var rect:Rectangle = new Rectangle(0, 0, layerAsset.width, layerAsset.height);
 
