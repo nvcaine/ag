@@ -13,10 +13,9 @@ import nme.display.BitmapData;
 import nme.geom.Point;
 import nme.geom.Rectangle;
 
-import org.actors.MessageEntity;
+import org.actors.SimpleMessageEntity;
 
-// MessageEntity contains graphic logic - unnecessary graphic logic
-class ShipEntity extends MessageEntity
+class ShipEntity extends SimpleMessageEntity
 {
 	private var data:Dynamic;
 

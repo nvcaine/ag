@@ -9,7 +9,7 @@ import entities.game.Player;
 import entities.game.level.Level;
 import entities.game.misc.Explosion;
 import entities.game.misc.Pickup;
-import entities.game.ui.GameHUD;
+import entities.game.ui.HUDEntityWrapper;// GameHUD;
 
 import model.events.EntityEvent;
 import model.events.LevelEvent;
@@ -25,7 +25,6 @@ import org.actors.BackgroundParticle;
 class GameScene extends Scene
 {
 	private var player:Player;
-	private var hud:GameHUD;
 
 	private var endTimer:Float = 0.05;
 	private var killedBoss:Bool = false;
@@ -46,9 +45,6 @@ class GameScene extends Scene
 			EventManager.cloneInstance(),
 			[EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP, LevelEvent.FINISHED_LEVEL],
 			[onEnemyExplode, onDropPickup, onKilledBoss]);
-
-		hud.clearListeners();
-		hud = null;
 	}	
 
 	override public function update()
@@ -92,8 +88,7 @@ class GameScene extends Scene
 
 		add(new Level(LevelProxy.cloneInstance().waves.concat([])));
 
-		hud = new GameHUD({background: "gfx/hud2.png", healthBar: "gfx/hp.png", energyBar: "gfx/energy.png"});
-		addGraphic(hud, 0, 0, 668);
+		add(new HUDEntityWrapper(0, 668));
 
 		player = new Player(HXP.width / 2, HXP.height - 150, this);
 
