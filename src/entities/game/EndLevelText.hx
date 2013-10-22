@@ -2,20 +2,17 @@ package entities.game;
 
 import com.haxepunk.Entity;
 import com.haxepunk.Tween;
-
 import com.haxepunk.graphics.Image;
-
+import com.haxepunk.tweens.TweenEvent;
 import com.haxepunk.tweens.motion.LinearPath;
 import com.haxepunk.tweens.misc.VarTween;
 import com.haxepunk.utils.Ease;
 
-import com.haxepunk.tweens.TweenEvent;
-
+import model.consts.LayerConsts;
 import model.events.MenuEvent;
 
 import nme.events.TimerEvent;
 import nme.utils.Timer;
-
 
 import org.events.EventManager;
 
@@ -29,6 +26,8 @@ class EndLevelText extends Entity
 	public function new(x:Float, y:Float)
 	{
 		super(x, y);
+
+		layer = LayerConsts.TOP;
 	}
 
 	override public function added()

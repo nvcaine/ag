@@ -2,6 +2,7 @@ package entities.game.ui;
 
 import com.haxepunk.graphics.Image;
 
+import model.consts.LayerConsts;
 import model.events.HUDEvent;
 import model.events.EntityEvent;
 import model.proxy.PlayerProxy;
@@ -25,7 +26,7 @@ class HUDEntityWrapper extends SimpleMessageEntity
 		super(x, y);
 
 		hud = new GameHUD({background: "gfx/hud2.png", healthBar: "gfx/hp.png", energyBar: "gfx/energy.png"});
-		layer = 0;
+		layer = LayerConsts.TOP;
 	}
 
 	override public function added()

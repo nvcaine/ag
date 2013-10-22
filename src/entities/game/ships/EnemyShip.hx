@@ -23,8 +23,6 @@ class EnemyShip extends ShipEntity
 	{
 		super(x, y, data);
 
-		this.layer = 0;
-
 		this.type = EntityTypeConsts.ENEMY; // don't confuse with data.type (which refers to the type of enemy)
 
 		if(waypoints != null)

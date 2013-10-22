@@ -3,13 +3,12 @@ package entities.game.ships;
 import com.haxepunk.graphics.Graphiclist;
 import com.haxepunk.graphics.Image;
 
+import model.consts.LayerConsts;
 import model.dto.HardpointDTO;
 import model.dto.ItemDTO;
 
 import nme.Assets;
-
 import nme.display.BitmapData;
-
 import nme.geom.Point;
 import nme.geom.Rectangle;
 
@@ -24,6 +23,7 @@ class ShipEntity extends SimpleMessageEntity
 		super(x, y);
 
 		this.data = Reflect.copy(data);
+		layer = LayerConsts.MIDDLE;
 	}
 
 	override public function added()

@@ -1,6 +1,7 @@
 package entities.game.misc;
 
 import model.consts.EntityTypeConsts;
+import model.consts.LayerConsts;
 import model.events.HUDEvent;
 
 import org.actors.MessageEntity;
@@ -14,6 +15,8 @@ class Pickup extends MessageEntity
 		super(x, y);
 
 		type = EntityTypeConsts.PICKUP;
+
+		layer = LayerConsts.MIDDLE;
 
 		initGraphic(data);
 

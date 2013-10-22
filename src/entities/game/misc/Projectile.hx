@@ -1,6 +1,7 @@
 package entities.game.misc;
 
 import model.consts.EntityTypeConsts;
+import model.consts.LayerConsts;
 import model.dto.ProjectileDTO;
 
 import nme.Assets;
@@ -22,6 +23,8 @@ class Projectile extends MessageEntity
 		super(x, y);
 
 		this.data = data;
+
+		layer = LayerConsts.MIDDLE;
 
 		gravityField = new GravityField();
 	}

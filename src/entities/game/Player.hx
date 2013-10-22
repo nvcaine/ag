@@ -41,8 +41,8 @@ class Player
 		em = EventManager.cloneInstance();
 		playerProxy = PlayerProxy.cloneInstance();
 
-		entity = scene.add(new PlayerShip(x, y, playerProxy.playerData.shipTemplate));
-		entity.layer = 0;
+		entity = new PlayerShip(x, y, playerProxy.playerData.shipTemplate);
+		scene.add(entity);
 
 		defineInput();
 		initWeaponTimers(playerProxy.playerData.shipTemplate.hardpoints);

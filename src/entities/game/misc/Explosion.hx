@@ -7,6 +7,8 @@ import com.haxepunk.utils.Ease;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
 
+import model.consts.LayerConsts;
+
 import nme.Assets;
 import nme.display.Bitmap;
 
@@ -19,6 +21,8 @@ class Explosion extends Entity
 		super(x, y);
 
 		init();
+
+		layer = LayerConsts.MIDDLE;
 	}
 
 	override public function added()

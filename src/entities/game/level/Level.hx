@@ -57,7 +57,11 @@ class Level extends MessageEntity
 
 	private function init()
 	{
-		scene.add(new ScrollingBackground(1));
+		var bg:ScrollingBackground = new ScrollingBackground(1);
+
+		bg.layer = 100;
+
+		scene.add(bg);
 
 		/*scene.add(new ParticleBackground(0.3, 6, 5, 0.75));
 		scene.add(new ParticleBackground(0.1, 3.5, 3, 0.75));
