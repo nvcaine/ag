@@ -33,6 +33,8 @@ class EnemyShip extends ShipEntity
 	{
 		super.added();
 
+		flipGraphic();
+
 		if(waypoints != null)
 			initWaypointsTween(waypoints, data.speed);
 	}
@@ -44,6 +46,16 @@ class EnemyShip extends ShipEntity
 		checkHealth();
 
 		move();
+	}
+
+	private function flipGraphic()
+	{
+		var asset:Image = cast(graphic, Image);
+
+		asset.originX = asset.width;
+		asset.originY = asset.height;
+
+		asset.angle = 180;
 	}
 
 	private function move()

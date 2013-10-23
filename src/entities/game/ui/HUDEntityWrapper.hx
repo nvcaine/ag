@@ -4,7 +4,7 @@ import com.haxepunk.graphics.Image;
 
 import model.consts.LayerConsts;
 import model.events.HUDEvent;
-import model.events.EntityEvent;
+import model.events.LevelEvent;
 import model.proxy.PlayerProxy;
 
 import org.actors.SimpleMessageEntity;
@@ -62,7 +62,7 @@ class HUDEntityWrapper extends SimpleMessageEntity
 		hud.drawHealth(currentHealth, playerProxy.getMaxHealth());
 
 		if(currentHealth == 0)
-			sendMessage(new EntityEvent(EntityEvent.PLAYER_DEAD));
+			sendMessage(new LevelEvent(LevelEvent.FINISHED_LEVEL));
 	}
 
 	private function onUpdateEnergy(e:HUDEvent)
