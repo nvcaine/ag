@@ -7,7 +7,6 @@ import model.events.MenuEvent;
 
 import nme.events.MouseEvent;
 
-import org.actors.ScrollingBackground;
 import org.events.EventManager;
 import org.ui.Button;
 

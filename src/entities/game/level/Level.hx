@@ -9,8 +9,7 @@ import model.events.LevelEvent;
 import model.proxy.EnemyProxy;
 
 import org.actors.MessageEntity;
-import org.actors.ScrollingBackground;
-import org.actors.ParticleBackground;
+//import org.actors.ParticleBackground;
 
 class Level extends MessageEntity
 {
@@ -57,11 +56,7 @@ class Level extends MessageEntity
 
 	private function init()
 	{
-		var bg:ScrollingBackground = new ScrollingBackground(1);
-
-		bg.layer = 100;
-
-		scene.add(bg);
+		scene.add(new ScrollingBackground(1));
 
 		/*scene.add(new ParticleBackground(0.3, 6, 5, 0.75));
 		scene.add(new ParticleBackground(0.1, 3.5, 3, 0.75));

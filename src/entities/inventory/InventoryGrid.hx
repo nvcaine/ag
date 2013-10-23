@@ -62,7 +62,6 @@ class InventoryGrid extends Entity
 		items.push(item);
 
 		if(item.type == currentInventorySection)
-			//refreshItems();
 			addItem(item);
 	}
 

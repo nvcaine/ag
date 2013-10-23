@@ -27,10 +27,17 @@ class HUDEntityWrapper extends SimpleMessageEntity
 
 		hud = new GameHUD({background: "gfx/hud2.png", healthBar: "gfx/hp.png", energyBar: "gfx/energy.png"});
 		layer = LayerConsts.TOP;
+
+		eventHandlers = [
+			{event: HUDEvent.UPDATE_HEALTH, handler: onUpdateHealth},
+			{event: HUDEvent.UPDATE_ENERGY, handler: onUpdateEnergy}
+		];
 	}
 
 	override public function added()
 	{
+		super.added();
+
 		graphic = hud;
 
 		playerProxy = PlayerProxy.cloneInstance();
@@ -39,63 +46,36 @@ class HUDEntityWrapper extends SimpleMessageEntity
 		currentEnergy = playerProxy.getMaxEnergy();
 
 		playerProxy.updateEnergy(currentEnergy);
-
-		initListener();
 	}
 
 	override public function removed()
 	{
+		super.removed();
+
 		hud = null;
-
-		clearListeners();
-	}
-
-	private function initListener()
-	{
-		em = EventManager.cloneInstance();
-
-		//em.addEventListener(HUDEvent.KILL_SCORE, onScore, false, 0, true);
-		em.addEventListener(HUDEvent.UPDATE_HEALTH, onUpdateHealth, false, 0, true);
-		em.addEventListener(HUDEvent.UPDATE_ENERGY, onUpdateEnergy, false, 0, true);
-	}
-
-
-	public function clearListeners()
-	{
-		em.removeEventListener(HUDEvent.UPDATE_HEALTH, onUpdateHealth);
-		em.removeEventListener(HUDEvent.UPDATE_ENERGY, onUpdateEnergy);
 	}
 
 	private function onUpdateHealth(e:HUDEvent)
 	{
-		currentHealth = getUpdatedStatValue(currentHealth, e.health, playerProxy.getMaxHealth());
+		currentHealth = getClampedValue(currentHealth, e.health, playerProxy.getMaxHealth());
 
 		hud.drawHealth(currentHealth, playerProxy.getMaxHealth());
 
 		if(currentHealth == 0)
-			em.dispatchEvent(new EntityEvent(EntityEvent.PLAYER_DEAD));
+			sendMessage(new EntityEvent(EntityEvent.PLAYER_DEAD));
 	}
 
 	private function onUpdateEnergy(e:HUDEvent)
 	{
-		currentEnergy = getUpdatedStatValue(currentEnergy, e.energy, playerProxy.getMaxEnergy());
+		currentEnergy = getClampedValue(currentEnergy, e.energy, playerProxy.getMaxEnergy());
 
 		hud.drawEnergy(currentEnergy, playerProxy.getMaxHealth());
 
 		playerProxy.updateEnergy(currentEnergy);			
 	}
 
-	private function getUpdatedStatValue(stat:Int, value:Int, statMax:Int):Dynamic
+	private function getClampedValue(current:Int, offset:Int, max:Int, min:Int = 0):Dynamic
 	{
-		stat += value;
-
-		if(stat > statMax)
-			stat = statMax;
-
-		if(stat < 0)
-			stat = 0;
-
-		return stat;
+		return Math.max(min, Math.min(current + offset, max)); // min <= x <= max - ALWAYS
 	}
-
 }

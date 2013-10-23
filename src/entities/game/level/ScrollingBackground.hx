@@ -1,4 +1,4 @@
-package org.actors;
+package entities.game.level;
 
 import com.haxepunk.Entity;
 import com.haxepunk.HXP;
