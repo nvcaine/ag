@@ -41,7 +41,7 @@ class InventoryHeader extends SimpleMessageEntity
 	override public function removed()
 	{
 		for(buttonInfo in buttons)
-			cast(buttonInfo.entity, Button).clearListener(MouseEvent.CLICK, buttonInfo.handler);
+			cast(buttonInfo.entity, Button).clearListener(MouseEvent.CLICK, buttonInfo.clickHandler);
 	}
 
 	// adds a button to the stage then saves the refference to the entity in the initial info object
