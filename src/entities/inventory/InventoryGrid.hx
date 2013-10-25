@@ -43,14 +43,20 @@ class InventoryGrid extends SimpleMessageEntity
 
 	override public function added()
 	{
-		drawBackground(x, y);
 		scene.add(new InventoryHeader(0, 425));
+
+		drawBackground(x, y);
 
 		refreshItems();
 
 		addListener(InventoryEvent.FILTER_ITEMS, onFilterItems);
 	}
 
+	override public function removed()
+	{
+		// not removing event/message listeners prevents objects from being garbage-collected
+		clearListener(InventoryEvent.FILTER_ITEMS, onFilterItems);
+	}
 	public function unequip(item:ItemDTO)
 	{
 		items.remove(item);
@@ -80,8 +86,8 @@ class InventoryGrid extends SimpleMessageEntity
 		if(inventoryItems.length == 0)
 			return;
 
-		for(i in 0...inventoryItems.length)
-			scene.remove(inventoryItems[i]);
+		for(item in inventoryItems)
+			scene.remove(item);
 
 		inventoryItems = [];
 	}
@@ -119,17 +125,17 @@ class InventoryGrid extends SimpleMessageEntity
 
 		clearItems();
 
-		for(i in 0...currentItems.length)
-			addItem(currentItems[i]);
+		for(item in currentItems)
+			addItem(item);
 	}
 
 	private function getItemsByType(type:String):Array<ItemDTO>
 	{
 		var result:Array<ItemDTO> = [];
 
-		for(i in 0...items.length)
-			if(items[i].type == type)
-				result.push(items[i]);
+		for(item in items)
+			if(item.type == type)
+				result.push(item);
 
 		return result;
 	}
