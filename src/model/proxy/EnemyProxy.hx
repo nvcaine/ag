@@ -18,7 +18,7 @@ class EnemyProxy
 
 		enemyTemplate = {
 
-			assetPath: "gfx/enemy_01.png",
+			assetPath: "gfx/nava_1.png", //"gfx/enemy_01.png",
 			energyRegen: 1,
 			type: "enemy",
 			health: 100, damage: 25, speed: 3,

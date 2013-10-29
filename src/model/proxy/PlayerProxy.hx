@@ -25,7 +25,7 @@ class PlayerProxy
 		playerData = {
 			shipTemplate: {
 
-				assetPath: "gfx/nava_1.png",
+				assetPath: "gfx/enemy_01.png", //"gfx/nava_1.png",
 				hp: 100, energy: 100, energyRegen: 1,
 				width:98, height: 98, speed: 5,
 
