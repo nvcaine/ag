@@ -55,8 +55,6 @@ class InventoryScene extends Scene
 	{
 		backB = new Button(10, 10, {defaultImage: "gfx/menu/back.png", downImage: "gfx/menu/back_down.png", overImage: "gfx/menu/back_over.png"});
 
-		//backB.filters = [new GlowFilter(0xFF0000)];
-
 		backB.addListener(MouseEvent.CLICK, onBack);
 		add(backB);
 

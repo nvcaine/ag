@@ -1,19 +1,20 @@
 package entities.inventory;
 
-import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.HXP;
 
 import com.haxepunk.graphics.Image;
 
 import model.consts.ItemTypeConsts;
+import model.events.InventoryEvent;
 import model.dto.ItemDTO;
 
 import nme.events.MouseEvent;
 
+import org.actors.SimpleMessageEntity;
 import org.ui.Button;
 
-class InventoryGrid extends Entity
+class InventoryGrid extends SimpleMessageEntity
 {
 	private var _numRows:Int = 0;
 	private var _numCols:Int = 0;
@@ -23,7 +24,6 @@ class InventoryGrid extends Entity
 	private var inventoryItems:Array<InventoryItem>;
 	private var currentInventorySection:String;
 	private var items:Array<ItemDTO>;
-
 
 	public function new(x:Float, y:Float, itemsData:Array<ItemDTO>, numRows:Int, numCols:Int, cellWidth:Int, cellHeight:Int)
 	{
@@ -43,12 +43,20 @@ class InventoryGrid extends Entity
 
 	override public function added()
 	{
+		scene.add(new InventoryHeader(0, 425));
+
 		drawBackground(x, y);
-		drawInventoryHeader();
 
 		refreshItems();
+
+		addListener(InventoryEvent.FILTER_ITEMS, onFilterItems);
 	}
 
+	override public function removed()
+	{
+		// not removing event/message listeners prevents objects from being garbage-collected
+		clearListener(InventoryEvent.FILTER_ITEMS, onFilterItems);
+	}
 	public function unequip(item:ItemDTO)
 	{
 		items.remove(item);
@@ -78,8 +86,8 @@ class InventoryGrid extends Entity
 		if(inventoryItems.length == 0)
 			return;
 
-		for(i in 0...inventoryItems.length)
-			scene.remove(inventoryItems[i]);
+		for(item in inventoryItems)
+			scene.remove(item);
 
 		inventoryItems = [];
 	}
@@ -91,21 +99,6 @@ class InventoryGrid extends Entity
 		inventoryItems.push(itemEntity);
 
 		scene.add(itemEntity);
-	}
-
-	private function drawInventoryHeader()
-	{
-		var weaponsButton:Button = new Button(5, 425, {defaultImage: "gfx/inventory/weapons.png", overImage: "gfx/inventory/weapons_hover.png", downImage: "gfx/inventory/weapons_down.png"});
-		var enginesButton:Button = new Button(170, 425, {defaultImage: "gfx/inventory/engines.png", overImage: "gfx/inventory/engines_hover.png", downImage: "gfx/inventory/engines_down.png"});
-		var utilityButton:Button = new Button(335, 425, {defaultImage: "gfx/inventory/utility.png", overImage: "gfx/inventory/utility_hover.png", downImage: "gfx/inventory/utility_down.png"});
-
-		weaponsButton.addListener(MouseEvent.CLICK, onWeaponsClick);
-		enginesButton.addListener(MouseEvent.CLICK, onEnginesClick);
-		utilityButton.addListener(MouseEvent.CLICK, onUtilityClick);
-
-		scene.add(weaponsButton);
-		scene.add(enginesButton);
-		scene.add(utilityButton);
 	}
 
 	private function drawBackground(startX:Float, startY:Float)
@@ -132,33 +125,23 @@ class InventoryGrid extends Entity
 
 		clearItems();
 
-		for(i in 0...currentItems.length)
-			addItem(currentItems[i]);
+		for(item in currentItems)
+			addItem(item);
 	}
 
 	private function getItemsByType(type:String):Array<ItemDTO>
 	{
 		var result:Array<ItemDTO> = [];
 
-		for(i in 0...items.length)
-			if(items[i].type == type)
-				result.push(items[i]);
+		for(item in items)
+			if(item.type == type)
+				result.push(item);
 
 		return result;
 	}
 
-	private function onWeaponsClick(e:MouseEvent)
+	private function onFilterItems(e:InventoryEvent)
 	{
-		changeInventorySection(ItemTypeConsts.ITEM_WEAPON);
-	}
-
-	private function onEnginesClick(e:MouseEvent)
-	{
-		changeInventorySection(ItemTypeConsts.ITEM_ENGINE);
-	}
-
-	private function onUtilityClick(e:MouseEvent)
-	{
-		changeInventorySection(ItemTypeConsts.ITEM_UTILITY);
+		changeInventorySection(e.category);
 	}
 }

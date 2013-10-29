@@ -43,7 +43,7 @@ class MenuScene extends Scene
 
 	private function onNewGame(e:MouseEvent)
 	{
-		em.dispatchEvent(new MenuEvent(MenuEvent.NEW_GAME));
+		em.dispatchEvent(new MenuEvent(MenuEvent.SHOW_STAGES));
 	}
 
 	private function onInventory(e:MouseEvent)

@@ -14,6 +14,7 @@ import org.events.EventManager;
 import scenes.GameScene;
 import scenes.MenuScene;
 import scenes.InventoryScene;
+import scenes.StageScene;
 
 class Main extends Engine
 {
@@ -29,7 +30,7 @@ class Main extends Engine
 		initScenes();
 		addHandlers();
 
-		HXP.scene = scenes.get(SceneConsts.MENU);
+		HXP.scene = scenes.get(SceneConsts.STAGE);
 	}
 
 	public static function main()
@@ -45,6 +46,7 @@ class Main extends Engine
 		eventManager.addEventListener(MenuEvent.NEW_GAME, onNewGame, false, 0, true);
 		eventManager.addEventListener(MenuEvent.SHOW_INVENTORY, onShowInventory, false, 0, true);
 		eventManager.addEventListener(MenuEvent.SHOW_MENU, onShowMenu, false, 0, true);
+		eventManager.addEventListener(MenuEvent.SHOW_STAGES, onShowStages, false, 0, true);
 	}
 
 	private function initScenes()
@@ -54,6 +56,7 @@ class Main extends Engine
 		scenes.set(SceneConsts.GAME, new GameScene());
 		scenes.set(SceneConsts.MENU, new MenuScene());
 		scenes.set(SceneConsts.INVENTORY, new InventoryScene());
+		scenes.set(SceneConsts.STAGE, new StageScene());
 	}
 
 	private function onPlayerDead(e:Event)
@@ -66,13 +69,22 @@ class Main extends Engine
 		HXP.scene = scenes.get(SceneConsts.MENU);
 	}
 
-	private function onNewGame(e:Event)
+	private function onNewGame(e:MenuEvent)
 	{
-		HXP.scene = scenes.get(SceneConsts.GAME);
+		var scene:GameScene = cast(scenes.get(SceneConsts.GAME), GameScene);
+
+		scene.setLevelIndex(e.index);
+
+		HXP.scene = scene;
 	}
 
 	private function onShowInventory(e:Event)
 	{
 		HXP.scene = scenes.get(SceneConsts.INVENTORY);
+	}
+
+	private function onShowStages(e:Event)
+	{
+		HXP.scene = scenes.get(SceneConsts.STAGE);
 	}
 }
