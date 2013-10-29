@@ -9,8 +9,12 @@ class MenuEvent extends Event
 	public static inline var SHOW_MENU:String = "showMenu";
 	public static inline var SHOW_STAGES:String = "showStages";
 
-	public function new(type:String, bubbles:Bool = false, cancelable:Bool = false)
+	public var index:Int;
+
+	public function new(type:String, levelIndex:Int = 0, bubbles:Bool = false, cancelable:Bool = false)
 	{
 		super(type, bubbles, cancelable);
+
+		this.index = levelIndex;
 	}
 }

@@ -69,9 +69,13 @@ class Main extends Engine
 		HXP.scene = scenes.get(SceneConsts.MENU);
 	}
 
-	private function onNewGame(e:Event)
+	private function onNewGame(e:MenuEvent)
 	{
-		HXP.scene = scenes.get(SceneConsts.GAME);
+		var scene:GameScene = cast(scenes.get(SceneConsts.GAME), GameScene);
+
+		scene.setLevelIndex(e.index);
+
+		HXP.scene = scene;
 	}
 
 	private function onShowInventory(e:Event)

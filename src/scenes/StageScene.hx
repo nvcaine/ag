@@ -24,9 +24,9 @@ class StageScene extends Scene
 		add(backB);
 
 		initLevels([
-			{x: 100, y: 100, name: "Level 1"},
-			{x: 200, y: 100, name: "Level 2"},
-			{x: 100, y: 200, name: "Level 3"}
+			{x: 100, y: 100, name: "Level 1", levelIndex: 0},
+			{x: 200, y: 100, name: "Level 2", levelIndex: 1},
+			{x: 100, y: 200, name: "Level 3", levelIndex: 2}
 		]);
 	}
 
@@ -47,8 +47,13 @@ class StageScene extends Scene
 	{
 		var result:TooltipButton = new TooltipButton(data.x, data.y, {defaultImage: "gfx/hardpoint.png"});
 
+		var handler:MouseEvent->Void = function(e:MouseEvent)
+		{
+			em.dispatchEvent(new MenuEvent(MenuEvent.NEW_GAME, data.levelIndex));
+		}
+
 		result.setTooltipText(data.name);
-		result.addListener(MouseEvent.CLICK, onLevelSelect);
+		result.addListener(MouseEvent.CLICK, handler);
 
 		return result;
 	}
@@ -56,10 +61,5 @@ class StageScene extends Scene
 	private function onBack(e:MouseEvent)
 	{
 		em.dispatchEvent(new MenuEvent(MenuEvent.SHOW_MENU));
-	}
-
-	private function onLevelSelect(e:MouseEvent)
-	{
-		em.dispatchEvent(new MenuEvent(MenuEvent.NEW_GAME));
 	}
 }

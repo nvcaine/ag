@@ -34,6 +34,8 @@ class GameScene extends Scene
 	private var endCount:Int = 0;
 	private var returnTimer:Timer;
 
+	private var levelIndex:Int;
+
 	override public function begin()
 	{
 		this.removeAll();
@@ -55,6 +57,11 @@ class GameScene extends Scene
 			[EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP, LevelEvent.FINISHED_LEVEL],
 			[onEnemyExplode, onDropPickup, onLevelFinished]);
 	}	
+
+	public function setLevelIndex(index:Int)
+	{
+		levelIndex = index;
+	}
 
 	override public function update()
 	{
@@ -97,7 +104,7 @@ class GameScene extends Scene
 
 	private function init()
 	{
-		add(new Level(LevelProxy.cloneInstance().waves.concat([])));
+		add(new Level(LevelProxy.cloneInstance().waves[levelIndex].concat([])));
 		add(new HUDEntityWrapper(0, 668));
 
 		player = new Player(HXP.width / 2, HXP.height - 150, this);
