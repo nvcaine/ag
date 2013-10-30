@@ -19,7 +19,7 @@ class EnemyShip extends ShipEntity
 
 	private var waypoints:Dynamic;
 
-	public function new(x:Float, y:Float, data:Dynamic, ?waypoints:Array<Dynamic>)
+	public function new(x:Float, y:Float, data:Dynamic, ?waypoints:Dynamic)
 	{
 		super(x, y, data);
 
@@ -36,7 +36,7 @@ class EnemyShip extends ShipEntity
 		flipGraphic();
 
 		if(waypoints != null)
-			initWaypointsTween(waypoints, data.speed);
+			initWaypointsTween(waypoints.path, waypoints.duration);
 	}
 
 	override public function update()

@@ -2,6 +2,8 @@ package scenes;
 
 import com.haxepunk.Scene;
 
+import entities.game.level.StageButton;
+
 import model.events.MenuEvent;
 
 import org.events.EventManager;
@@ -19,14 +21,19 @@ class StageScene extends Scene
 	{
 		em = EventManager.cloneInstance();
 
-		backB = new Button(10, 10, {defaultImage: "gfx/menu/back.png", downImage: "gfx/menu/back_down.png", overImage: "gfx/menu/back_over.png"});
+		backB = new Button(10, 10, {
+			defaultImage: "gfx/menu/back.png",
+			downImage: "gfx/menu/back_down.png",
+			overImage: "gfx/menu/back_over.png"
+		});
+
 		backB.addListener(MouseEvent.CLICK, onBack);
 		add(backB);
 
 		initLevels([
-			{x: 100, y: 100, name: "Level 1", levelIndex: 0},
-			{x: 200, y: 100, name: "Level 2", levelIndex: 1},
-			{x: 100, y: 200, name: "Level 3", levelIndex: 2}
+			{x: 100, y: 100, name: "Level 1", levelIndex: 0, asset: "gfx/hardpoint.png"},
+			{x: 200, y: 100, name: "Level 2", levelIndex: 1, asset: "gfx/hardpoint.png"},
+			{x: 100, y: 200, name: "Level 3", levelIndex: 2, asset: "gfx/hardpoint.png"}
 		]);
 	}
 
@@ -40,22 +47,7 @@ class StageScene extends Scene
 	private function initLevels(levelInfo:Array<Dynamic>)
 	{
 		for(info in levelInfo)
-			add(initLevelElement(info));
-	}
-
-	public function initLevelElement(data:Dynamic):TooltipButton
-	{
-		var result:TooltipButton = new TooltipButton(data.x, data.y, {defaultImage: "gfx/hardpoint.png"});
-
-		var handler:MouseEvent->Void = function(e:MouseEvent)
-		{
-			em.dispatchEvent(new MenuEvent(MenuEvent.NEW_GAME, data.levelIndex));
-		}
-
-		result.setTooltipText(data.name);
-		result.addListener(MouseEvent.CLICK, handler);
-
-		return result;
+			add(new StageButton(info));
 	}
 
 	private function onBack(e:MouseEvent)
