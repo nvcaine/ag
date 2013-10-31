@@ -18,13 +18,15 @@ class Projectile extends MessageEntity
 
 	private var data:ProjectileDTO;
 
-	public function new(x:Float, y:Float, data:ProjectileDTO)
+	private var flipped:Bool;
+
+	public function new(x:Float, y:Float, data:ProjectileDTO, isFlipped:Bool = true)
 	{
 		super(x, y);
 
 		this.data = data;
-
 		layer = LayerConsts.MIDDLE;
+		this.flipped = isFlipped;
 
 		gravityField = new GravityField();
 	}
@@ -41,7 +43,7 @@ class Projectile extends MessageEntity
 
 	override public function update()
 	{
-		moveBy(0, -data.speed);
+		moveBy(0, getSpeed());
 
 		gravityField.positionX = x;
 		gravityField.positionY = y;
@@ -59,5 +61,13 @@ class Projectile extends MessageEntity
 		damage = data.damage;
 
 		Assets.getSound(data.sound).play(0, 1, new SoundTransform(0.15));
+	}
+
+	private function getSpeed():Float
+	{
+		if(flipped == true)
+			return data.speed;
+
+		return -data.speed;
 	}
 }

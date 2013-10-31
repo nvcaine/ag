@@ -23,7 +23,16 @@ class EnemyProxy
 			health: 100, damage: 25, speed: 3,
 			width: 98, height: 98,
 			score: 5, xp: 10,
-			hardpoints: []
+			hardpoints: [
+				new HardpointDTO({
+					name:"Hardpoint 1",
+					assetPath:"gfx/hardpoint.png",
+					type: ItemTypeConsts.ITEM_WEAPON,
+					x:10, y:26,
+					
+					item: ItemsProxy.cloneInstance().itemTemplates[5]
+				})
+			]
 		}, {
 			assetPath: "gfx/nava_1.png",
 			energyRegen: 1,

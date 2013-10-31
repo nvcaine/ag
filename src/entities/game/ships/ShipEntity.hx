@@ -3,9 +3,11 @@ package entities.game.ships;
 import com.haxepunk.graphics.Graphiclist;
 import com.haxepunk.graphics.Image;
 
+import model.consts.ItemTypeConsts;
 import model.consts.LayerConsts;
 import model.dto.HardpointDTO;
 import model.dto.ItemDTO;
+import model.dto.WeaponDTO;
 
 import nme.Assets;
 import nme.display.BitmapData;
@@ -16,6 +18,7 @@ import org.actors.SimpleMessageEntity;
 
 class ShipEntity extends SimpleMessageEntity
 {
+	private var weapons:Array<Weapon>;
 	private var data:Dynamic;
 
 	public function new(x:Float, y:Float, data:Dynamic)
@@ -31,6 +34,16 @@ class ShipEntity extends SimpleMessageEntity
 		graphic = getEntityGraphic(data.assetPath, data.hardpoints);
 
 		setHitbox(data.width, data.height);
+		initWeapons(data.hardpoints);
+	}
+
+	public function fire(flipped:Bool = false)
+	{
+		if(weapons == null || weapons.length == 0)
+			return;
+
+		for(weapon in weapons)
+			weapon.fire(x, y, scene);
 	}
 
 	private function getEntityGraphic(baseAsset:String, hardpoints:Array<HardpointDTO>):Image
@@ -53,5 +66,27 @@ class ShipEntity extends SimpleMessageEntity
 		var rect:Rectangle = new Rectangle(0, 0, layerAsset.width, layerAsset.height);
 
 		base.copyPixels(layerAsset, rect , offset, null, null, true);
+	}
+
+	private function initWeapons(hardpointsInfo:Array<HardpointDTO>)
+	{
+		if(hardpointsInfo.length == 0 || hardpointsInfo == null)
+			return;
+
+		weapons = [];
+
+		for(hardpoint in hardpointsInfo)
+			if(hardpoint.item != null && hardpoint.item.type == ItemTypeConsts.ITEM_WEAPON)
+				weapons.push(initNewWeapon(hardpoint));
+	}
+
+	private function initNewWeapon(hardpoint:HardpointDTO):Weapon
+	{
+		var weaponData:WeaponDTO = cast(hardpoint.item, WeaponDTO);
+		var projectileBitmapData:BitmapData = Assets.getBitmapData(weaponData.projectile.assetPath);
+		var weaponAsset:BitmapData = Assets.getBitmapData(hardpoint.item.layerAsset);
+		var xOffset:Float = hardpoint.x + (weaponAsset.width - projectileBitmapData.width) / 2;
+
+		return new Weapon(weaponData, xOffset, hardpoint.y - weaponAsset.height);
 	}
 }

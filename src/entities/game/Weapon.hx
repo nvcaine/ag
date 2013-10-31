@@ -18,7 +18,7 @@ class Weapon
 	private var timer:Float = 0;
 	private var xOffset:Float;
 	private var yOffset:Float;
-	private var em:EventManager;
+	//private var em:EventManager;
 
 	public function new(data:WeaponDTO, xOffset:Float = 0, yOffset:Float = 0)
 	{
@@ -27,7 +27,7 @@ class Weapon
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 
-		em = EventManager.cloneInstance();
+		//em = EventManager.cloneInstance();
 	}
 
 	public function fire(xSource:Float, ySource:Float, scene:Scene)
@@ -41,7 +41,8 @@ class Weapon
 			timer = data.fireDelay;
 
 		scene.add(createProjectile(xSource + xOffset, ySource + yOffset, data.projectile));
-		em.dispatchEvent(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, -Std.int(data.energy)));
+		//em.dispatchEvent(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, -Std.int(data.energy)));
+		// let the player handle this
 	}
 
 	private function createProjectile(x:Float, y:Float, projectileData:ProjectileDTO):Projectile

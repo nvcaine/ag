@@ -45,7 +45,6 @@ class Player
 		scene.add(entity);
 
 		defineInput();
-		initWeaponTimers(playerProxy.playerData.shipTemplate.hardpoints);
 	}
 
 	public function handleInput()
@@ -65,8 +64,7 @@ class Player
 			xAcc = 1;
 
 		if(Input.check("shoot"))
-			for(weapon in weapons)
-				weapon.fire(entity.x, entity.y, scene);
+			entity.fire();
 
 		if(energyRegenTimer < 0)
 			regenerateEnergy(playerProxy.playerData.shipTemplate.energyRegen);
@@ -74,21 +72,6 @@ class Player
 		entity.setAcceleration(xAcc, yAcc);
 
 		energyRegenTimer -=  HXP.elapsed;
-	}
-
-	private function initWeaponTimers(hardpointsInfo:Array<HardpointDTO>)
-	{
-		weapons = [];
-
-		for(hardpoint in hardpointsInfo)
-			if(hardpoint.item != null && hardpoint.item.type == ItemTypeConsts.ITEM_WEAPON)
-			{
-				var weaponData:WeaponDTO = cast(hardpoint.item, WeaponDTO);
-				var projectileBitmapData:BitmapData = Assets.getBitmapData(weaponData.projectile.assetPath);
-				var weaponAsset:BitmapData = Assets.getBitmapData(hardpoint.item.layerAsset);
-
-				weapons.push(new Weapon(weaponData, hardpoint.x + (weaponAsset.width - projectileBitmapData.width) / 2, hardpoint.y - weaponAsset.height));
-			}
 	}
 
 	private function defineInput()
