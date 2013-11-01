@@ -20,13 +20,16 @@ class ShipEntity extends SimpleMessageEntity
 {
 	private var weapons:Array<Weapon>;
 	private var data:Dynamic;
+	private var flipped:Bool;
 
-	public function new(x:Float, y:Float, data:Dynamic)
+	public function new(x:Float, y:Float, data:Dynamic, flipped:Bool = false)
 	{
 		super(x, y);
 
 		this.data = Reflect.copy(data);
 		layer = LayerConsts.MIDDLE;
+
+		this.flipped = flipped;
 	}
 
 	override public function added()
@@ -37,13 +40,13 @@ class ShipEntity extends SimpleMessageEntity
 		initWeapons(data.hardpoints);
 	}
 
-	public function fire(flipped:Bool = false)
+	public function fire()
 	{
 		if(weapons == null || weapons.length == 0)
 			return;
 
 		for(weapon in weapons)
-			weapon.fire(x, y, scene);
+			weapon.fire(x, y, scene, flipped);
 	}
 
 	private function getEntityGraphic(baseAsset:String, hardpoints:Array<HardpointDTO>):Image
@@ -86,7 +89,14 @@ class ShipEntity extends SimpleMessageEntity
 		var projectileBitmapData:BitmapData = Assets.getBitmapData(weaponData.projectile.assetPath);
 		var weaponAsset:BitmapData = Assets.getBitmapData(hardpoint.item.layerAsset);
 		var xOffset:Float = hardpoint.x + (weaponAsset.width - projectileBitmapData.width) / 2;
+		var yOffset:Float = hardpoint.y - weaponAsset.height;
 
-		return new Weapon(weaponData, xOffset, hardpoint.y - weaponAsset.height);
+		if(flipped)
+		{
+			xOffset = width - (xOffset + projectileBitmapData.width / 2);
+			yOffset = height - (yOffset + projectileBitmapData.height);
+		}
+
+		return new Weapon(weaponData, xOffset, yOffset, flipped);
 	}
 }

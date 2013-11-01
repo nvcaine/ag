@@ -1,6 +1,7 @@
 package org.actors;
 
 import com.haxepunk.Entity;
+import com.haxepunk.graphics.Image;
 
 import flash.events.Event;
 
@@ -26,6 +27,16 @@ class SimpleMessageEntity extends Entity
 	override public function removed()
 	{
 		parseEventHandlerPairs(eventHandlers, true);
+	}
+
+	private function flipGraphic()
+	{
+		var asset:Image = cast(graphic, Image);
+
+		asset.originX = asset.width;
+		asset.originY = asset.height;
+
+		asset.angle = 180;
 	}
 
 	private function parseEventHandlerPairs(eventHandlerPairs:Array<Dynamic>, remove:Bool = false)

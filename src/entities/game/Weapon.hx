@@ -20,21 +20,24 @@ class Weapon
 	private var yOffset:Float;
 	//private var em:EventManager;
 
-	public function new(data:WeaponDTO, xOffset:Float = 0, yOffset:Float = 0)
+	private var flipped:Bool;
+
+	public function new(data:WeaponDTO, xOffset:Float = 0, yOffset:Float = 0, isFlipped:Bool = false)
 	{
 		this.data = data;
 
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 
+		this.flipped = isFlipped;
 		//em = EventManager.cloneInstance();
 	}
 
-	public function fire(xSource:Float, ySource:Float, scene:Scene)
+	public function fire(xSource:Float, ySource:Float, scene:Scene, flipped:Bool = false)
 	{
 		timer -= HXP.elapsed;
 
-		if(timer >= 0 || PlayerProxy.cloneInstance().getAvailableEnergy() < data.energy)
+		if(timer >= 0)// || PlayerProxy.cloneInstance().getAvailableEnergy() < data.energy)
 			return;
 
 		if(timer < 0)
@@ -51,6 +54,6 @@ class Weapon
 
 		copy.damage = data.damage;
 
-		return new Projectile(x, y, copy);
+		return new Projectile(x, y, copy, flipped);
 	}
 }

@@ -19,6 +19,8 @@ class EnemyShip extends ShipEntity
 
 	private var waypoints:Dynamic;
 
+	private var shootTimer:Float = 0.15;
+
 	public function new(x:Float, y:Float, data:Dynamic, ?waypoints:Dynamic)
 	{
 		super(x, y, data);
@@ -27,13 +29,16 @@ class EnemyShip extends ShipEntity
 
 		if(waypoints != null)
 			this.waypoints = waypoints;
+
+		flipped = true;
 	}
 
 	override public function added()
 	{
 		super.added();
 
-		flipGraphic();
+		if(flipped)
+			flipGraphic();
 
 		if(waypoints != null)
 			initWaypointsTween(waypoints.path, waypoints.duration);
@@ -41,21 +46,19 @@ class EnemyShip extends ShipEntity
 
 	override public function update()
 	{
-		checkCollision(EntityTypeConsts.PROJECTILE, collideWithProjectile);
+		//checkCollision(EntityTypeConsts.PROJECTILE, collideWithProjectile);
 		checkCollision(EntityTypeConsts.PLAYER, collideWithPlayer);
 		checkHealth();
 
 		move();
-	}
 
-	private function flipGraphic()
-	{
-		var asset:Image = cast(graphic, Image);
+		shootTimer -= HXP.elapsed;
 
-		asset.originX = asset.width;
-		asset.originY = asset.height;
-
-		asset.angle = 180;
+		if(shootTimer < 0)
+		{
+			shootTimer = 0.15;
+			fire();
+		}
 	}
 
 	private function move()
