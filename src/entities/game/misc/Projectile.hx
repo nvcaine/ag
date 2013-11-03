@@ -1,6 +1,10 @@
 package entities.game.misc;
 
+import com.haxepunk.Entity;
+import com.haxepunk.HXP;
 import com.haxepunk.graphics.Image;
+
+import entities.game.ships.ShipEntity;
 
 import model.consts.EntityTypeConsts;
 import model.consts.LayerConsts;
@@ -16,13 +20,13 @@ class Projectile extends MessageEntity
 {
 	//public var gravityField:GravityField;
 
-	public var damage(get, null):Int;
-
 	private var data:ProjectileDTO;
 
 	private var flipped:Bool;
 
-	public function new(x:Float, y:Float, data:ProjectileDTO, isFlipped:Bool = false)
+	private var entityTypes:Array<String>;
+
+	public function new(x:Float, y:Float, data:ProjectileDTO, isFlipped:Bool = false, entityTypes:Array<String> = null)
 	{
 		super(x, y);
 
@@ -30,12 +34,9 @@ class Projectile extends MessageEntity
 		layer = LayerConsts.MIDDLE;
 		this.flipped = isFlipped;
 
-		//gravityField = new GravityField();
-	}
+		this.entityTypes = entityTypes;
 
-	public function get():Int
-	{
-		return damage;
+		//gravityField = new GravityField();
 	}
 
 	override public function added()
@@ -53,10 +54,10 @@ class Projectile extends MessageEntity
 		//gravityField.positionX = x;
 		//gravityField.positionY = y;
 
-		if(this.y < 0)
+		if(this.y < 0 || this.y > HXP.height)
 			scene.remove(this);
 
-		// check ship collision here !!
+		checkCollisionTargets(entityTypes);
 	}
 
 	private function init(data:Dynamic)
@@ -65,9 +66,7 @@ class Projectile extends MessageEntity
 		
 		type = EntityTypeConsts.PROJECTILE;
 
-		damage = data.damage;
-
-		Assets.getSound(data.sound).play(0, 1, new SoundTransform(0.15));
+		//Assets.getSound(data.sound).play(0, 1, new SoundTransform(0.15));
 	}
 
 	private function getSpeed():Float
@@ -76,5 +75,27 @@ class Projectile extends MessageEntity
 			return data.speed;
 
 		return -data.speed;
+	}
+
+	private function checkCollisionTargets(entityTypes:Array<String>)
+	{
+		for(type in entityTypes)
+			checkCollision(type, onEntityCollision);
+	}
+
+	private function checkCollision(entityType:String, handler:Entity->Void)
+	{
+		var entity:Entity = collide(entityType, this.x, this.y);
+
+		if(entity != null)
+			handler(entity);
+	}
+
+	private function onEntityCollision(e:Entity)
+	{
+		var entity:ShipEntity = cast(e, ShipEntity); // this will potentially exclude "ground" elements
+
+		entity.takeDamage(data.damage);
+		scene.remove(this);
 	}
 }

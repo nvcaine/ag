@@ -8,6 +8,7 @@ import entities.game.Weapon;
 import entities.game.misc.Projectile;
 import entities.game.ships.PlayerShip;
 
+import model.consts.EntityTypeConsts;
 import model.consts.ItemTypeConsts;
 import model.dto.HardpointDTO;
 import model.dto.ItemDTO;
@@ -64,7 +65,7 @@ class Player
 			xAcc = 1;
 
 		if(Input.check("shoot"))
-			entity.fire();
+			entity.fire([EntityTypeConsts.ENEMY]);
 
 		if(energyRegenTimer < 0)
 			regenerateEnergy(playerProxy.playerData.shipTemplate.energyRegen);

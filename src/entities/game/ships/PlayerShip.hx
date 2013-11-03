@@ -6,6 +6,7 @@ import entities.game.misc.Projectile;
 
 import model.consts.EntityTypeConsts;
 import model.consts.PlayerConsts;
+import model.events.HUDEvent;
 
 class PlayerShip extends ShipEntity
 {
@@ -28,6 +29,11 @@ class PlayerShip extends ShipEntity
 		yVelocity = getAcceleratedVelocity(yVelocity, yAcceleration, 0, HXP.height - height, y, data.speed, PlayerConsts.DRAG);
 
 		moveBy(xVelocity, yVelocity, EntityTypeConsts.LEVEL);
+	}
+
+	override public function takeDamage(damage:Float)
+	{
+		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, Std.int(-damage))); // why int ? change event constructor
 	}
 
 	public function setAcceleration(xAcc:Float, yAcc:Float)

@@ -74,7 +74,7 @@ class HUDEntityWrapper extends SimpleMessageEntity
 		playerProxy.updateEnergy(currentEnergy);			
 	}
 
-	private function getClampedValue(current:Int, offset:Int, max:Int, min:Int = 0):Dynamic
+	private function getClampedValue(current:Float, offset:Float, max:Float, min:Float = 0):Dynamic
 	{
 		return Math.max(min, Math.min(current + offset, max)); // min <= x <= max - ALWAYS
 	}

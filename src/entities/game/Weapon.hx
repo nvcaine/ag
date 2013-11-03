@@ -33,7 +33,7 @@ class Weapon
 		//em = EventManager.cloneInstance();
 	}
 
-	public function fire(xSource:Float, ySource:Float, scene:Scene, flipped:Bool = false)
+	public function fire(xSource:Float, ySource:Float, scene:Scene, flipped:Bool = false, entityTypes:Array<String> = null)
 	{
 		timer -= HXP.elapsed;
 
@@ -43,17 +43,17 @@ class Weapon
 		if(timer < 0)
 			timer = data.fireDelay;
 
-		scene.add(createProjectile(xSource + xOffset, ySource + yOffset, data.projectile));
+		scene.add(createProjectile(xSource + xOffset, ySource + yOffset, data.projectile, entityTypes));
 		//em.dispatchEvent(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, -Std.int(data.energy)));
 		// let the player handle this
 	}
 
-	private function createProjectile(x:Float, y:Float, projectileData:ProjectileDTO):Projectile
+	private function createProjectile(x:Float, y:Float, projectileData:ProjectileDTO, entityTypes:Array<String>):Projectile
 	{
 		var copy:ProjectileDTO = projectileData;
 
 		copy.damage = data.damage;
 
-		return new Projectile(x, y, copy, flipped);
+		return new Projectile(x, y, copy, flipped, entityTypes);
 	}
 }

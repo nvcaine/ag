@@ -46,19 +46,12 @@ class EnemyShip extends ShipEntity
 
 	override public function update()
 	{
-		//checkCollision(EntityTypeConsts.PROJECTILE, collideWithProjectile);
 		checkCollision(EntityTypeConsts.PLAYER, collideWithPlayer);
 		checkHealth();
 
 		move();
 
-		shootTimer -= HXP.elapsed;
-
-		if(shootTimer < 0)
-		{
-			shootTimer = 0.15;
-			fire();
-		}
+		fireWeapons();
 	}
 
 	private function move()
@@ -110,17 +103,9 @@ class EnemyShip extends ShipEntity
 			handler(entity);
 	}
 
-	private function collideWithProjectile(e:Entity)
-	{
-		var entity:Projectile = cast(e, Projectile);
-
-		data.health -= entity.damage;
-		scene.remove(entity);
-	}
-
 	private function collideWithPlayer(e:Entity)
 	{
-		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, Std.int(-data.damage)));
+		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, -data.damage)); // default damage, not weapon damage
 		die();
 	}
 
@@ -150,5 +135,16 @@ class EnemyShip extends ShipEntity
 		tween.removeEventListener(TweenEvent.FINISH, onPassedWaypoints);
 
 		this.waypoints = null;
+	}
+
+	private function fireWeapons()
+	{
+		shootTimer -= HXP.elapsed;
+
+		if(shootTimer < 0)
+		{
+			shootTimer = 0.15;
+			fire([EntityTypeConsts.PLAYER]);
+		}
 	}
 }

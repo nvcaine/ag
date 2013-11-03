@@ -1,8 +1,12 @@
 package entities.game.ships;
 
+import com.haxepunk.Entity;
 import com.haxepunk.graphics.Graphiclist;
 import com.haxepunk.graphics.Image;
 
+import entities.game.misc.Projectile;
+
+import model.consts.EntityTypeConsts;
 import model.consts.ItemTypeConsts;
 import model.consts.LayerConsts;
 import model.dto.HardpointDTO;
@@ -40,13 +44,18 @@ class ShipEntity extends SimpleMessageEntity
 		initWeapons(data.hardpoints);
 	}
 
-	public function fire()
+	public function takeDamage(damage:Float)
+	{
+		data.health -= damage;
+	}
+
+	public function fire(targetTypes:Array<String>)
 	{
 		if(weapons == null || weapons.length == 0)
 			return;
 
 		for(weapon in weapons)
-			weapon.fire(x, y, scene, flipped);
+			weapon.fire(x, y, scene, flipped, targetTypes);
 	}
 
 	private function getEntityGraphic(baseAsset:String, hardpoints:Array<HardpointDTO>):Image
