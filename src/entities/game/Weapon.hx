@@ -18,7 +18,6 @@ class Weapon
 	private var timer:Float = 0;
 	private var xOffset:Float;
 	private var yOffset:Float;
-	//private var em:EventManager;
 
 	private var flipped:Bool;
 
@@ -30,10 +29,9 @@ class Weapon
 		this.yOffset = yOffset;
 
 		this.flipped = isFlipped;
-		//em = EventManager.cloneInstance();
 	}
 
-	public function fire(xSource:Float, ySource:Float, scene:Scene, flipped:Bool = false, entityTypes:Array<String> = null)
+	public function fire(xSource:Float, ySource:Float, scene:Scene, flipped:Bool = false, entityTypes:Array<String> = null, drainEnergy:Bool = false)
 	{
 		timer -= HXP.elapsed;
 
@@ -44,7 +42,9 @@ class Weapon
 			timer = data.fireDelay;
 
 		scene.add(createProjectile(xSource + xOffset, ySource + yOffset, data.projectile, entityTypes));
-		//em.dispatchEvent(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, -Std.int(data.energy)));
+
+		if(drainEnergy)
+			drain(data.energy);
 		// let the player handle this
 	}
 
@@ -55,5 +55,13 @@ class Weapon
 		copy.damage = data.damage;
 
 		return new Projectile(x, y, copy, flipped, entityTypes);
+	}
+
+	private function drain(energy:Float)
+	{
+		if(PlayerProxy.cloneInstance().getAvailableEnergy() < energy)
+			return;
+
+		EventManager.cloneInstance().dispatchEvent(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, -energy));
 	}
 }

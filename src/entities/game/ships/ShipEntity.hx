@@ -49,13 +49,13 @@ class ShipEntity extends SimpleMessageEntity
 		data.health -= damage;
 	}
 
-	public function fire(targetTypes:Array<String>)
+	public function fire(targetTypes:Array<String>, drainEnergy:Bool = false)
 	{
 		if(weapons == null || weapons.length == 0)
 			return;
 
 		for(weapon in weapons)
-			weapon.fire(x, y, scene, flipped, targetTypes);
+			weapon.fire(x, y, scene, flipped, targetTypes, drainEnergy);
 	}
 
 	private function getEntityGraphic(baseAsset:String, hardpoints:Array<HardpointDTO>):Image

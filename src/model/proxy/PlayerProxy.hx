@@ -26,7 +26,7 @@ class PlayerProxy
 			shipTemplate: {
 
 				assetPath: "gfx/enemy_01.png", //"gfx/nava_1.png",
-				hp: 100, energy: 100, energyRegen: 1,
+				hp: 100, energy: 100, energyRegen: 1, eneryRegenRate: 0.75,
 				width:98, height: 98, speed: 5,
 
 				hardpoints: [
@@ -89,9 +89,14 @@ class PlayerProxy
 		availableEnergy = value;
 	}
 
-	public function getAvailableEnergy()
+	public function getAvailableEnergy():Int
 	{
 		return availableEnergy;
+	}
+
+	public function getEnergyRegenRate():Float
+	{
+		return playerData.shipTemplate.eneryRegenRate;
 	}
 
 	public function getHardpoints():Array<HardpointDTO>

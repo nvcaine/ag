@@ -29,7 +29,7 @@ class Player
 	private var entity:PlayerShip;
 	private var scene:GameScene;
 
-	private var energyRegenTimer:Float = 0.1;
+	private var energyRegenTimer:Float;
 	private var weapons:Array<Weapon>;
 
 	private var em:EventManager;
@@ -45,10 +45,33 @@ class Player
 		entity = new PlayerShip(x, y, playerProxy.playerData.shipTemplate);
 		scene.add(entity);
 
+		energyRegenTimer = playerProxy.getEnergyRegenRate();
+
 		defineInput();
 	}
 
 	public function handleInput()
+	{
+		handleAcceleration();
+
+		if(Input.check("shoot"))
+			entity.fire([EntityTypeConsts.ENEMY], true);
+
+		regenerateEnergy(playerProxy.playerData.shipTemplate.energyRegen, playerProxy.getEnergyRegenRate());
+
+	}
+
+	private function defineInput()
+	{
+		Input.define("up", [Key.UP, Key.W]);
+		Input.define("down", [Key.DOWN, Key.S]);
+		Input.define("shoot", [Key.X]);
+		Input.define("left", [Key.LEFT, Key.A]);
+		Input.define("right", [Key.RIGHT, Key.D]);
+		Input.define("regen", [Key.Z]);
+	}
+
+	private function handleAcceleration()
 	{
 		var xAcc:Int = 0, yAcc:Int = 0;
 
@@ -64,31 +87,21 @@ class Player
 		if(Input.check("right"))
 			xAcc = 1;
 
-		if(Input.check("shoot"))
-			entity.fire([EntityTypeConsts.ENEMY]);
+		entity.setAcceleration(xAcc, yAcc);
+	}
+
+	private function regenerateEnergy(amount:Int, regenRate:Float = 0.1)
+	{
+		if(playerProxy.getAvailableEnergy() == playerProxy.getMaxEnergy())
+			return;
 
 		if(energyRegenTimer < 0)
-			regenerateEnergy(playerProxy.playerData.shipTemplate.energyRegen);
+		{
+			em.dispatchEvent(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, amount));
 
-		entity.setAcceleration(xAcc, yAcc);
+			energyRegenTimer = regenRate;
+		}
 
 		energyRegenTimer -=  HXP.elapsed;
-	}
-
-	private function defineInput()
-	{
-		Input.define("up", [Key.UP, Key.W]);
-		Input.define("down", [Key.DOWN, Key.S]);
-		Input.define("shoot", [Key.X]);
-		Input.define("left", [Key.LEFT, Key.A]);
-		Input.define("right", [Key.RIGHT, Key.D]);
-		Input.define("regen", [Key.Z]);
-	}
-
-	private function regenerateEnergy(amount:Int)
-	{
-		em.dispatchEvent(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, amount));
-
-		energyRegenTimer = 0.1;
 	}
 }
