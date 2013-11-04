@@ -33,10 +33,10 @@ class Weapon
 
 	public function fire(xSource:Float, ySource:Float, scene:Scene, flipped:Bool = false, entityTypes:Array<String> = null, drainEnergy:Bool = false)
 	{
-		timer -= HXP.elapsed;
-
 		if(timer >= 0)// || PlayerProxy.cloneInstance().getAvailableEnergy() < data.energy)
 			return;
+
+		timer -= HXP.elapsed; // need update method that should be called every frame
 
 		if(timer < 0)
 			timer = data.fireDelay;
@@ -45,7 +45,6 @@ class Weapon
 
 		if(drainEnergy)
 			drain(data.energy);
-		// let the player handle this
 	}
 
 	private function createProjectile(x:Float, y:Float, projectileData:ProjectileDTO, entityTypes:Array<String>):Projectile
