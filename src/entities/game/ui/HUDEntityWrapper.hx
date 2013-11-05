@@ -62,7 +62,10 @@ class HUDEntityWrapper extends SimpleMessageEntity
 		hud.drawHealth(currentHealth, playerProxy.getMaxHealth());
 
 		if(currentHealth == 0)
+		{
 			sendMessage(new LevelEvent(LevelEvent.FINISHED_LEVEL));
+			clearListener(HUDEvent.UPDATE_HEALTH, onUpdateHealth);
+		}
 	}
 
 	private function onUpdateEnergy(e:HUDEvent)

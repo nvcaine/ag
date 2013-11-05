@@ -11,6 +11,7 @@ class ScrollingBackground extends Entity
 	private var bgImages:Array<Entity>;
 	private var currentPass:Int = 0;
 	private var speed:Float;
+	private var endLevel:Bool = false;
 
 	public function new(speed:Float = 0)
 	{
@@ -32,6 +33,14 @@ class ScrollingBackground extends Entity
 		super.update();
 
 		translateImages();
+
+		if(endLevel)
+			this.speed++;
+	}
+
+	public function warpBackground()
+	{
+		endLevel = true;
 	}
 
 	private function initImages(images:Array<String>)

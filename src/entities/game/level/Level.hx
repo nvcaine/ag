@@ -16,8 +16,10 @@ class Level extends MessageEntity
 	private var waves:Array<Dynamic>;
 	private var spawnTimer:Float = 0;
 	private var currentWave:Int = 0;
+	private var endLevel:Bool = false;
 
 	private var enemyProxy:EnemyProxy;
+	private var background:ScrollingBackground;
 
 	public function new(wavesData:Array<Dynamic>)
 	{
@@ -36,27 +38,38 @@ class Level extends MessageEntity
 
 	override public function update()
 	{
+		if(endLevel)
+			return;
+
 		spawnTimer -= HXP.elapsed;
 		
-		if(spawnTimer < 0)
-			updateWaves();
+		updateWaves();
 	}
 
 	private function updateWaves()
 	{
+		if(spawnTimer > 0)
+			return;
+
 		if(currentWave >= waves.length)
 		{
+			trace("end - level");
 			sendMessage(new LevelEvent(LevelEvent.FINISHED_LEVEL));
-			scene.remove(this);
+			endLevel = true;
+
 			return;
 		}
 
 		initWave(waves[currentWave]);
 	}
 
-	private function init()
+	private function init(backgroundSpeed:Float = 1)
 	{
-		scene.add(new ScrollingBackground(1));
+		background = new ScrollingBackground(backgroundSpeed);
+
+		scene.add(background);
+
+		endLevel = false;
 
 		/*scene.add(new ParticleBackground(0.3, 6, 5, 0.75));
 		scene.add(new ParticleBackground(0.1, 3.5, 3, 0.75));
