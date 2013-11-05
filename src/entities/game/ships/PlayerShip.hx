@@ -25,6 +25,11 @@ class PlayerShip extends ShipEntity
 
 	override public function update()
 	{
+		super.update();
+
+		//if(weapons == null)
+			//trace("null weapons");
+
 		xVelocity = getAcceleratedVelocity(xVelocity, xAcceleration, 0, HXP.width - width, x, data.speed, PlayerConsts.DRAG);
 		yVelocity = getAcceleratedVelocity(yVelocity, yAcceleration, 0, HXP.height - height, y, data.speed, PlayerConsts.DRAG);
 

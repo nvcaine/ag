@@ -15,7 +15,7 @@ import org.events.EventManager;
 class Weapon
 {
 	private var data:WeaponDTO;
-	private var timer:Float = 0;
+	private var fireTimer:Float = 0;
 	private var xOffset:Float;
 	private var yOffset:Float;
 
@@ -31,20 +31,20 @@ class Weapon
 		this.flipped = isFlipped;
 	}
 
-	public function fire(xSource:Float, ySource:Float, scene:Scene, flipped:Bool = false, entityTypes:Array<String> = null, drainEnergy:Bool = false)
+	public function update()
 	{
-		if(timer >= 0)// || PlayerProxy.cloneInstance().getAvailableEnergy() < data.energy)
+		if(fireTimer <= 0)
 			return;
 
-		timer -= HXP.elapsed; // need update method that should be called every frame
+		fireTimer -= HXP.elapsed;
+	}
 
-		if(timer < 0)
-			timer = data.fireDelay;
+	public function fire(xSource:Float, ySource:Float, scene:Scene, flipped:Bool = false, entityTypes:Array<String> = null, drainEnergy:Bool = false)
+	{
+		if((fireTimer > 0) || (drainEnergy && PlayerProxy.cloneInstance().getAvailableEnergy() < data.energy))
+			return;
 
-		scene.add(createProjectile(xSource + xOffset, ySource + yOffset, data.projectile, entityTypes));
-
-		if(drainEnergy)
-			drain(data.energy);
+		fireProjectile(xSource + xOffset, ySource + yOffset, scene, entityTypes, drainEnergy);
 	}
 
 	private function createProjectile(x:Float, y:Float, projectileData:ProjectileDTO, entityTypes:Array<String>):Projectile
@@ -56,11 +56,13 @@ class Weapon
 		return new Projectile(x, y, copy, flipped, entityTypes);
 	}
 
-	private function drain(energy:Float)
+	private function fireProjectile(x:Float, y:Float, scene:Scene, entityTypes:Array<String>, drainEnergy:Bool = false)
 	{
-		if(PlayerProxy.cloneInstance().getAvailableEnergy() < energy)
-			return;
+		fireTimer = data.fireDelay;
+	
+		scene.add(createProjectile(x, y, data.projectile, entityTypes));
 
-		EventManager.cloneInstance().dispatchEvent(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, -energy));
+		if(drainEnergy)
+			EventManager.cloneInstance().dispatchEvent(new HUDEvent(HUDEvent.UPDATE_ENERGY, 0, 0, 0, -data.energy));
 	}
 }

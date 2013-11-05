@@ -46,6 +46,8 @@ class EnemyShip extends ShipEntity
 
 	override public function update()
 	{
+		super.update();
+
 		checkCollision(EntityTypeConsts.PLAYER, collideWithPlayer);
 		checkHealth();
 

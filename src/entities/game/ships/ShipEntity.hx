@@ -44,6 +44,13 @@ class ShipEntity extends SimpleMessageEntity
 		initWeapons(data.hardpoints);
 	}
 
+	override public function update()
+	{
+		if(weapons != null)
+			for(weapon in weapons)
+				weapon.update();
+	}
+
 	public function takeDamage(damage:Float)
 	{
 		data.health -= damage;
@@ -51,6 +58,7 @@ class ShipEntity extends SimpleMessageEntity
 
 	public function fire(targetTypes:Array<String>, drainEnergy:Bool = false)
 	{
+		//trace("s.fire");
 		if(weapons == null || weapons.length == 0)
 			return;
 
