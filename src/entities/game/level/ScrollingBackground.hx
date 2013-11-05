@@ -34,8 +34,8 @@ class ScrollingBackground extends Entity
 
 		translateImages();
 
-		if(endLevel)
-			this.speed++;
+		if(endLevel && this.speed < 30)
+			this.speed += 0.25;
 	}
 
 	public function warpBackground()

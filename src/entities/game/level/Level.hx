@@ -53,9 +53,10 @@ class Level extends MessageEntity
 
 		if(currentWave >= waves.length)
 		{
-			trace("end - level");
 			sendMessage(new LevelEvent(LevelEvent.FINISHED_LEVEL));
 			endLevel = true;
+
+			background.warpBackground();
 
 			return;
 		}
