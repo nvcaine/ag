@@ -27,9 +27,6 @@ class PlayerShip extends ShipEntity
 	{
 		super.update();
 
-		//if(weapons == null)
-			//trace("null weapons");
-
 		xVelocity = getAcceleratedVelocity(xVelocity, xAcceleration, 0, HXP.width - width, x, data.speed, PlayerConsts.DRAG);
 		yVelocity = getAcceleratedVelocity(yVelocity, yAcceleration, 0, HXP.height - height, y, data.speed, PlayerConsts.DRAG);
 
@@ -38,7 +35,7 @@ class PlayerShip extends ShipEntity
 
 	override public function takeDamage(damage:Float)
 	{
-		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, Std.int(-damage))); // why int ? change event constructor
+		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, -damage));
 	}
 
 	public function setAcceleration(xAcc:Float, yAcc:Float)

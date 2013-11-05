@@ -58,7 +58,6 @@ class ShipEntity extends SimpleMessageEntity
 
 	public function fire(targetTypes:Array<String>, drainEnergy:Bool = false)
 	{
-		//trace("s.fire");
 		if(weapons == null || weapons.length == 0)
 			return;
 
