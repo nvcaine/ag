@@ -8,6 +8,7 @@ class HUDEvent extends Event
 	//public static inline var ENEMY_COLLISION:String = "enemyCollision";
 	public static inline var UPDATE_HEALTH:String = "updateHealth";
 	public static inline var UPDATE_ENERGY:String = "updateEnergy";
+	public static inline var PLAYER_DIED:String = "playerDied";
 
 	public var score:Int;
 	public var health:Float;

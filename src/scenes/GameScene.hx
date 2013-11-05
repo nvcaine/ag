@@ -12,6 +12,7 @@ import entities.game.misc.Pickup;
 import entities.game.ui.HUDEntityWrapper;
 
 import model.events.EntityEvent;
+import model.events.HUDEvent;
 import model.events.MenuEvent;
 import model.events.LevelEvent;
 
@@ -44,8 +45,8 @@ class GameScene extends Scene
 
 		initListeners(
 			EventManager.cloneInstance(),
-			[EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP, LevelEvent.FINISHED_LEVEL],
-			[onEnemyExplode, onDropPickup, onLevelFinished]);
+			[EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP, LevelEvent.FINISHED_LEVEL, HUDEvent.PLAYER_DIED],
+			[onEnemyExplode, onDropPickup, onLevelFinished, onPlayerDied]);
 	}
 
 	override public function end()
@@ -55,7 +56,7 @@ class GameScene extends Scene
 		clearListeners(
 			EventManager.cloneInstance(),
 			[EntityEvent.ENTITY_EXPLOSION, EntityEvent.DROP_PICKUP, LevelEvent.FINISHED_LEVEL],
-			[onEnemyExplode, onDropPickup, onLevelFinished]);
+			[onEnemyExplode, onDropPickup, onLevelFinished, onPlayerDied]);
 	}	
 
 	public function setLevelIndex(index:Int)
@@ -75,15 +76,9 @@ class GameScene extends Scene
 
 			if(endTimer < 0)
 			{
-				var endText:Dynamic = {
-					assetPath: "gfx/welldone.png",
-					path: [{x: 0, y: 0}, {x: -70, y: 100}, {x: 70, y: 100}, {x: 0, y: 0}],
-					duration: 3,
-					layer: endCount
-				};
+				showEndLevelText(74, 200, "gfx/welldone.png");
 
 				endCount++;
-				add(new EndLevelText(74, 200, endText));
 				endTimer = 0.15;
 			}
 		}
@@ -134,6 +129,18 @@ class GameScene extends Scene
 		returnTimer.start();
 	}
 
+	private function showEndLevelText(x:Float, y:Float, asset:String)
+	{
+		var endText:Dynamic = {
+			assetPath: asset,
+			path: [{x: 0, y: 0}, {x: -70, y: 100}, {x: 70, y: 100}, {x: 0, y: 0}],
+			duration: 3,
+			layer: endCount
+		};
+
+		add(new EndLevelText(x, y, endText));
+	}
+
 	private function onLevelDoneTimer(e:TimerEvent)
 	{
 		returnTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, onLevelDoneTimer);
@@ -156,5 +163,10 @@ class GameScene extends Scene
 		killedBoss = true;
 
 		startReturnTimer();
+	}
+
+	private function onPlayerDied(e:HUDEvent)
+	{
+		trace("you be dead");
 	}
 }
