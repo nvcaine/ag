@@ -32,6 +32,7 @@ class GameScene extends Scene
 
 	private var endTimer:Float = 0.05;
 	private var killedBoss:Bool = false;
+	private var playerDead:Bool = false;
 	private var endCount:Int = 0;
 	private var returnTimer:Timer;
 
@@ -70,18 +71,7 @@ class GameScene extends Scene
 
 		player.handleInput();
 
-		if(killedBoss && endCount < 10)
-		{
-			endTimer -= HXP.elapsed;
-
-			if(endTimer < 0)
-			{
-				showEndLevelText(74, 200, "gfx/welldone.png");
-
-				endCount++;
-				endTimer = 0.15;
-			}
-		}
+		if((killedBoss || playerDead))
 	}
 
 	/*public function getBackgroundParticles(size:Float):Array<BackgroundParticle>
@@ -105,7 +95,7 @@ class GameScene extends Scene
 		player = new Player(HXP.width / 2, HXP.height - 150, this);
 
 		endTimer = 0.15;
-		killedBoss = false;
+		killedBoss = playerDead = false;
 		endCount = 0;
 	}
 
@@ -141,6 +131,28 @@ class GameScene extends Scene
 		add(new EndLevelText(x, y, endText));
 	}
 
+	private function on()
+	{
+		if(endCount < 10)
+		{
+			endTimer -= HXP.elapsed;
+
+			if(endTimer < 0)
+			{
+				var asset:String = "gfx/welldone.png";
+
+				if(playerDead)
+					asset = "gfx/lolnoob.png";
+
+				showEndLevelText(74, 200, asset);
+
+				endCount++;
+				endTimer = 0.15;
+			}
+		}
+
+	}
+
 	private function onLevelDoneTimer(e:TimerEvent)
 	{
 		returnTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, onLevelDoneTimer);
@@ -167,6 +179,8 @@ class GameScene extends Scene
 
 	private function onPlayerDied(e:HUDEvent)
 	{
-		trace("you be dead");
+		playerDead = true;
+
+		startReturnTimer();
 	}
 }
