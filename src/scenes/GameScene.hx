@@ -71,7 +71,8 @@ class GameScene extends Scene
 
 		player.handleInput();
 
-		if((killedBoss || playerDead))
+		if(killedBoss || playerDead)
+			showEndLevelText(0.15);
 	}
 
 	/*public function getBackgroundParticles(size:Float):Array<BackgroundParticle>
@@ -119,7 +120,7 @@ class GameScene extends Scene
 		returnTimer.start();
 	}
 
-	private function showEndLevelText(x:Float, y:Float, asset:String)
+	private function addEndLevelText(x:Float, y:Float, asset:String)
 	{
 		var endText:Dynamic = {
 			assetPath: asset,
@@ -131,26 +132,28 @@ class GameScene extends Scene
 		add(new EndLevelText(x, y, endText));
 	}
 
-	private function on()
+	private function showEndLevelText(endTextDelay:Float)
 	{
-		if(endCount < 10)
-		{
-			endTimer -= HXP.elapsed;
+		if(endCount > 10)
+			return;
 
-			if(endTimer < 0)
-			{
-				var asset:String = "gfx/welldone.png";
+		endTimer -= HXP.elapsed;
 
-				if(playerDead)
-					asset = "gfx/lolnoob.png";
+		if(endTimer >= 0)
+			return;
 
-				showEndLevelText(74, 200, asset);
+		addEndLevelText(74, 200, getTextAssetPath(playerDead));
 
-				endCount++;
-				endTimer = 0.15;
-			}
-		}
+		endCount++;
+		endTimer = endTextDelay;
+	}
 
+	private function getTextAssetPath(playerDied:Bool = false)
+	{
+		if(playerDied)
+			return "gfx/lolnoob.png";
+
+		return "gfx/welldone.png";
 	}
 
 	private function onLevelDoneTimer(e:TimerEvent)
