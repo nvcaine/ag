@@ -5,6 +5,7 @@ import com.haxepunk.graphics.Image;
 import com.haxepunk.masks.Pixelmask;
 
 import model.consts.EntityTypeConsts;
+import model.consts.LayerConsts;
 
 class GroundEntity extends Entity
 {
@@ -17,6 +18,7 @@ class GroundEntity extends Entity
 		this.data = data;
 
 		type = EntityTypeConsts.LEVEL;
+		layer = LayerConsts.MIDDLE;
 	}
 
 	override public function added()

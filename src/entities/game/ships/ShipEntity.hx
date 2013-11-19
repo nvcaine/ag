@@ -38,6 +38,8 @@ class ShipEntity extends SimpleMessageEntity
 
 	override public function added()
 	{
+		//var i:Image = ; i.centerOO(); // nice idea
+
 		graphic = new Image(getEntityBitmapData(data.assetPath, data.hardpoints)); //getEntityGraphic(data.assetPath, data.hardpoints);
 
 		setHitbox(data.width, data.height);

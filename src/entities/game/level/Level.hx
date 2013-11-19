@@ -72,7 +72,14 @@ class Level extends MessageEntity
 
 		endLevel = false;
 
-		scene.add(new GroundEntity(300, 0, {assetPath: "gfx/turret.png", speed: 0}));
+		scene.add(new GroundEntity(350, 100, {assetPath: "gfx/meteor2.png", speed: 1}));
+		scene.add(new GroundEntity(300, 100, {assetPath: "gfx/meteor2.png", speed: 1}));
+		scene.add(new GroundEntity(250, 100, {assetPath: "gfx/meteor2.png", speed: 1}));
+
+		scene.add(new GroundEntity(200, 100, {assetPath: "gfx/meteor2.png", speed: 0}));
+		scene.add(new GroundEntity(200, 150, {assetPath: "gfx/meteor2.png", speed: 0}));
+		scene.add(new GroundEntity(200, 200, {assetPath: "gfx/meteor2.png", speed: 0}));
+		scene.add(new GroundEntity(200, 250, {assetPath: "gfx/meteor2.png", speed: 0}));
 
 		/*scene.add(new ParticleBackground(0.3, 6, 5, 0.75));
 		scene.add(new ParticleBackground(0.1, 3.5, 3, 0.75));

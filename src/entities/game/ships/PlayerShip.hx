@@ -1,5 +1,6 @@
 package entities.game.ships;
 
+import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import com.haxepunk.masks.Pixelmask;
 
@@ -31,6 +32,20 @@ class PlayerShip extends ShipEntity
 		mask = new Pixelmask(getEntityBitmapData(data.assetPath, data.hardpoints));
 	}
 
+	override public function moveCollideX(e:Entity):Bool
+	{
+		xVelocity = data.speed * -xAcceleration;
+
+		return true;
+	}
+
+	override public function moveCollideY(e:Entity):Bool
+	{
+		yVelocity = data.speed * -yAcceleration;
+
+		return true;
+	}
+
 	override public function update()
 	{
 		super.update();
@@ -39,6 +54,9 @@ class PlayerShip extends ShipEntity
 		yVelocity = getAcceleratedVelocity(yVelocity, yAcceleration, 0, HXP.height - height, y, data.speed, PlayerConsts.DRAG);
 
 		moveBy(xVelocity, yVelocity, EntityTypeConsts.LEVEL);
+
+		if(yVelocity == 0 && collideTypes([EntityTypeConsts.LEVEL], x, y) != null)
+			yVelocity = data.speed;
 	}
 
 	override public function takeDamage(damage:Float)

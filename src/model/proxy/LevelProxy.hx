@@ -51,7 +51,7 @@ class LevelProxy
 		}];
 
 		waves[1] = [{
-			duration: 7,
+			duration: 70,
 			enemies: [
 				{template: enemy2.template, waypoints: enemy2.waypoints, startX: 50, startY: 20},
 				{template: enemy2.template, waypoints: enemy2.waypoints, startX: 450, startY: 20}
