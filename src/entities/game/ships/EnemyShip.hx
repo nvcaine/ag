@@ -19,7 +19,7 @@ class EnemyShip extends ShipEntity
 
 	private var waypoints:Dynamic;
 
-	private var shootTimer:Float = 0.15;
+	private var shootTimer:Float = 1;
 
 	public function new(x:Float, y:Float, data:Dynamic, ?waypoints:Dynamic)
 	{
@@ -145,7 +145,7 @@ class EnemyShip extends ShipEntity
 
 		if(shootTimer < 0)
 		{
-			shootTimer = 0.15;
+			shootTimer = 1;
 			fire([EntityTypeConsts.PLAYER]);
 		}
 	}

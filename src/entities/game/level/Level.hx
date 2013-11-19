@@ -72,6 +72,8 @@ class Level extends MessageEntity
 
 		endLevel = false;
 
+		scene.add(new GroundEntity(300, 0, {assetPath: "gfx/turret.png", speed: 0}));
+
 		/*scene.add(new ParticleBackground(0.3, 6, 5, 0.75));
 		scene.add(new ParticleBackground(0.1, 3.5, 3, 0.75));
 		scene.add(new ParticleBackground(0.075, 2, 2, 1, false));*/

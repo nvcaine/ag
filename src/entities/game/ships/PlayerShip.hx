@@ -1,6 +1,7 @@
 package entities.game.ships;
 
 import com.haxepunk.HXP;
+import com.haxepunk.masks.Pixelmask;
 
 import entities.game.misc.Projectile;
 
@@ -21,6 +22,13 @@ class PlayerShip extends ShipEntity
 		super(x, y, data);
 
 		this.type = EntityTypeConsts.PLAYER;
+	}
+
+	override public function added()
+	{
+		super.added();
+
+		mask = new Pixelmask(getEntityBitmapData(data.assetPath, data.hardpoints));
 	}
 
 	override public function update()

@@ -38,7 +38,7 @@ class ShipEntity extends SimpleMessageEntity
 
 	override public function added()
 	{
-		graphic = getEntityGraphic(data.assetPath, data.hardpoints);
+		graphic = new Image(getEntityBitmapData(data.assetPath, data.hardpoints)); //getEntityGraphic(data.assetPath, data.hardpoints);
 
 		setHitbox(data.width, data.height);
 		initWeapons(data.hardpoints);
@@ -65,15 +65,21 @@ class ShipEntity extends SimpleMessageEntity
 			weapon.fire(x, y, scene, flipped, targetTypes, drainEnergy);
 	}
 
-	private function getEntityGraphic(baseAsset:String, hardpoints:Array<HardpointDTO>):Image
+	// might have to remove this later
+	private function getEntityBitmapData(baseAsset:String, hardpoints:Array<HardpointDTO>):BitmapData
 	{
 		var base:BitmapData = Assets.getBitmapData(baseAsset, false);
 
 		for(hardpoint in hardpoints)
 			equipHardpointItem(base, hardpoint);
 
-		return new Image(base);
+		return base;
 	}
+
+	/*private function getEntityGraphic(baseAsset:String, hardpoints:Array<HardpointDTO>):Image
+	{
+		return new Image(getEntityBitmapData(baseAsset, hardpoints));
+	}*/
 
 	private function equipHardpointItem(base:BitmapData, hardpoint:HardpointDTO)
 	{
