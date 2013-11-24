@@ -33,7 +33,7 @@ class LevelProxy
 				{template: enemy1.template, waypoints: enemy1.waypoints, startX: 50, startY: 20},
 				{template: enemy1.template, waypoints: enemy1.waypoints, startX: 280, startY: 20},
 				{template: enemy1.template, waypoints: enemy1.waypoints, startX: 450, startY: 20}
-			]
+			],
 		}, {
 			duration: 7,
 			enemies: [
@@ -51,15 +51,40 @@ class LevelProxy
 		}];
 
 		waves[1] = [{
-			duration: 70,
-			enemies: [
-				{template: enemy2.template, waypoints: enemy2.waypoints, startX: 50, startY: 20},
-				{template: enemy2.template, waypoints: enemy2.waypoints, startX: 450, startY: 20}
-			]
-		}, {
 			duration: 7,
 			enemies: [
-				{template: enemy2.template, waypoints: enemy2.waypoints, startX: 300, startY: 20}
+				{template: enemy2.template, waypoints: enemy2.waypoints, startX: 50, startY: 20},
+				{template: enemy2.template, waypoints: enemy2.waypoints, startX: 450, startY: 20},
+			],
+			groundElements: [
+				{x: 350, y: -100, assetPath: "gfx/meteor2.png", speed: 1},
+				{x: 300, y: -100, assetPath: "gfx/meteor2.png", speed: 1},
+				{x: 250, y: -100, assetPath: "gfx/meteor2.png", speed: 1}
+			]
+		}, {
+			duration: 5,
+			groundElements: [
+				{x: 300, y: -300, assetPath: "gfx/meteor2.png", speed: 1},
+				{x: 300, y: -200, assetPath: "gfx/meteor2.png", speed: 1},
+				{x: 300, y: -100, assetPath: "gfx/meteor2.png", speed: 1},
+			]			
+		}, {
+			duration: 70,
+			enemies: [
+				{template: enemy2.template, startX: 100, startY: 20},
+				{template: enemy2.template, startX: 200, startY: 20},
+				{template: enemy2.template, startX: 150, startY: 120},
+			],
+			groundElements: [
+				{x: 300, y: -900, assetPath: "gfx/meteor2.png", speed: 1},
+				{x: 300, y: -800, assetPath: "gfx/meteor2.png", speed: 1},
+				{x: 300, y: -700, assetPath: "gfx/meteor2.png", speed: 1},
+				{x: 300, y: -600, assetPath: "gfx/meteor2.png", speed: 1},
+				{x: 300, y: -500, assetPath: "gfx/meteor2.png", speed: 1},
+				{x: 300, y: -400, assetPath: "gfx/meteor2.png", speed: 1},
+				{x: 300, y: -300, assetPath: "gfx/meteor2.png", speed: 1},
+				{x: 300, y: -200, assetPath: "gfx/meteor2.png", speed: 1},
+				{x: 300, y: -100, assetPath: "gfx/meteor2.png", speed: 1},
 			]
 		}];
 

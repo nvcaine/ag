@@ -37,7 +37,7 @@ class EnemyProxy
 			assetPath: "gfx/nava_1.png",
 			energyRegen: 1,
 			type: "enemy",
-			health: 100, damage: 25, speed: 3,
+			health: 100, damage: 25, speed: 1.33,
 			width: 98, height: 98,
 			score: 5, xp: 10,
 			hardpoints: []		

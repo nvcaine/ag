@@ -1,6 +1,7 @@
 package entities.game.level;
 
 import com.haxepunk.Entity;
+import com.haxepunk.HXP;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.masks.Pixelmask;
 
@@ -11,14 +12,20 @@ class GroundEntity extends Entity
 {
 	private var data:Dynamic;
 
-	public function new(x:Float, y:Float, data:Dynamic)
+	public function new(data:Dynamic)
 	{
-		super(x, y);
-
 		this.data = data;
+
+		super(data.x, data.y);
 
 		type = EntityTypeConsts.LEVEL;
 		layer = LayerConsts.MIDDLE;
+	}
+
+	// do this for all level entities
+	override public function removed()
+	{
+		graphic.destroy();
 	}
 
 	override public function added()
@@ -28,6 +35,13 @@ class GroundEntity extends Entity
 
 	override public function update()
 	{
+		if(y > HXP.height)
+		{
+			scene.remove(this);
+
+			return;
+		}
+
 		updatePosition();
 		checkPlayerCollision();
 	}
