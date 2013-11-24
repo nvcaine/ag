@@ -69,7 +69,8 @@ class GameScene extends Scene
 	{
 		super.update();
 
-		player.handleInput();
+		if(!playerDead)
+			player.handleInput();
 
 		if(killedBoss || playerDead)
 			showEndLevelText(0.15);
@@ -185,5 +186,6 @@ class GameScene extends Scene
 		playerDead = true;
 
 		startReturnTimer();
+		player.die();
 	}
 }
