@@ -13,6 +13,7 @@ import model.consts.ItemTypeConsts;
 import model.dto.HardpointDTO;
 import model.dto.ItemDTO;
 import model.dto.WeaponDTO;
+import model.events.EntityEvent;
 import model.events.HUDEvent;
 import model.proxy.PlayerProxy;
 import model.proxy.ProjectileProxy;
@@ -59,6 +60,15 @@ class Player
 
 		regenerateEnergy(playerProxy.playerData.shipTemplate.energyRegen, playerProxy.getEnergyRegenRate());
 
+	}
+
+	public function die()
+	{
+		em.dispatchEvent(new EntityEvent(EntityEvent.ENTITY_EXPLOSION, entity.x + entity.width / 2, entity.y + entity.height / 2));
+
+		scene.remove(entity);
+
+		entity = null;
 	}
 
 	private function defineInput()

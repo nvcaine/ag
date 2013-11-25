@@ -9,7 +9,6 @@ import model.events.LevelEvent;
 import model.proxy.EnemyProxy;
 
 import org.actors.MessageEntity;
-//import org.actors.ParticleBackground;
 
 class Level extends MessageEntity
 {
@@ -71,29 +70,28 @@ class Level extends MessageEntity
 		scene.add(background);
 
 		endLevel = false;
-
-		scene.add(new GroundEntity(350, -100, {assetPath: "gfx/meteor2.png", speed: 1}));
-		scene.add(new GroundEntity(300, -100, {assetPath: "gfx/meteor2.png", speed: 1}));
-		scene.add(new GroundEntity(250, -100, {assetPath: "gfx/meteor2.png", speed: 1}));
-
-		/*scene.add(new GroundEntity(200, 100, {assetPath: "gfx/meteor2.png", speed: 0}));
-		scene.add(new GroundEntity(200, 150, {assetPath: "gfx/meteor2.png", speed: 0}));
-		scene.add(new GroundEntity(200, 200, {assetPath: "gfx/meteor2.png", speed: 0}));
-		scene.add(new GroundEntity(200, 250, {assetPath: "gfx/meteor2.png", speed: 0}));*/
-
-		/*scene.add(new ParticleBackground(0.3, 6, 5, 0.75));
-		scene.add(new ParticleBackground(0.1, 3.5, 3, 0.75));
-		scene.add(new ParticleBackground(0.075, 2, 2, 1, false));*/
 	}
 
 	private function initWave(waveData:Dynamic)
 	{
-		var enemies:Array<Dynamic> = waveData.enemies;
+		if(Reflect.hasField(waveData, "groundElements"))
+		{
+			var groundElements:Array<Dynamic> = waveData.groundElements;
 
-		for(t in enemies)
-			scene.add(new EnemyShip(t.startX, t.startY, t.template, t.waypoints));
+			for(ge in groundElements)
+				scene.add(new GroundEntity(ge));
+		}
+
+		if(Reflect.hasField(waveData, "enemies"))
+		{
+			var enemies:Array<Dynamic> = waveData.enemies;
+
+			for(t in enemies)
+				scene.add(new EnemyShip(t.startX, t.startY, t.template, t.waypoints));
+		}
 
 		spawnTimer = waveData.duration;
+
 		currentWave++;
 	}
 }
