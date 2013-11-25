@@ -1,6 +1,7 @@
 package entities.game.level;
 
 import com.haxepunk.Entity;
+import com.haxepunk.HXP;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.masks.Pixelmask;
 
@@ -30,6 +31,9 @@ class GroundEntity extends Entity
 	{
 		updatePosition();
 		checkPlayerCollision();
+
+		if(y > HXP.height)
+			scene.remove(this);
 	}
 
 	private function init(assetPath:String)
