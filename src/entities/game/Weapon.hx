@@ -3,6 +3,7 @@ package entities.game;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 
+import entities.game.misc.Plasma;
 import entities.game.misc.Projectile;
 
 import model.dto.ProjectileDTO;
@@ -53,7 +54,7 @@ class Weapon
 
 		copy.damage = data.damage;
 
-		return new Projectile(x, y, copy, flipped, entityTypes);
+		return new Plasma(x, y, copy, flipped, entityTypes); //Projectile
 	}
 
 	private function fireProjectile(x:Float, y:Float, scene:Scene, entityTypes:Array<String>, drainEnergy:Bool = false)
