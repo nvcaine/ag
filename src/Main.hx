@@ -16,7 +16,7 @@ import scenes.MenuScene;
 import scenes.InventoryScene;
 import scenes.StageScene;
 
-// commit test
+// commit test - new
 class Main extends Engine
 {
 	private var eventManager:EventManager;
