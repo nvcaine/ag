@@ -85,7 +85,7 @@ class Projectile extends MessageEntity
 
 	private function checkCollision(entityType:String, removeFromScene:Bool = true)
 	{
-		onEnemyCollision(collide(entityType, this.x, this.y));
+		onEnemyCollision(collide(entityType, this.x, this.y), removeFromScene);
 	}
 
 	private function onEnemyCollision(enemy:Entity, removeFromScene:Bool = false)

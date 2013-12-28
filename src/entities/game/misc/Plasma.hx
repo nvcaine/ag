@@ -32,7 +32,7 @@ class Plasma extends Projectile
 	{
 		var g:Image = cast(graphic, Image);
 
-		g.alpha -= 0.1;
+		g.alpha -= data.fadeRate;
 
 		if(g.alpha <= 0)
 			scene.remove(this);

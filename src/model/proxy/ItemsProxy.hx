@@ -44,14 +44,14 @@ class ItemsProxy
 			new WeaponDTO({
 				name:"Weapon 4", type: ItemTypeConsts.ITEM_WEAPON,
 				assetPath: "gfx/arma_3_icon.png", layerAsset: "gfx/arma_4.png",
-				fireDelay: 0.5, damage: 30, energy: 1,
+				fireDelay: 1.5, damage: 30, energy: 1,
 				projectile: ProjectileProxy.cloneInstance().projectileTemplates[2]
 			}),
 
 			new WeaponDTO({
 				name:"Weapon 5", type: ItemTypeConsts.ITEM_WEAPON,
 				assetPath: "gfx/arma_3_icon.png", layerAsset: "gfx/arma_5.png",
-				fireDelay: 0.5, damage: 30, energy: 1,
+				fireDelay: 1.5, damage: 30, energy: 1,
 				projectile: ProjectileProxy.cloneInstance().projectileTemplates[3]
 			})
 	];

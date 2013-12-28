@@ -6,6 +6,7 @@ import com.haxepunk.Scene;
 import entities.game.misc.Plasma;
 import entities.game.misc.Projectile;
 
+import model.consts.ProjectileTypeConsts;
 import model.dto.ProjectileDTO;
 import model.dto.WeaponDTO;
 import model.events.HUDEvent;
@@ -54,7 +55,10 @@ class Weapon
 
 		copy.damage = data.damage;
 
-		return new Plasma(x, y, copy, flipped, entityTypes); //Projectile
+		if(projectileData.type == ProjectileTypeConsts.PLASMA)
+			return new Plasma(x, y, copy, flipped, entityTypes); //Projectile
+
+		return new Projectile(x, y, copy, flipped, entityTypes);
 	}
 
 	private function fireProjectile(x:Float, y:Float, scene:Scene, entityTypes:Array<String>, drainEnergy:Bool = false)
