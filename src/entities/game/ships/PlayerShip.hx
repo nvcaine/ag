@@ -61,7 +61,7 @@ class PlayerShip extends ShipEntity
 
 	override public function takeDamage(damage:Float)
 	{
-		sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, -damage));
+		//sendMessage(new HUDEvent(HUDEvent.UPDATE_HEALTH, 0, -damage));
 	}
 
 	public function setAcceleration(xAcc:Float, yAcc:Float)

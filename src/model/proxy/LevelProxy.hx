@@ -53,8 +53,8 @@ class LevelProxy
 		waves[1] = [{
 			duration: 7,
 			enemies: [
-				{template: enemy2.template, waypoints: enemy2.waypoints, startX: 50, startY: 20},
-				{template: enemy2.template, waypoints: enemy2.waypoints, startX: 450, startY: 20},
+				{template: enemy2.template, waypoints: enemy2.waypoints, startX: 50, startY: 10},
+				{template: enemy2.template, waypoints: enemy2.waypoints, startX: 50, startY: 50},
 			],
 			groundElements: [
 				{x: 350, y: -100, assetPath: "gfx/meteor2.png", speed: 1},

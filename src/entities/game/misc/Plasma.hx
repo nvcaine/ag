@@ -1,7 +1,10 @@
 package entities.game.misc;
 
-import com.haxepunk.graphics.Image;//Graphic;
+import com.haxepunk.Entity;
 import com.haxepunk.HXP;
+import com.haxepunk.graphics.Image;//Graphic;
+
+import entities.game.ships.ShipEntity;
 
 import nme.Assets;
 
@@ -12,45 +15,36 @@ import nme.geom.Rectangle;
 
 class Plasma extends Projectile
 {
-	private var graphicBitmapData:BitmapData;
-	private var delay:Float = 0.05;
-
-	override public function added()
-	{
-		graphicBitmapData = Assets.getBitmapData(data.assetPath);
-
-		graphic = new Image(graphicBitmapData);//new Graphic();
-
-		setHitbox(graphicBitmapData.width, graphicBitmapData.height);
-	}
+	private var checked:Bool = false;
 
 	override public function update()
 	{
-		if(delay < 0)
+		if(!checked)
 		{
-			fire();
-			delay = 0.05;
-			moveBy(0, -12);
-			return;
+			checkCollisionTargets(entityTypes, false);
+			checked = true;
 		}
 
-		delay -= HXP.elapsed;
+		fade();
 	}
 
-	private function fire()
+	private function fade()
 	{
-		var prevHeight:Int = graphicBitmapData.height;
+		var g:Image = cast(graphic, Image);
 
-		var prevBMData:BitmapData = graphicBitmapData.clone();
-		var bd:BitmapData = Assets.getBitmapData(data.assetPath);
+		g.alpha -= 0.1;
 
-		graphicBitmapData = new BitmapData(prevBMData.width,  prevHeight + bd.height, true, 0x000000);
+		if(g.alpha <= 0)
+			scene.remove(this);
+	}
 
-		graphicBitmapData.copyPixels(prevBMData, new Rectangle(0, 0, prevBMData.width, prevHeight) , new Point(0, 0), null, null, true);
-		graphicBitmapData.copyPixels(bd, new Rectangle(0, 0, bd.width, bd.height) , new Point(0, prevHeight), null, null, true);
+	override private function checkCollision(entityType:String, removeFromScene:Bool = true)
+	{
+		var targetEntities:Array<ShipEntity> = [];
 
-		graphic = new Image(graphicBitmapData);
+		collideInto(entityType, this.x, this.y, targetEntities);
 
-		setHitbox(graphicBitmapData.width, graphicBitmapData.height);
+		for(ship in targetEntities)
+			ship.takeDamage(data.damage);
 	}
 }

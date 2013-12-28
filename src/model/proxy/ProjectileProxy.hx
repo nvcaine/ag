@@ -20,6 +20,16 @@ class ProjectileProxy
 				assetPath: "gfx/glontz2.png", sound: "sfx/laser1.mp3",
 				width: 6, height: 15, speed: 12.5
 			}),
+
+			new ProjectileDTO({
+				assetPath: "gfx/plasma2.png", sound: "sfx/laser.mp3",
+				width: 19, height: 700, speed: 0
+			}),
+
+			new ProjectileDTO({
+				assetPath: "gfx/plasma3.png", sound: "sfx/laser.mp3",
+				width: 19, height: 700, speed: 0
+			})
 		];
 	}
 

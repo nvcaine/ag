@@ -77,25 +77,27 @@ class Projectile extends MessageEntity
 		return -data.speed;
 	}
 
-	private function checkCollisionTargets(entityTypes:Array<String>)
+	private function checkCollisionTargets(entityTypes:Array<String>, removeFromScene:Bool = true)
 	{
 		for(type in entityTypes)
-			checkCollision(type, onEntityCollision);
+			checkCollision(type, removeFromScene);
 	}
 
-	private function checkCollision(entityType:String, handler:Entity->Void)
+	private function checkCollision(entityType:String, removeFromScene:Bool = true)
 	{
-		var entity:Entity = collide(entityType, this.x, this.y);
-
-		if(entity != null)
-			handler(entity);
+		onEnemyCollision(collide(entityType, this.x, this.y));
 	}
 
-	private function onEntityCollision(e:Entity)
+	private function onEnemyCollision(enemy:Entity, removeFromScene:Bool = false)
 	{
-		var entity:ShipEntity = cast(e, ShipEntity); // this will potentially exclude "ground" elements
+		if(enemy == null)
+			return;
+	
+		var entity:ShipEntity = cast(enemy, ShipEntity); // this will potentially exclude "ground" elements - collideTypes might work better
 
 		entity.takeDamage(data.damage);
-		scene.remove(this);
+
+		if(removeFromScene)
+			scene.remove(this);
 	}
 }

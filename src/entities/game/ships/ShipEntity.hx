@@ -40,7 +40,7 @@ class ShipEntity extends SimpleMessageEntity
 	{
 		//var i:Image = ; i.centerOO(); // nice idea
 
-		graphic = new Image(getEntityBitmapData(data.assetPath, data.hardpoints)); //getEntityGraphic(data.assetPath, data.hardpoints);
+		graphic = new Image(getEntityBitmapData(data.assetPath, data.hardpoints));
 
 		setHitbox(data.width, data.height);
 		initWeapons(data.hardpoints);
@@ -78,18 +78,15 @@ class ShipEntity extends SimpleMessageEntity
 		return base;
 	}
 
-	/*private function getEntityGraphic(baseAsset:String, hardpoints:Array<HardpointDTO>):Image
-	{
-		return new Image(getEntityBitmapData(baseAsset, hardpoints));
-	}*/
-
-	private function equipHardpointItem(base:BitmapData, hardpoint:HardpointDTO)
+	// yPaddingOffset used so the hardpoint and the item juxtapose,
+	// hardpoint.y - layerAsset.height would make the asset "touch" the hardpoint
+	private function equipHardpointItem(base:BitmapData, hardpoint:HardpointDTO, yPaddingOffset:Int = 15)
 	{
 		if(hardpoint.item == null)
 			return;
 
 		var layerAsset:BitmapData = Assets.getBitmapData(hardpoint.item.layerAsset);
-		var offset:Point = new Point(hardpoint.x, hardpoint.y - layerAsset.height + 15);
+		var offset:Point = new Point(hardpoint.x, hardpoint.y - layerAsset.height + yPaddingOffset);
 		var rect:Rectangle = new Rectangle(0, 0, layerAsset.width, layerAsset.height);
 
 		base.copyPixels(layerAsset, rect , offset, null, null, true);
@@ -107,13 +104,14 @@ class ShipEntity extends SimpleMessageEntity
 				weapons.push(initNewWeapon(hardpoint));
 	}
 
-	private function initNewWeapon(hardpoint:HardpointDTO):Weapon
+	// yPaddOff - see above
+	private function initNewWeapon(hardpoint:HardpointDTO, yPaddingOffset:Int = 15):Weapon
 	{
 		var weaponData:WeaponDTO = cast(hardpoint.item, WeaponDTO);
 		var projectileBitmapData:BitmapData = Assets.getBitmapData(weaponData.projectile.assetPath);
 		var weaponAsset:BitmapData = Assets.getBitmapData(hardpoint.item.layerAsset);
 		var xOffset:Float = hardpoint.x + (weaponAsset.width - projectileBitmapData.width) / 2;
-		var yOffset:Float = hardpoint.y - weaponAsset.height;
+		var yOffset:Float = hardpoint.y + yPaddingOffset - (weaponAsset.height + projectileBitmapData.height);
 
 		if(flipped)
 		{
